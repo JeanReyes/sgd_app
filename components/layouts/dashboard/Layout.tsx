@@ -3,9 +3,10 @@ import Head from 'next/head'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Navbar } from '../../ui';
 import { SideNav } from '../../ui/SideNav/SideNav';
-import { Box, Container, Grid, Stack, styled } from '@mui/material';
+import { Box, Container, Grid, Slide, styled } from '@mui/material';
 import { withAuthGuard } from '../../ui/AuthGuard/WhitAuthGuard';
 import { usePathname } from 'next/navigation';
+import { SideContent } from '../../ui/SideNav/SideContent';
 
 const SIDE_NAV_WIDTH = 280;
 
@@ -14,7 +15,7 @@ const LayoutRoot = styled('div')(({ theme }) => ({
   flex: '1 1 auto',
   maxWidth: '100%',
   [theme.breakpoints.up('lg')]: {
-    paddingLeft: SIDE_NAV_WIDTH
+    // paddingLeft: SIDE_NAV_WIDTH
   }
 }));
 
@@ -46,29 +47,36 @@ export const Layout = withAuthGuard(({children}: Props) => {
 
     return (
         <>
-            <Navbar onNavOpen={() => setOpenNav(true)} />
-            <SideNav
+            <Navbar onNavOpen={() => setOpenNav(!openNav)} />
+            {/* <SideNav
                 onClose={() => setOpenNav(false)}
                 open={openNav}
-            />
-               <LayoutRoot>
-                    <LayoutContainer>
-                        <Box
-                            component="main"
-                            sx={{
-                                flexGrow: 1,
-                                py: 8,
-                                p:2
-                            }}
-                        >
-                            {/* <Grid container> */}
-                                {/* <Grid item> */}
-                                    {children}
-                                {/* </Grid> */}
-                            {/* </Grid> */}
-                        </Box>
-                    </LayoutContainer>
-               </LayoutRoot>
+            /> */}
+            <Box
+                sx={{
+                    display: 'flex',
+                    position: 'fixed',
+                    top: 64,
+                    width: '100%',
+                    height: '100vh'
+                }}
+            >
+                {openNav && <SideContent direction={openNav ? 'right' : 'left'}/>}
+                    <LayoutRoot>
+                        <LayoutContainer>
+                            <Box
+                                component="main"
+                                sx={{
+                                    flexGrow: 1,
+                                    py: 8,
+                                    p:2
+                                }}
+                            >
+                                {children}
+                            </Box>
+                        </LayoutContainer>
+                    </LayoutRoot>
+            </Box>
         </>
     )
 })

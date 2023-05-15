@@ -39,11 +39,11 @@ export const Navbar = ({onNavOpen}: Props) => {
           backgroundColor: (theme) => alpha(theme.palette.background.default, 0.8),
           position: 'sticky',
           left: {
-            lg: `${SIDE_NAV_WIDTH}px`
+            // lg: `${SIDE_NAV_WIDTH}px`
           },
           top: 0,
           width: {
-            lg: `calc(100% - ${SIDE_NAV_WIDTH}px)`
+            // lg: `calc(100% - ${SIDE_NAV_WIDTH}px)`
           },
           zIndex: (theme) => theme.zIndex.appBar
         }}
@@ -63,13 +63,13 @@ export const Navbar = ({onNavOpen}: Props) => {
               direction="row"
               spacing={2}
             >
-              {!lgUp && (
+              {/* {!lgUp && ( */}
                 <IconButton onClick={onNavOpen}>
                   <SvgIcon fontSize="small">
                     <Bars3Icon />
                   </SvgIcon>
                 </IconButton>
-              )}
+              {/* )}  */}
               <Tooltip title="Search">
                 <IconButton>
                   <SvgIcon fontSize="small">

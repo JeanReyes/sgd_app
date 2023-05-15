@@ -1,51 +1,53 @@
-/* eslint-disable @next/next/no-img-element */
+
 import NextLink from 'next/link';
 import { usePathname } from 'next/navigation';
 import ChevronUpDownIcon from '@heroicons/react/24/solid/ChevronUpDownIcon';
 import ArrowTopRightOnSquareIcon from '@heroicons/react/24/solid/ArrowTopRightOnSquareIcon';
+
 import {
-  Box,
-  Button,
-  Divider,
-  Drawer,
-  Stack,
-  SvgIcon,
-  Typography,
-  useMediaQuery
-} from '@mui/material';
+    Box,
+    Button,
+    Divider,
+    Drawer,
+    Stack,
+    SvgIcon,
+    Typography,
+    useMediaQuery,
+    Slide
+  } from '@mui/material';
+
 import { Logo } from '../../Logos/Logo';
 import { items } from '../../layouts/dashboard/Items';
 import { SideNavItem } from './SideNavItem';
-import { Scrollbar } from './Scrollbar';
 
 interface Props {
-    onClose: () => void,
-    open: boolean
+    direction: 'left' | 'right'
 }
 
-export const SideNav = ({open, onClose}:Props) => {
+export const SideContent = ({direction} : Props) => {
+    const pathname = usePathname();
+    return (
 
-  const pathname = usePathname();
-  const lgUp = useMediaQuery((theme) => (theme as any).breakpoints.up('lg'));
-
-  const content = (
-
-  //   <Scrollbar
-  //   sx={{
-  //     height: '100%',
-  //     '& .simplebar-content': {
-  //       height: '100%'
-  //     },
-  //     '& .simplebar-scrollbar:before': {
-  //       background: 'neutral.400'
-  //     }
-  //   }}
-  // >
-    <Box
+        //   <Scrollbar
+        //   sx={{
+        //     height: '100%',
+        //     '& .simplebar-content': {
+        //       height: '100%'
+        //     },
+        //     '& .simplebar-scrollbar:before': {
+        //       background: 'neutral.400'
+        //     }
+        //   }}
+        // >
+        <Slide direction={direction} in={true} mountOnEnter unmountOnExit>
+        <Box
         sx={{
+          backgroundColor: 'neutral.800',
           display: 'flex',
           flexDirection: 'column',
-          height: '100%'
+          height: '100%',
+          width: '280px',
+          color: 'common.white',
         }}
       >
         <Box sx={{ p: 3 }}>
@@ -181,47 +183,9 @@ export const SideNav = ({open, onClose}:Props) => {
           </Button>
         </Box>
       </Box>
-  // </Scrollbar>
-      
-  );
-
-  if (lgUp) {
-    console.log("up", lgUp);
-    
-    return (
-      <Drawer
-        anchor="left"
-        open
-        PaperProps={{
-          sx: {
-            backgroundColor: 'neutral.800',
-            color: 'common.white',
-            width: 280
-          }
-        }}
-        variant="permanent"
-      >
-        {content}
-      </Drawer>
-    );
-  }
-
-  return (
-    <Drawer
-      anchor="left"
-      onClose={onClose}
-      open={open}
-      PaperProps={{
-        sx: {
-          backgroundColor: 'neutral.800',
-          color: 'common.white',
-          width: 280
-        }
-      }}
-      sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
-      variant="temporary"
-    >
-      <>{content}</>
-    </Drawer>
-  );
-};
+      </Slide>
+          
+        // </Scrollbar>
+            
+        );
+}
