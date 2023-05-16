@@ -8,13 +8,9 @@ import {
     Box,
     Button,
     Divider,
-    Drawer,
     Stack,
     SvgIcon,
     Typography,
-    useMediaQuery,
-    Slide,
-    useTheme
   } from '@mui/material';
 
 import { Logo } from '../../Logos/Logo';
@@ -33,16 +29,15 @@ export const SideContent = ({direction, navHeight, sideWidth} : Props) => {
     const pathname = usePathname();
 
     const openStyled = {
-        transition: 'transform 290ms ease',
+        transition: 'transform 280ms ease',
         transform: 'translateX(0)'
     }
     
     const closeStyled = {
-        transition: 'transform 290ms ease',
+        transition: 'transform 280ms ease',
         transform: `translateX(-${sideWidth}px)`,
     }
     return (
-    //   <Slide direction="right" in={direction} mountOnEnter unmountOnExit>
         <Box
             sx={{
                 ...(direction ? openStyled : closeStyled),
@@ -187,8 +182,5 @@ export const SideContent = ({direction, navHeight, sideWidth} : Props) => {
             </Button>
             </Box>
         </Box>
-
-    //   </Slide>
-   
     );
 }

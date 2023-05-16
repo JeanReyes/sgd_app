@@ -3,7 +3,7 @@ import Head from 'next/head'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Navbar } from '../../ui';
 import { SideNav } from '../../ui/SideNav/SideNav';
-import { Box, Container, Grid, Slide, styled, useTheme } from '@mui/material';
+import { Box, Container, Grid, Slide, styled, useMediaQuery, useTheme } from '@mui/material';
 import { withAuthGuard } from '../../ui/AuthGuard/WhitAuthGuard';
 import { usePathname } from 'next/navigation';
 import { SideContent } from '../../ui/SideNav/SideContent';
@@ -42,22 +42,40 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
             width: '100%'
         },
         [theme.breakpoints.down('md')]: {
-            marginLeft: '20px',
+            // marginLeft: '20px',
             // width: `calc(100% - ${SIDE_NAV_WIDTH}px)`,
             width: '100%',
-            padding: '16px'
+            // padding: '16px'
+        },
+        [theme.breakpoints.up('sm')]: {
+            // marginLeft: -(SIDE_NAV_WIDTH),
+            // width: `calc(100% - ${SIDE_NAV_WIDTH}px)`
+            width: '100%'
         },
         [theme.breakpoints.down('sm')]: {
-            marginLeft: '10px',
-            width: `calc(100% - ${SIDE_NAV_WIDTH}px)`,
-            padding: '16px',
-            marginRight: '10px'
+            // marginLeft: '10px',
+            width: '100%',
+            // width: `calc(100% - ${SIDE_NAV_WIDTH}px)`,
+            // padding: '16px',
+            // marginRight: '10px'
+        },
+        [theme.breakpoints.up('xs')]: {
+            // marginLeft: -(SIDE_NAV_WIDTH),
+            // width: `calc(100% - ${SIDE_NAV_WIDTH}px)`
+            width: '100%'
+        },
+        [theme.breakpoints.down('xs')]: {
+            // marginLeft: '10px',
+            width: '100%',
+            // width: `calc(100% - ${SIDE_NAV_WIDTH}px)`,
+            // padding: '16px',
+            // marginRight: '10px'
         }
     }),
     ...(open && {
         transition: theme.transitions.create('margin', {
-            easing: theme.transitions.easing.easeOut,
-            duration: theme.transitions.duration.enteringScreen
+            // easing: theme.transitions.easing.easeOut,
+            // duration: theme.transitions.duration.enteringScreen
         }),
         marginLeft: 0,
         borderBottomLeftRadius: 0,
@@ -68,6 +86,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
             // marginLeft: '20px'
         },
         [theme.breakpoints.down('sm')]: {
+            
             // marginLeft: '10px'
         }
     })
@@ -82,6 +101,7 @@ export const Layout = withAuthGuard(({children}: Props) => {
     const [openNav, setOpenNav] = useState(false);
     const pathname = usePathname();
     const theme = useTheme();
+    const mdUp = useMediaQuery((theme) => (theme as any).breakpoints.up('md'));
 
     const handlePathnameChange = useCallback(() => {
         if (openNav) {
@@ -96,10 +116,6 @@ export const Layout = withAuthGuard(({children}: Props) => {
     return (
         <>
             <Navbar onNavOpen={() => setOpenNav(!openNav)} sideWidth={SIDE_NAV_WIDTH} navHeight={TOP_NAV_HEIGHT}/>
-            {/* <SideNav
-                onClose={() => setOpenNav(false)}
-                open={openNav}
-            /> */}
             <Box
                 sx={{
                     display: 'flex',
@@ -109,14 +125,14 @@ export const Layout = withAuthGuard(({children}: Props) => {
                     height: '100%'
                 }}
             >
-                <SideContent direction={openNav} sideWidth={SIDE_NAV_WIDTH} navHeight={TOP_NAV_HEIGHT}/>
+                {
+                    !mdUp 
+                    ? <SideNav onClose={() => setOpenNav(false)} open={openNav} /> 
+                    : <SideContent direction={openNav} sideWidth={SIDE_NAV_WIDTH} navHeight={TOP_NAV_HEIGHT}/>
+                }
+                
+                
                 <Main open={openNav} theme={theme}>
-
-                    <Box
-                        // sx={{
-                        //     width:'100%'
-                        // }}
-                    >
                     <LayoutRoot>
                         <LayoutContainer>
                             <Box
@@ -131,7 +147,6 @@ export const Layout = withAuthGuard(({children}: Props) => {
                             </Box>
                         </LayoutContainer>
                     </LayoutRoot>
-                </Box>
                 </Main>
             </Box>
         </>

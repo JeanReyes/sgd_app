@@ -16,7 +16,6 @@ import {
 import { Logo } from '../../Logos/Logo';
 import { items } from '../../layouts/dashboard/Items';
 import { SideNavItem } from './SideNavItem';
-import { Scrollbar } from './Scrollbar';
 
 interface Props {
     onClose: () => void,
@@ -26,21 +25,11 @@ interface Props {
 export const SideNav = ({open, onClose}:Props) => {
 
   const pathname = usePathname();
-  const lgUp = useMediaQuery((theme) => (theme as any).breakpoints.up('lg'));
+  const lgUp = useMediaQuery((theme) => (theme as any).breakpoints.up('md'));
+  console.log("adasdasd");
+  
 
   const content = (
-
-  //   <Scrollbar
-  //   sx={{
-  //     height: '100%',
-  //     '& .simplebar-content': {
-  //       height: '100%'
-  //     },
-  //     '& .simplebar-scrollbar:before': {
-  //       background: 'neutral.400'
-  //     }
-  //   }}
-  // >
     <Box
         sx={{
           display: 'flex',
@@ -180,9 +169,7 @@ export const SideNav = ({open, onClose}:Props) => {
             Pro Live Preview
           </Button>
         </Box>
-      </Box>
-  // </Scrollbar>
-      
+      </Box>    
   );
 
   if (lgUp) {
@@ -205,7 +192,8 @@ export const SideNav = ({open, onClose}:Props) => {
       </Drawer>
     );
   }
-
+  console.log('fuera');
+  
   return (
     <Drawer
       anchor="left"
@@ -221,7 +209,7 @@ export const SideNav = ({open, onClose}:Props) => {
       sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
       variant="temporary"
     >
-      <>{content}</>
+      {content}
     </Drawer>
   );
 };
