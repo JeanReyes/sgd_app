@@ -18,14 +18,13 @@ import { alpha } from '@mui/material/styles';
 import { usePopover } from '../../../hooks/usePopover';
 import { AccountPopover } from './AccountPopover';
 
-const SIDE_NAV_WIDTH = 280;
-const TOP_NAV_HEIGHT = 64;
-
 interface Props {
-  onNavOpen: () => void
+  onNavOpen: () => void;
+  sideWidth: number;
+  navHeight: number;
 }
 
-export const Navbar = ({onNavOpen}: Props) => {
+export const Navbar = ({onNavOpen, sideWidth, navHeight}: Props) => {
 
   const lgUp = useMediaQuery((theme) => (theme as any).breakpoints.up('lg'));
   const accountPopover = usePopover();
@@ -39,11 +38,11 @@ export const Navbar = ({onNavOpen}: Props) => {
           backgroundColor: (theme) => alpha(theme.palette.background.default, 0.8),
           position: 'sticky',
           left: {
-            // lg: `${SIDE_NAV_WIDTH}px`
+            // lg: `${sideWidth}px`
           },
           top: 0,
           width: {
-            // lg: `calc(100% - ${SIDE_NAV_WIDTH}px)`
+            // lg: `calc(100% - ${sideWidth}px)`
           },
           zIndex: (theme) => theme.zIndex.appBar
         }}
@@ -54,7 +53,7 @@ export const Navbar = ({onNavOpen}: Props) => {
             justifyContent="space-between"
             spacing={2}
             sx={{
-              minHeight: TOP_NAV_HEIGHT,
+              minHeight: navHeight,
               px: 2
             }}
           >
