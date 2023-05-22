@@ -2,7 +2,7 @@
 import { useCallback, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import { Box, Divider, MenuItem, MenuList, Popover, Typography } from '@mui/material';
-import { useAuth } from '../../../hooks/useAuth';
+import { useAuth } from '../../../hooks/useContext';
 import { AuthContext } from '../../../context/Auth/AuthContext';
 
 interface Props {

@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { useAuth } from '../../../hooks/useAuth';
+import { useAuth } from '../../../hooks/useContext';
 
 interface Props {
     children: JSX.Element;

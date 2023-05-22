@@ -76,7 +76,7 @@ export const SideNavItem = ({active = false, disabled, external, icon, path, tit
             lineHeight: '24px',
             whiteSpace: 'nowrap',
             ...(active && {
-              color: 'common.white'
+              color: 'common.black'
             }),
             ...(disabled && {
               color: 'neutral.500'

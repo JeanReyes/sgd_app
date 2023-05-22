@@ -12,6 +12,7 @@ import {
   Stack,
   SvgIcon,
   Tooltip,
+  AppBar,
   useMediaQuery
 } from '@mui/material';
 import { alpha } from '@mui/material/styles';
@@ -31,21 +32,8 @@ export const Navbar = ({onNavOpen, sideWidth, navHeight}: Props) => {
 
   return (
     <>
-      <Box
+      <AppBar
         component="header"
-        sx={{
-          backdropFilter: 'blur(6px)',
-          backgroundColor: (theme) => alpha(theme.palette.background.default, 0.8),
-          position: 'sticky',
-          left: {
-            // lg: `${sideWidth}px`
-          },
-          top: 0,
-          width: {
-            // lg: `calc(100% - ${sideWidth}px)`
-          },
-          zIndex: (theme) => theme.zIndex.appBar
-        }}
       >
           <Stack
             alignItems="center"
@@ -114,7 +102,7 @@ export const Navbar = ({onNavOpen, sideWidth, navHeight}: Props) => {
               />
             </Stack>
           </Stack>
-      </Box>
+      </AppBar>
       <AccountPopover
         anchorEl={accountPopover.anchorRef.current}
         open={accountPopover.open}

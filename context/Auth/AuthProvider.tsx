@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer, useRef } from 'react'
 import { AuthContext } from './AuthContext'
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from '../../hooks/useContext';
 import { User } from '../../interface/Auth';
 import { AuthReducer } from './AuthReducer';
 
@@ -63,7 +63,7 @@ export const AuthProvider = ({children}: Props) => {
               type:'init-login',
             });
           }
-    }
+    };
 
     const signIn = async (email: string, password: string) => {
         // metodo de login ir a BD y traer user
@@ -89,12 +89,13 @@ export const AuthProvider = ({children}: Props) => {
             payload: user
           });
     };
+
     const signOut = () => {
         window.localStorage.removeItem('authenticated')
         dispatch({
           type: 'sing-out'
         });
-      };
+    };
 
     useEffect(() => {    
         initialize()

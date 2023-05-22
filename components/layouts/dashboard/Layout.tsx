@@ -1,12 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import Head from 'next/head'
 import React, { useCallback, useEffect, useState } from 'react'
 import { Navbar } from '../../ui';
 import { SideNav } from '../../ui/SideNav/SideNav';
-import { Box, Container, Grid, Slide, styled, useMediaQuery, useTheme } from '@mui/material';
+import { Box, styled, useTheme } from '@mui/material';
 import { withAuthGuard } from '../../ui/AuthGuard/WhitAuthGuard';
 import { usePathname } from 'next/navigation';
-import { SideContent } from '../../ui/SideNav/SideContent';
+import { sideDark, sideLight } from '../../../themes/config/utils';
 
 const SIDE_NAV_WIDTH = 280;
 const TOP_NAV_HEIGHT = 64;
@@ -32,10 +31,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
     ...(!open && {
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 0,
-        transition: theme.transitions.create('margin', {
-            // easing: theme.transitions.easing.sharp,
-            // duration: theme.transitions.duration.leavingScreen
-        }),
+        transition: theme.transitions.create('margin', {}),
         [theme.breakpoints.up('md')]: {
             marginLeft: -(SIDE_NAV_WIDTH),
             // width: `calc(100% - ${SIDE_NAV_WIDTH}px)`
@@ -73,10 +69,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
         }
     }),
     ...(open && {
-        transition: theme.transitions.create('margin', {
-            // easing: theme.transitions.easing.easeOut,
-            // duration: theme.transitions.duration.enteringScreen
-        }),
+        transition: theme.transitions.create('margin', {}),
         marginLeft: 0,
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 0,
@@ -101,15 +94,25 @@ export const Layout = withAuthGuard(({children}: Props) => {
     const [openNav, setOpenNav] = useState(false);
     const pathname = usePathname();
     const theme = useTheme();
-    const mdUp = useMediaQuery((theme) => (theme as any).breakpoints.up('md'));
-
+    const classes = () => {
+        console.log("theme.palette.mode", theme.palette.mode);
+        
+        if(theme.palette.mode === 'light') {
+            return sideLight()
+        }
+        if(theme.palette.mode === 'dark') {
+            return sideDark()
+        }
+    }
+    // cada vez que cambio de ruta cierro el nav
     const handlePathnameChange = useCallback(() => {
         if (openNav) {
-          setOpenNav(false);
+          setOpenNav(true);
         }
+     
     },[openNav]);
   
-    useEffect(() => {
+    useEffect(() => {  
         handlePathnameChange();
     },[pathname]);
 
@@ -125,13 +128,14 @@ export const Layout = withAuthGuard(({children}: Props) => {
                     height: '100%'
                 }}
             >
-                {
-                    !mdUp 
-                    ? <SideNav onClose={() => setOpenNav(false)} open={openNav} /> 
-                    : <SideContent direction={openNav} sideWidth={SIDE_NAV_WIDTH} navHeight={TOP_NAV_HEIGHT}/>
-                }
-                
-                
+                <SideNav 
+                    direction={openNav}
+                    sideWidth={SIDE_NAV_WIDTH}
+                    navHeight={TOP_NAV_HEIGHT}
+                    className={(classes() as any).root}
+                    onClose={() => setOpenNav(false)} 
+                    open={openNav} 
+                /> 
                 <Main open={openNav} theme={theme}>
                     <LayoutRoot>
                         <LayoutContainer>

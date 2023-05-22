@@ -23,11 +23,31 @@ export function createComponents(config: any) {
         }
       }
     },
+    MuiAppBar: {
+        defaultProps: {
+            elevation: 0
+        },
+        styleOverrides: {
+            root: {
+                // backgroundColor: 'red'
+                color: '#fff'
+            }
+        }
+    },
+    MuiIconButton:{
+      styleOverrides: {
+        root: {
+            // backgroundColor: 'red'
+            color: '#fff'
+        }
+    }
+    },
     MuiButton: {
       styleOverrides: {
         root: {
           borderRadius: '12px',
-          textTransform: 'none'
+          textTransform: 'none',
+          // backgroundColor: 'red'
         },
         sizeSmall: {
           padding: '6px 16px'
@@ -52,7 +72,7 @@ export function createComponents(config: any) {
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: 20,
+          borderRadius: 10,
           [`&.${paperClasses.elevation1}`]: {
             boxShadow: '0px 5px 22px rgba(0, 0, 0, 0.04), 0px 0px 0px 0.5px rgba(0, 0, 0, 0.03)'
           }
@@ -295,6 +315,15 @@ export function createComponents(config: any) {
     MuiTextField: {
       defaultProps: {
         variant: 'filled'
+      }
+    },
+    MuiButtonBase: {
+      styleOverrides: {
+        root: {
+          borderBottomColor: palette.divider,
+          padding: '15px 16px',
+          color: 'black'
+        }
       }
     }
   };

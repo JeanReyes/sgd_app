@@ -8,6 +8,7 @@ import { createEmotionCache } from '../utils/create-emotion-react'
 import { useProgress } from '../hooks/useProgress'
 import 'simplebar-react/dist/simplebar.min.css';
 import '../styles/globals.css'
+import { SgdProvider } from '../context/App/SdgProvider'
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -20,23 +21,22 @@ export default function App({ Component, pageProps }: AppProps) {
 
     return (
         <CacheProvider value={clientSideEmotionCache}>
-             <Head>
-                <meta
-                name="viewport"
-                content="initial-scale=1, width=device-width"
-                />
+            <Head>
+                <meta name="viewport" content="initial-scale=1, width=device-width"/>
             </Head>
             <AuthProvider>
-                <ThemeProvider theme={lightTheme}>
-                    <CssBaseline/>
-                    <AuthConsumer>
-                        {
-                            ({isLoading}) => isLoading
-                            ? <>Cargando...</>
-                            : <Component {...pageProps} />
-                        }
-                    </AuthConsumer>
-                </ThemeProvider>
+                <SgdProvider company={'san-clemente'}>
+                    <ThemeProvider theme={lightTheme}>
+                        <CssBaseline/>
+                        <AuthConsumer>
+                            {
+                                ({isLoading}) => isLoading
+                                ? <>Cargando...</>
+                                : <Component {...pageProps} />
+                            }
+                        </AuthConsumer>
+                    </ThemeProvider>
+                </SgdProvider>
             </AuthProvider>
         </CacheProvider>
     )
