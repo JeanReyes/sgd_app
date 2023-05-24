@@ -18,6 +18,7 @@ import {
 } from '@mui/material';
 import { LoginLayout } from '../../components/layouts';
 import { useAuth } from '../../hooks/useContext';
+import { ConfigTheme } from '../../components/configTheme/ConfigTheme';
 // import { Layout as AuthLayout } from 'src/layouts/auth/layout';
 
 const Login = () => {
@@ -101,21 +102,21 @@ const Login = () => {
                     >
                         <Typography variant="h4">
                             Login
+                            <ConfigTheme from='login' sx={{marginLeft: 2, padding: 1}}/>
                         </Typography>
                         <Typography
                             color="text.secondary"
                             variant="body2"
                         >
-                            Don&apos;t have an account?
-                            &nbsp;
-                            <Link
+                            {/* <Link
                                 component={NextLink}
                                 href="/auth/register"
                                 underline="hover"
                                 variant="subtitle2"
                             >
                             Register
-                            </Link>
+                            </Link> */}
+                            
                         </Typography>
                     </Stack>
                     <form

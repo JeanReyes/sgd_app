@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+
 import BellIcon from '@heroicons/react/24/solid/BellIcon';
 import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
 import Bars3Icon from '@heroicons/react/24/solid/Bars3Icon';
@@ -6,18 +6,18 @@ import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
 import {
   Avatar,
   Badge,
-  Box,
-  Grid,
   IconButton,
   Stack,
   SvgIcon,
   Tooltip,
   AppBar,
-  useMediaQuery
 } from '@mui/material';
-import { alpha } from '@mui/material/styles';
 import { usePopover } from '../../../hooks/usePopover';
 import { AccountPopover } from './AccountPopover';
+import SettingsIcon from '@mui/icons-material/Settings';
+import { useContext, useState } from 'react';
+import { SgdContext } from '../../../context/App/SgdContext';
+import { Settings } from '../Settings/Settings';
 
 interface Props {
   onNavOpen: () => void;
@@ -25,10 +25,13 @@ interface Props {
   navHeight: number;
 }
 
-export const Navbar = ({onNavOpen, sideWidth, navHeight}: Props) => {
-
-  const lgUp = useMediaQuery((theme) => (theme as any).breakpoints.up('lg'));
+export const Navbar = ({onNavOpen, navHeight}: Props) => {
+  const [toggle, setToggle] = useState(false)
   const accountPopover = usePopover();
+
+  const handleSettings = () => {
+    setToggle(!toggle)
+  }
 
   return (
     <>
@@ -90,6 +93,13 @@ export const Navbar = ({onNavOpen, sideWidth, navHeight}: Props) => {
                   </Badge>
                 </IconButton>
               </Tooltip>
+              <Tooltip title="Settings">
+                <IconButton onClick={handleSettings}>
+                    <SvgIcon fontSize="small">
+                      <SettingsIcon/>
+                    </SvgIcon>
+                </IconButton>
+              </Tooltip>
               <Avatar
                 onClick={accountPopover.handleOpen}
                 ref={accountPopover.anchorRef}
@@ -108,6 +118,7 @@ export const Navbar = ({onNavOpen, sideWidth, navHeight}: Props) => {
         open={accountPopover.open}
         onClose={accountPopover.handleClose}
       />
+      <Settings toggle={toggle} handleSettings={handleSettings}/>
     </>
   );
 };

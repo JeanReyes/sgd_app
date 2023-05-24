@@ -1,5 +1,4 @@
 import { createTheme } from '@mui/material';
-import { grey, red } from '@mui/material/colors';
 import { createPalette } from './config/light-theme/create-palette';
 import { createComponents } from './config/light-theme/create-components';
 import { createShadows } from './config/light-theme/create-shadows';

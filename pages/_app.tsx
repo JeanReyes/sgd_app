@@ -8,7 +8,7 @@ import { createEmotionCache } from '../utils/create-emotion-react'
 import { useProgress } from '../hooks/useProgress'
 import 'simplebar-react/dist/simplebar.min.css';
 import '../styles/globals.css'
-import { SgdProvider } from '../context/App/SdgProvider'
+import { SgdConsumer, SgdProvider } from '../context/App/SdgProvider'
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -17,7 +17,7 @@ const SplashScreen = () => null;
 export default function App({ Component, pageProps }: AppProps) {
     // const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
     
-    useProgress()
+    useProgress();
 
     return (
         <CacheProvider value={clientSideEmotionCache}>
@@ -26,16 +26,22 @@ export default function App({ Component, pageProps }: AppProps) {
             </Head>
             <AuthProvider>
                 <SgdProvider company={'san-clemente'}>
-                    <ThemeProvider theme={lightTheme}>
-                        <CssBaseline/>
-                        <AuthConsumer>
-                            {
-                                ({isLoading}) => isLoading
-                                ? <>Cargando...</>
-                                : <Component {...pageProps} />
-                            }
-                        </AuthConsumer>
-                    </ThemeProvider>
+                    <SgdConsumer>
+                        {
+                            ({theme}) => (
+                                <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
+                                    <CssBaseline/>
+                                    <AuthConsumer>
+                                        {
+                                            ({isLoading}) => isLoading
+                                            ? <>Cargando...</>
+                                            : <Component {...pageProps} />
+                                        }
+                                    </AuthConsumer>
+                                </ThemeProvider>
+                            )
+                        }
+                    </SgdConsumer>
                 </SgdProvider>
             </AuthProvider>
         </CacheProvider>

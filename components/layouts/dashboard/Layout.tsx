@@ -95,8 +95,6 @@ export const Layout = withAuthGuard(({children}: Props) => {
     const pathname = usePathname();
     const theme = useTheme();
     const classes = () => {
-        console.log("theme.palette.mode", theme.palette.mode);
-        
         if(theme.palette.mode === 'light') {
             return sideLight()
         }
