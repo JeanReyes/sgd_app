@@ -100,10 +100,17 @@ const Login = () => {
                         spacing={1}
                         sx={{ mb: 3 }}
                     >
-                        <Typography variant="h4">
-                            Login
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between'
+                            }}
+                        >
+                            <Typography variant="h4">
+                                Login
+                            </Typography>
                             <ConfigTheme from='login' sx={{marginLeft: 2, padding: 1}}/>
-                        </Typography>
+                        </Box>
                         <Typography
                             color="text.secondary"
                             variant="body2"

@@ -1,4 +1,5 @@
 
+import { useContext, useState } from 'react';
 import BellIcon from '@heroicons/react/24/solid/BellIcon';
 import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
 import Bars3Icon from '@heroicons/react/24/solid/Bars3Icon';
@@ -11,13 +12,14 @@ import {
   SvgIcon,
   Tooltip,
   AppBar,
+  useTheme
 } from '@mui/material';
 import { usePopover } from '../../../hooks/usePopover';
 import { AccountPopover } from './AccountPopover';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { useContext, useState } from 'react';
 import { SgdContext } from '../../../context/App/SgdContext';
 import { Settings } from '../Settings/Settings';
+import { grey } from '@mui/material/colors';
 
 interface Props {
   onNavOpen: () => void;
@@ -26,9 +28,11 @@ interface Props {
 }
 
 export const Navbar = ({onNavOpen, navHeight}: Props) => {
+  const { theme } = useContext(SgdContext);
   const [toggle, setToggle] = useState(false)
   const accountPopover = usePopover();
-
+  const isLight = theme === 'light'
+  
   const handleSettings = () => {
     setToggle(!toggle)
   }
@@ -37,6 +41,9 @@ export const Navbar = ({onNavOpen, navHeight}: Props) => {
     <>
       <AppBar
         component="header"
+        sx={{
+          borderBottom: `0.5px solid ${!isLight && grey[200] }`
+        }}
       >
           <Stack
             alignItems="center"
@@ -118,7 +125,7 @@ export const Navbar = ({onNavOpen, navHeight}: Props) => {
         open={accountPopover.open}
         onClose={accountPopover.handleClose}
       />
-      <Settings toggle={toggle} handleSettings={handleSettings}/>
+      <Settings toggle={toggle} title='Settings' anchor='right' handleSettings={handleSettings}/>
     </>
   );
 };

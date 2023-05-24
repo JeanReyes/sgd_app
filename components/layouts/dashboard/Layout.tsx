@@ -6,9 +6,8 @@ import { Box, styled, useTheme } from '@mui/material';
 import { withAuthGuard } from '../../ui/AuthGuard/WhitAuthGuard';
 import { usePathname } from 'next/navigation';
 import { sideDark, sideLight } from '../../../themes/config/utils';
+import { SIDE_NAV_WIDTH, TOP_NAV_HEIGHT } from '../../../utils/constants';
 
-const SIDE_NAV_WIDTH = 280;
-const TOP_NAV_HEIGHT = 64;
 
 const LayoutRoot = styled('div')(({ theme }) => ({
   display: 'flex',

@@ -1,82 +1,59 @@
-import React, {useContext, useEffect, useState} from 'react';
-import Box from '@mui/material/Box';
+import React from 'react';
 import Drawer from '@mui/material/Drawer';
-import Button from '@mui/material/Button';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import { SgdContext } from '../../../context/App/SgdContext';
+import { SIDE_NAV_WIDTH } from '../../../utils/constants';
+import { ConfigTheme } from '../../configTheme/ConfigTheme';
+import { Card, CardHeader, Typography, CardContent, Divider, Grid, } from '@mui/material';
+
+
+type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
 interface Props {
     toggle: boolean;
-    handleSettings: () => void
+    anchor: Anchor;
+    title: string;
+    handleSettings: () => void;
 }
-type Anchor = 'top' | 'left' | 'bottom' | 'right';
 
-export const Settings = ({toggle, handleSettings}:  Props) => {
-
-//   const [toggleState, setToggleState] = useState(toggle);
+export const Settings = ({toggle, anchor, title, handleSettings}:  Props) => {
 
   const toggleDrawer =(anchor: Anchor, open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (event.type === 'keydown' && ((event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift')) return;
-
-    //   setToggleState(open);
       handleSettings()
-    };
-
-    // useEffect(() => {
-    //     setToggleState(toggle);
-    // },[toggle])
-
-//   const list = (anchor: Anchor) => (
-//     <Box
-//       sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
-//       role="presentation"
-//       onClick={toggleDrawer(anchor, false)}
-//       onKeyDown={toggleDrawer(anchor, false)}
-//     >
-//       <List>
-//         {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-//           <ListItem key={text} disablePadding>
-//             <ListItemButton>
-//               <ListItemIcon>
-//                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-//               </ListItemIcon>
-//               <ListItemText primary={text} />
-//             </ListItemButton>
-//           </ListItem>
-//         ))}
-//       </List>
-//       <Divider />
-//       <List>
-//         {['All mail', 'Trash', 'Spam'].map((text, index) => (
-//           <ListItem key={text} disablePadding>
-//             <ListItemButton>
-//               <ListItemIcon>
-//                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-//               </ListItemIcon>
-//               <ListItemText primary={text} />
-//             </ListItemButton>
-//           </ListItem>
-//         ))}
-//       </List>
-//     </Box>
-//   );
+  };
+  
 
   return (
     <div>
-        {/* <Button onClick={toggleDrawer('right', true)}>{'right'}</Button> */}
         <Drawer
-            anchor={'right'}
+            anchor={anchor}
             open={toggle}
-            onClose={toggleDrawer('right', !toggle)}
+            onClose={toggleDrawer(anchor, !toggle)}
+            PaperProps={{
+              sx: {
+                // backgroundColor: 'neutral.800',
+                // color: 'common.white',
+                width: `${200}px`
+              }
+            }}
         >
-            Hola
+          <Card>
+              <CardHeader
+                title={title}
+              />
+               <Divider />
+              <CardContent>
+                <Grid sx={{display: 'flex', alignItems: 'center'}} container spacing={2}>
+                  <Grid item xs={4}>
+                    <Typography>
+                      theme:
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={8}>
+                    <ConfigTheme from='nav'/>
+                  </Grid>
+                </Grid>
+              </CardContent>
+          </Card>
         </Drawer>
     </div>
   );

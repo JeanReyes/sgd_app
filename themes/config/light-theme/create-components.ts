@@ -69,41 +69,41 @@ export function createComponents(config: any) {
         }
       }
     },
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          borderRadius: 10,
-          [`&.${paperClasses.elevation1}`]: {
-            boxShadow: '0px 5px 22px rgba(0, 0, 0, 0.04), 0px 0px 0px 0.5px rgba(0, 0, 0, 0.03)'
-          }
-        }
-      }
-    },
-    MuiCardContent: {
-      styleOverrides: {
-        root: {
-          padding: '32px 24px',
-          '&:last-child': {
-            paddingBottom: '32px'
-          }
-        }
-      }
-    },
-    MuiCardHeader: {
-      defaultProps: {
-        titleTypographyProps: {
-          variant: 'h6'
-        },
-        subheaderTypographyProps: {
-          variant: 'body2'
-        }
-      },
-      styleOverrides: {
-        root: {
-          padding: '32px 24px 16px'
-        }
-      }
-    },
+    // MuiCard: {
+    //   styleOverrides: {
+    //     root: {
+    //       borderRadius: 10,
+    //       [`&.${paperClasses.elevation1}`]: {
+    //         boxShadow: '0px 5px 22px rgba(0, 0, 0, 0.04), 0px 0px 0px 0.5px rgba(0, 0, 0, 0.03)'
+    //       }
+    //     }
+    //   }
+    // },
+    // MuiCardContent: {
+    //   styleOverrides: {
+    //     root: {
+    //       padding: '32px 24px',
+    //       '&:last-child': {
+    //         paddingBottom: '32px'
+    //       }
+    //     }
+    //   }
+    // },
+    // MuiCardHeader: {
+    //   defaultProps: {
+    //     titleTypographyProps: {
+    //       variant: 'h6'
+    //     },
+    //     subheaderTypographyProps: {
+    //       variant: 'body2'
+    //     }
+    //   },
+    //   styleOverrides: {
+    //     root: {
+    //       padding: '32px 24px 16px'
+    //     }
+    //   }
+    // },
     MuiCssBaseline: {
       styleOverrides: {
         '*': {
