@@ -2,7 +2,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Navbar } from '../../ui';
 import { SideNav } from '../../ui/SideNav/SideNav';
-import { Box, styled, useTheme } from '@mui/material';
+import { Box, styled, useTheme, useMediaQuery } from '@mui/material';
 import { withAuthGuard } from '../../ui/AuthGuard/WhitAuthGuard';
 import { usePathname } from 'next/navigation';
 import { sideDark, sideLight } from '../../../themes/config/utils';
@@ -28,6 +28,7 @@ const LayoutContainer = styled('div')({
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({ theme, open }: {theme: any, open: boolean}) => ({
     ...theme.typography.mainContent,
     ...(!open && {
+        overflowY: 'auto',
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 0,
         transition: theme.transitions.create('margin', {}),
@@ -40,16 +41,19 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
             // marginLeft: '20px',
             // width: `calc(100% - ${SIDE_NAV_WIDTH}px)`,
             width: '100%',
+            overflowY: 'auto',
             // padding: '16px'
         },
         [theme.breakpoints.up('sm')]: {
             // marginLeft: -(SIDE_NAV_WIDTH),
             // width: `calc(100% - ${SIDE_NAV_WIDTH}px)`
-            width: '100%'
+            width: '100%',
+            overflowY: 'auto',
         },
         [theme.breakpoints.down('sm')]: {
             // marginLeft: '10px',
             width: '100%',
+            overflowY: 'auto',
             // width: `calc(100% - ${SIDE_NAV_WIDTH}px)`,
             // padding: '16px',
             // marginRight: '10px'
@@ -57,11 +61,13 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
         [theme.breakpoints.up('xs')]: {
             // marginLeft: -(SIDE_NAV_WIDTH),
             // width: `calc(100% - ${SIDE_NAV_WIDTH}px)`
-            width: '100%'
+            width: '100%',
+            overflowY: 'auto',
         },
         [theme.breakpoints.down('xs')]: {
             // marginLeft: '10px',
             width: '100%',
+            overflowY: 'auto',
             // width: `calc(100% - ${SIDE_NAV_WIDTH}px)`,
             // padding: '16px',
             // marginRight: '10px'
@@ -73,6 +79,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(({
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 0,
         width: '100%',
+        overflowY: 'auto',
         // width: `calc(100% - ${SIDE_NAV_WIDTH}px)`,
         [theme.breakpoints.down('md')]: {
             // marginLeft: '20px'
@@ -93,6 +100,7 @@ export const Layout = withAuthGuard(({children}: Props) => {
     const [openNav, setOpenNav] = useState(false);
     const pathname = usePathname();
     const theme = useTheme();
+    const lgMd = useMediaQuery((theme) => (theme as any).breakpoints.up('md'));
     const classes = () => {
         if(theme.palette.mode === 'light') {
             return sideLight()
@@ -110,9 +118,10 @@ export const Layout = withAuthGuard(({children}: Props) => {
     },[openNav]);
   
     useEffect(() => {  
+       
+        
         handlePathnameChange();
     },[pathname]);
-
     return (
         <>
             <Navbar onNavOpen={() => setOpenNav(!openNav)} sideWidth={SIDE_NAV_WIDTH} navHeight={TOP_NAV_HEIGHT}/>
@@ -139,9 +148,9 @@ export const Layout = withAuthGuard(({children}: Props) => {
                             <Box
                                 component="main"
                                 sx={{
-                                    flexGrow: 1,
-                                    py: 8,
-                                    p:2
+                                    // flexGrow: 1,
+                                    // py: 8,
+                                    p: lgMd ? 8 : 3
                                 }}
                             >
                                 {children}

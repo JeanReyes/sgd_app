@@ -1,9 +1,11 @@
 import { ClassNameMap, makeStyles } from '@mui/styles';
+import { common, grey } from '@mui/material/colors';
 
 // crear factory para las classes
 
 export const sideLight = makeStyles({
     root: {
+      backgroundColor: common.white,
       height: '100%',
       color: 'black',
       borderRight: '1px solid'

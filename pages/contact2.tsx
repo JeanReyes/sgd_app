@@ -4,7 +4,7 @@ import { Layout } from '../components/layouts'
 const contact = () => {
     return (
         <Layout>
-            <div>contact1</div>
+            <div>contact2</div>
         </Layout>
     )
 }

@@ -2,7 +2,7 @@ import React from 'react';
 import Drawer from '@mui/material/Drawer';
 import { SIDE_NAV_WIDTH } from '../../../utils/constants';
 import { ConfigTheme } from '../../configTheme/ConfigTheme';
-import { Card, CardHeader, Typography, CardContent, Divider, Grid, } from '@mui/material';
+import { Card, CardHeader, CardContent, Typography, Divider, Grid, } from '@mui/material';
 
 
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
