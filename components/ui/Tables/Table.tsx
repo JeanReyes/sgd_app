@@ -14,8 +14,8 @@ interface Props {
     initItem: ItemSolicitud
 }
 
-const initItem: ItemSolicitud [] = new Array(10).fill({ quantity: '', unidad_medida: '', detail: '', classification: '', precio: '' })
 
+const initItem: ItemSolicitud [] = new Array(10).fill({ quantity: '', unidad_medida: '', detail: '', classification: '', precio: '' })
 export const TableDefault = ({ header, items }: Props) => {
   const [dataItems, setDataItems] = useState([] as ItemSolicitud []);
 

@@ -5,14 +5,9 @@ import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import {
-    Alert,
     Box,
     Button,
-    FormHelperText,
-    Link,
     Stack,
-    Tab,
-    Tabs,
     TextField,
     Typography
 } from '@mui/material';
@@ -37,11 +32,11 @@ const Login = () => {
             .string()
             .email('Must be a valid email')
             .max(255)
-            .required('Email is required'),
+            .required('Email es requerido'),
         password: Yup
             .string()
             .max(255)
-            .required('Password is required')
+            .required('Password es requerido')
         }),
         onSubmit: async (values, helpers) => {
         try {
@@ -107,24 +102,10 @@ const Login = () => {
                             }}
                         >
                             <Typography variant="h4">
-                                Login
+                                Acceso
                             </Typography>
                             <ConfigTheme from='login' sx={{marginLeft: 2, padding: 1}}/>
                         </Box>
-                        <Typography
-                            color="text.secondary"
-                            variant="body2"
-                        >
-                            {/* <Link
-                                component={NextLink}
-                                href="/auth/register"
-                                underline="hover"
-                                variant="subtitle2"
-                            >
-                            Register
-                            </Link> */}
-                            
-                        </Typography>
                     </Stack>
                     <form
                         noValidate

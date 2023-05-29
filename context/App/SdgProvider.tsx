@@ -6,11 +6,13 @@ import { ThemeSgd } from '../../interface/Auth';
 export interface SgdState {
     theme: ThemeSgd;
     settingApp: boolean;
+    openNav: boolean
 }
 
 const SGD_INITIAL_APP: SgdState = {
     theme: 'light',
-    settingApp: false
+    settingApp: false,
+    openNav: false
 }
 
 interface Props {
@@ -28,9 +30,10 @@ export const SgdProvider = ({ children, company }: Props) => {
         dispatch({type: 'set-theme', payload: value});
     }
     const handleSettingApp = (value: boolean) => {
-        console.log("value", value);
-        
         dispatch({type: 'set-toggle', payload: value});
+    }
+    const handleSideNav = (openNav: boolean) => {
+        dispatch({type: 'change-sideNav', payload: openNav})
     }
 
     useEffect(() => {
@@ -44,7 +47,8 @@ export const SgdProvider = ({ children, company }: Props) => {
             ...state,
             company,
             handleSetTheme,
-            handleSettingApp
+            handleSettingApp,
+            handleSideNav
         }}>
             {children}
         </SgdContext.Provider>

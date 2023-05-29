@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { Navbar } from '../../ui';
 import { SideNav } from '../../ui/SideNav/SideNav';
 import { Box, styled, useTheme, useMediaQuery } from '@mui/material';
@@ -7,6 +7,7 @@ import { withAuthGuard } from '../../ui/AuthGuard/WhitAuthGuard';
 import { usePathname } from 'next/navigation';
 import { sideDark, sideLight } from '../../../themes/config/utils';
 import { SIDE_NAV_WIDTH, TOP_NAV_HEIGHT } from '../../../utils/constants';
+import { SgdContext } from '../../../context/App/SgdContext';
 
 
 const LayoutRoot = styled('div')(({ theme }) => ({
@@ -97,7 +98,10 @@ interface Props {
 }
 
 export const Layout = withAuthGuard(({children}: Props) => {
-    const [openNav, setOpenNav] = useState(false);
+    const { openNav, handleSideNav } = useContext(SgdContext);
+    // console.log("openNav",openNav);
+    
+    // const [openNav, handleSideNav] = useState(false);
     const pathname = usePathname();
     const theme = useTheme();
     const lgMd = useMediaQuery((theme) => (theme as any).breakpoints.up('md'));
@@ -112,19 +116,18 @@ export const Layout = withAuthGuard(({children}: Props) => {
     // cada vez que cambio de ruta cierro el nav
     const handlePathnameChange = useCallback(() => {
         if (openNav) {
-          setOpenNav(true);
+            handleSideNav(true);
         }
      
     },[openNav]);
   
     useEffect(() => {  
-       
-        
         handlePathnameChange();
     },[pathname]);
+
     return (
         <>
-            <Navbar onNavOpen={() => setOpenNav(!openNav)} sideWidth={SIDE_NAV_WIDTH} navHeight={TOP_NAV_HEIGHT}/>
+            <Navbar onNavOpen={() => handleSideNav(!openNav)} sideWidth={SIDE_NAV_WIDTH} navHeight={TOP_NAV_HEIGHT}/>
             <Box
                 sx={{
                     display: 'flex',
@@ -139,7 +142,7 @@ export const Layout = withAuthGuard(({children}: Props) => {
                     sideWidth={SIDE_NAV_WIDTH}
                     navHeight={TOP_NAV_HEIGHT}
                     className={(classes() as any).root}
-                    onClose={() => setOpenNav(false)} 
+                    onClose={() => handleSideNav(false)} 
                     open={openNav} 
                 /> 
                 <Main open={openNav} theme={theme}>

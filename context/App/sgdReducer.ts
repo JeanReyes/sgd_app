@@ -4,8 +4,7 @@ import { SgdState } from "./SdgProvider"
 export type SgdAction = 
 | { type: 'set-theme', payload: ThemeSgd }
 | { type: 'set-toggle', payload: boolean }
-
-
+| { type: 'change-sideNav', payload: boolean }
 
 export const SgdReducer = (state: SgdState, action: SgdAction ): SgdState => {
     const { type } = action
@@ -20,6 +19,13 @@ export const SgdReducer = (state: SgdState, action: SgdAction ): SgdState => {
         return {
             ...state,
             settingApp: action.payload
+        }
+    }
+
+    if(type === 'change-sideNav') {
+        return {
+            ...state,
+            openNav: action.payload
         }
     }
 

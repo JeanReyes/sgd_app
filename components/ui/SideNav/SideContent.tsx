@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useLayoutEffect, useMemo, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import ChevronUpDownIcon from '@heroicons/react/24/solid/ChevronUpDownIcon';
 import ArrowTopRightOnSquareIcon from '@heroicons/react/24/solid/ArrowTopRightOnSquareIcon';
@@ -21,20 +21,20 @@ interface Props {
     classes?: any;
 }
 
-export const SideContent = ({ className, classes} : Props) => {
+export const SideContent = ({ className, classes } : Props) => {
     const pathname = usePathname();
     const { company } = useSgd();
     const [activeMenus, setActiveMenus] = useState<string[]>([]);
 
     const handletoggleSubMenu = (menuName: string) => {
-      if (activeMenus.includes(menuName)) {
-        setActiveMenus(activeMenus.filter((item) => item !== menuName));
-      } else {
-        setActiveMenus([...activeMenus, menuName]);
-      }
-    };
+        if (activeMenus.includes(menuName)) {
+          setActiveMenus(activeMenus.filter((item) => item !== menuName));
+        } else {
+          setActiveMenus([...activeMenus, menuName]);
+        }
+    }
 
-    useEffect(() => {
+    const setMenu = useCallback(() => {
         const array = items.map(item => {
             if(item.subMenu) {
                 return item.subMenu.map((sub) => {
@@ -45,6 +45,10 @@ export const SideContent = ({ className, classes} : Props) => {
             }
         })
        setActiveMenus(array.flat().filter((menu) => menu) as string []);
+    }, [])
+    
+    useLayoutEffect(() => {
+        setMenu()
     }, [])
     
     
@@ -135,7 +139,7 @@ export const SideContent = ({ className, classes} : Props) => {
                                                             key={sub.title}
                                                             isList={true}
                                                             active={active}
-                                                            icon={sub.icon}
+                                                            // icon={sub.icon}
                                                             disabled={sub.disabled}
                                                             external={sub.external}
                                                             path={sub.path}
