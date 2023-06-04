@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Layout } from '../components/layouts'
-import { Grid, Divider, Card, CardHeader, CardContent, TextField, Button, useMediaQuery, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { Grid, Divider, Card, CardHeader, CardContent, TextField, Button, useMediaQuery, MenuItem } from '@mui/material';
 import { TableDefault } from '../components/ui/Tables/Table';
 import { ItemSolicitud } from '../interface/Sgd';
 import { useFormik } from 'formik';
@@ -72,12 +72,12 @@ const Solicitud = () => {
             return;  
         } else {     
             setDisabledButton(true) 
-            setItems((prev) => {
-                return [
-                    ...prev,
-                    values
-                ]
-            })
+        setItems((prev) => {
+            return [
+                ...prev,
+                values
+            ]
+        })
             resetForm()
         } 
     }
@@ -89,7 +89,7 @@ const Solicitud = () => {
             setDisabledButton(false) 
         } else {
             setDisabledButton(true)
-        }
+    }
         
     }, [errors])
 
@@ -127,9 +127,9 @@ const Solicitud = () => {
                             //   value={}
                                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                                     console.log(event.target.value);
-                                
+
                             }}/>
-                                
+                            
                         </Grid>
                         <Grid lg={2} md={2} sm={12} xs={12} item>
                             <TextField 
@@ -141,7 +141,7 @@ const Solicitud = () => {
                             //   value={}
                                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                                     console.log(event.target.value);
-                                
+                                    
                             }}/>     
                         </Grid>
                         <Grid lg={2} md={2} sm={12} xs={12} item>
@@ -153,9 +153,9 @@ const Solicitud = () => {
                         //   value={}
                             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                                 console.log(event.target.value);
-                                
+                            
                             }}/>
-                                
+                         
                         </Grid>
                     </Grid>
                     {/* row */}
@@ -169,7 +169,7 @@ const Solicitud = () => {
                                 error={!!(touched.quantity && errors.quantity)}
                                 helperText={touched.quantity && errors.quantity}
                                 onBlur={handleBlur}
-                                onChange={handleChange}/>
+                                onChange={handleChange}/>     
                                 
                                 
                         </Grid>
@@ -183,7 +183,7 @@ const Solicitud = () => {
                                 helperText={touched.unidad_medida && errors.unidad_medida}
                                 onBlur={handleBlur}
                                 onChange={handleChange}/>     */}
-                            <TextField
+                            <TextField 
                                 sx={{width: '100%', paddingRight:2, position: 'relative', bottom: 4 }}
                                 id="standard-select-currency"
                                 // id="standard-select-currency-native"
@@ -213,8 +213,8 @@ const Solicitud = () => {
                                 value={values.detail}
                                 error={!!(touched.detail && errors.detail)}
                                 helperText={touched.detail && errors.detail}
-                                onBlur={handleBlur}
-                                onChange={handleChange}/>
+                            onBlur={handleBlur}
+                            onChange={handleChange}/>
                                 
                         </Grid>
                         <Grid lg={3} md={3} sm={12} xs={12} item>
@@ -227,7 +227,7 @@ const Solicitud = () => {
                                 helperText={touched.classification && errors.classification}
                                 onBlur={handleBlur}
                                 onChange={handleChange}/>     
-                        </Grid>
+                    </Grid>
                         <Grid lg={1} md={1} sm={12} xs={12} item>
                             <TextField 
                                 sx={{ width: '100%'}}
@@ -244,7 +244,7 @@ const Solicitud = () => {
                     </Grid>
                     </Grid>    
                     {/* table*/}
-                    <TableDefault header={headerSolicitud} items={items} initItem={initItem}/>
+                    <TableDefault header={headerSolicitud} items={items}/>
                 </CardContent>
             </Card>
         </Layout>

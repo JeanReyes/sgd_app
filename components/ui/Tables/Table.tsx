@@ -10,8 +10,7 @@ import { ItemSolicitud } from '../../../interface/Sgd';
 
 interface Props {
     header: string [],
-    items: ItemSolicitud [];
-    initItem: ItemSolicitud
+    items: ItemSolicitud []
 }
 
 
