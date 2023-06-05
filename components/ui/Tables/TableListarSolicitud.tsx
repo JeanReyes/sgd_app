@@ -7,32 +7,26 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { ItemSolicitud } from '../../../interface/Sgd';
+import { Solicitud } from '../../../pages/solicitudes';
+import { Button } from '@mui/material';
+import { useRouter } from 'next/router';
 
 interface Props {
     header: string [],
-    items: ItemSolicitud []
+    items: Solicitud []
 }
 
-const initItem: ItemSolicitud [] = new Array(5).fill({ quantity: '', unidad_medida: '', detail: '', classification: '', precio: '' })
-export const TableDefault = ({ header, items }: Props) => {
-  const [dataItems, setDataItems] = useState([] as ItemSolicitud []);
+export const TableSolicitud = ({ header, items }: Props) => {
+  const [dataItems, setDataItems] = useState([] as Solicitud []);
+  const router = useRouter()
 
   useEffect(() => {
-    if(items.length > 0) {
-      if (initItem.length) {
-        initItem.length = initItem.length - 1;
-      }
-      setDataItems(() => {
-        return [
-          ...items,
-          ...initItem
-        ]
-      })
-    } else {
-      setDataItems(initItem)
-    }
+      setDataItems(items)
   },[items]);
 
+const handleStatusSolicitud = (id: string) => {
+    router.push(`solicitudes/detail/${id}`)
+}
 
   return (
     <TableContainer component={Paper}>
@@ -49,11 +43,12 @@ export const TableDefault = ({ header, items }: Props) => {
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" align="right"> {index + 1} </TableCell>
-              <TableCell component="th" align="right"> {row.quantity} </TableCell>
-              <TableCell align="right">{row.unidad_medida}</TableCell>
-              <TableCell align="right">{row.detail}</TableCell>
-              <TableCell align="right">{row.classification}</TableCell>
-              <TableCell align="right">{row.precio}</TableCell>
+              <TableCell component="th" align="right"> {row.fecha_creacion} </TableCell>
+              <TableCell align="right">{row.creador}</TableCell>
+              <TableCell align="right">{row.numero_solicitud}</TableCell>
+              <TableCell align="right">{row.area}</TableCell>
+              <TableCell align="right">{row.firma}</TableCell>
+              <TableCell align="right"><Button onClick={() => handleStatusSolicitud(row.id)}>Ver</Button></TableCell>
             </TableRow>
           ))}
         </TableBody>

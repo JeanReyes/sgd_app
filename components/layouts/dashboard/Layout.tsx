@@ -5,9 +5,10 @@ import { SideNav } from '../../ui/SideNav/SideNav';
 import { Box, styled, useTheme, useMediaQuery } from '@mui/material';
 import { withAuthGuard } from '../../ui/AuthGuard/WhitAuthGuard';
 import { usePathname } from 'next/navigation';
-import { sideDark, sideLight } from '../../../themes/config/utils';
+// import { sideDark, sideLight } from '../../../themes/config/utils';
 import { SIDE_NAV_WIDTH, TOP_NAV_HEIGHT } from '../../../utils/constants';
 import { SgdContext } from '../../../context/App/SgdContext';
+import { common } from '@mui/material/colors';
 
 
 const LayoutRoot = styled('div')(({ theme }) => ({
@@ -107,10 +108,19 @@ export const Layout = withAuthGuard(({children}: Props) => {
     const lgMd = useMediaQuery((theme) => (theme as any).breakpoints.up('md'));
     const classes = () => {
         if(theme.palette.mode === 'light') {
-            return sideLight()
+            return {
+                backgroundColor: common.white,
+                height: '100%',
+                color: 'black',
+                borderRight: '1px solid'
+              }
         }
         if(theme.palette.mode === 'dark') {
-            return sideDark()
+            return {
+                backgroundColor: '#001E3C',
+                height: '100%',
+                color: 'white'
+              }
         }
     }
     // cada vez que cambio de ruta cierro el nav
@@ -141,7 +151,8 @@ export const Layout = withAuthGuard(({children}: Props) => {
                     direction={openNav}
                     sideWidth={SIDE_NAV_WIDTH}
                     navHeight={TOP_NAV_HEIGHT}
-                    className={(classes() as any).root}
+                    // className={(classes() as any).root}
+                    styles={classes}
                     onClose={() => handleSideNav(false)} 
                     open={openNav} 
                 /> 

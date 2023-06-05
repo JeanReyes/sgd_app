@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Grid, TextField, MenuItem, Button, useMediaQuery } from '@mui/material';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { ItemSolicitud } from '../../interface/Sgd';
+import { ItemSolicitud } from '../../../interface/Sgd';
 
 const initItem = {
     quantity: '',
@@ -16,7 +16,7 @@ interface Props {
     addItems: (values: ItemSolicitud) => void
 }
 
-export const DetailItem = ({addItems}: Props) => {
+export const AddItem = ({addItems}: Props) => {
     const lgMd = useMediaQuery((theme) => (theme as any).breakpoints.up('md'));
     const [ disabledButton, setDisabledButton ] = useState(true);
     
@@ -45,7 +45,6 @@ export const DetailItem = ({addItems}: Props) => {
     });
 
     const handleAddItem = () => {
-
         if(Object.keys(errors).length) {
             return;  
         } else {     

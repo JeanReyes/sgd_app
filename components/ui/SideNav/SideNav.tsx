@@ -11,10 +11,10 @@ interface Props {
     sideWidth?: number;
     navHeight?: number;
     open: boolean;
-    className?: any
+    styles?: any
 }
 
-export const SideNav = ({open, onClose, className, direction, sideWidth, navHeight }:Props) => {
+export const SideNav = ({open, onClose, styles, direction, sideWidth, navHeight }:Props) => {
 
   const lgMd = useMediaQuery((theme) => (theme as any).breakpoints.up('md'));
 
@@ -41,7 +41,7 @@ export const SideNav = ({open, onClose, className, direction, sideWidth, navHeig
     }
 
   if (lgMd) {
-    return <SideContent className={className} classes={classes}/>
+    return <SideContent styles={styles} classes={classes}/>
   }
   
   return (
@@ -52,7 +52,7 @@ export const SideNav = ({open, onClose, className, direction, sideWidth, navHeig
         sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
         variant="temporary"
       >
-        <SideContent className={className} classes={classes}/>
+        <SideContent styles={styles} classes={classes}/>
       </Drawer>
   );
 };
