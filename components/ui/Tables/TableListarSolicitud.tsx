@@ -7,7 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { ItemSolicitud } from '../../../interface/Sgd';
-import { Solicitud } from '../../../pages/solicitudes';
+import { Solicitud } from '../../../pages/solicitud/list';
 import { Button } from '@mui/material';
 import { useRouter } from 'next/router';
 
@@ -25,7 +25,7 @@ export const TableSolicitud = ({ header, items }: Props) => {
   },[items]);
 
 const handleStatusSolicitud = (id: string) => {
-    router.push(`solicitudes/detail/${id}`)
+    router.push(`/solicitud/detail/${id}`)
 }
 
   return (

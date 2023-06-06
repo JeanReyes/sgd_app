@@ -58,26 +58,8 @@ export const LoginLayout = ({children}: Props) => {
                             }}
                             variant="h1"
                         >
-                            Welcome to{' '}
-                        <Box
-                            component="a"
-                            sx={{ color: '#15B79E' }}
-                            target="_blank"
-                        >
-                            Devias Kit
-                        </Box>
+                            Sistema de Gestión Documental para Municipalidades
                         </Typography>
-                        <Typography
-                            align="center"
-                            sx={{ mb: 3 }}
-                            variant="subtitle1"
-                        >
-                            Login Nes
-                        </Typography>
-                        {/* <img
-                            alt=""
-                            src="/auth-illustration.svg"
-                        /> */}
                     </Box>
                 </Grid>
             </Grid>

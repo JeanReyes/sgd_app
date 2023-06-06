@@ -51,7 +51,7 @@ export const AuthProvider = ({children}: Props) => {
                 id: '5e86809283e28b96d2d38537',
                 avatar: '/avatar-anika-visser.png',
                 name: 'Jean Reyes',
-                email: 'SGD.jereyes@NES.cl'
+                email: 'nes@company.cl'
             };
 
             dispatch({
@@ -67,7 +67,7 @@ export const AuthProvider = ({children}: Props) => {
 
     const signIn = async (email: string, password: string) => {
         // metodo de login ir a BD y traer user
-        if (email !== 'SGD.jereyes@NES.cl' || password !== 'Password123!') {
+        if (email !== 'nes@company.cl' || password !== 'Password123!') {
             throw new Error('Please check your email and password');
         }
     
@@ -81,7 +81,7 @@ export const AuthProvider = ({children}: Props) => {
             id: '5e86809283e28b96d2d38537',
             avatar: '/avatar-anika-visser.png',
             name: 'Jean Reyes',
-            email: 'SGD.jereyes@NES.cl'
+            email: 'nes@company.cl'
         };
 
         dispatch({

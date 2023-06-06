@@ -1,6 +1,6 @@
 import React from 'react'
 import { TableSolicitud } from '../../ui/Tables/TableListarSolicitud';
-import { Solicitud } from '../../../pages/solicitudes';
+import { Solicitud } from '../../../pages/solicitud/list';
 
 interface Props {
     header: string[];

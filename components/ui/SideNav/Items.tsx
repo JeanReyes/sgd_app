@@ -23,7 +23,7 @@ export const items = [
     subMenu: [
       {
         title: 'Ingresar Solicitud',
-        path: '/ingresar-solicitud',
+        path: '/solicitud/ingresar-solicitud',
         icon: (
           <SvgIcon fontSize="small">
             <ChartBarIcon />
@@ -32,7 +32,7 @@ export const items = [
       },
       {
         title: 'Solicitudes',
-        path: '/solicitudes',
+        path: '/solicitud/list',
         icon: (
           <SvgIcon fontSize="small">
             <UserIcon />

@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { Layout } from '../components/layouts'
+import { Layout } from '../../components/layouts'
 import { Grid, Divider, Card, CardHeader, CardContent, TextField, Button, useMediaQuery, MenuItem } from '@mui/material';
-import { TableDefault } from '../components/ui/Tables/Table';
-import { ItemSolicitud } from '../interface/Sgd';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { AddItem } from '../components/solicitud/ingresarSolicitud/AddItem';
+import { TableDefault } from '../../components/ui/Tables/Table';
+import { ItemSolicitud } from '../../interface/Sgd';
+import { AddItem } from '../../components/solicitud/ingresarSolicitud/AddItem';
 
 
 const headerSolicitud = ['N°','Cantidad', 'Unidad de Medida', 'Detalle o Descripción', 'Clasificación Presupuestaria', 'Precio Neto']
