@@ -7,14 +7,16 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { ItemSolicitud } from '../../../interface/Sgd';
+import { Button } from '@mui/material';
 
 interface Props {
-    header: string [],
-    items: ItemSolicitud []
+    header: string [];
+    items: ItemSolicitud [];
+    handleRemoveItem: (index: number) => void
 }
 
 const initItem: ItemSolicitud [] = new Array(5).fill({ quantity: '', unidad_medida: '', detail: '', classification: '', precio: '' })
-export const TableDefault = ({ header, items }: Props) => {
+export const TableDefault = ({ header, items, handleRemoveItem }: Props) => {
   const [dataItems, setDataItems] = useState([] as ItemSolicitud []);
 
   useEffect(() => {
@@ -54,6 +56,7 @@ export const TableDefault = ({ header, items }: Props) => {
               <TableCell align="right">{row.detail}</TableCell>
               <TableCell align="right">{row.classification}</TableCell>
               <TableCell align="right">{row.precio}</TableCell>
+              <TableCell align="right"><Button onClick={() => handleRemoveItem(index)}>X</Button></TableCell>
             </TableRow>
           ))}
         </TableBody>

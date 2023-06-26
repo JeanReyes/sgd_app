@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
 import { Grid, TextField, MenuItem, Button, useMediaQuery } from '@mui/material';
 import { useFormik } from 'formik';
@@ -53,7 +54,7 @@ export const AddItem = ({addItems}: Props) => {
             resetForm()
         } 
     }
-    
+
     useEffect(() => {
         if(Object.keys(errors).length === 0 && Object.keys(touched).length !== 0) {
             setDisabledButton(false) 
@@ -79,15 +80,6 @@ export const AddItem = ({addItems}: Props) => {
                 onChange={handleChange}/>
         </Grid>
         <Grid lg={2} md={2} sm={12} xs={12} item>
-            {/* <TextField 
-                sx={{width: '100%', paddingRight:2}}
-                id="standard-basic" label="Unidad de Medida" variant="standard" 
-                name='unidad_medida'
-                value={values.unidad_medida}
-                error={!!(touched.unidad_medida && errors.unidad_medida)}
-                helperText={touched.unidad_medida && errors.unidad_medida}
-                onBlur={handleBlur}
-                onChange={handleChange}/>     */}
             <TextField
                 sx={{width: '100%', paddingRight:2, position: 'relative', bottom: 4 }}
                 id="standard-select-currency"
