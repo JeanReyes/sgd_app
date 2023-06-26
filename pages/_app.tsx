@@ -19,6 +19,8 @@ export default function App({ Component, pageProps }: AppProps) {
     
     useProgress();
 
+    const AnyComponent = Component as any;
+
     return (
         <CacheProvider value={clientSideEmotionCache}>
             <Head>
@@ -35,7 +37,7 @@ export default function App({ Component, pageProps }: AppProps) {
                                         {
                                             ({isLoading}) => isLoading
                                             ? <>Cargando...</>
-                                            : <Component {...pageProps} />
+                                            : <AnyComponent {...pageProps} />
                                         }
                                     </AuthConsumer>
                                 </ThemeProvider>
