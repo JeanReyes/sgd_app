@@ -23,6 +23,7 @@ const initItem = {
     destino: '',
     programa: '',
 }
+
 const Solicitud = () => {
 
     const lgMd = useMediaQuery((theme) => (theme as any).breakpoints.up('md'));
@@ -71,8 +72,7 @@ const Solicitud = () => {
     }
 
     useEffect(() => {
-        console.log("values", values);
-        
+        console.log("values", values); 
     }, [values])
     
 
@@ -120,7 +120,6 @@ const Solicitud = () => {
                             </Grid>
                             {/* datos generales */}
                             <Grid sx={{width: '100%', paddingBottom: 4}} container>
-
                                 <Grid lg={4} md={4} sm={12} xs={12} item>
                                     <TextField 
                                         sx={{

@@ -30,5 +30,8 @@
     "simplebar-react": "^3.2.4",
     "typescript": "5.0.4",
     "yup": "^1.1.1"
+  },
+  "devDependencies": {
+    "@types/nprogress": "^0.2.0"
   }
 }
