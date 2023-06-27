@@ -20,6 +20,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import { SgdContext } from '../../../context/App/SgdContext';
 import { Settings } from '../Settings/Settings';
 import { grey } from '@mui/material/colors';
+import { ConfigTheme } from '../../configTheme/ConfigTheme';
 
 interface Props {
   onNavOpen: () => void;
@@ -80,13 +81,7 @@ export const Navbar = ({onNavOpen, navHeight}: Props) => {
               direction="row"
               spacing={2}
             >
-              <Tooltip title="Contacts">
-                <IconButton>
-                  <SvgIcon fontSize="small">
-                    <UsersIcon />
-                  </SvgIcon>
-                </IconButton>
-              </Tooltip>
+              <ConfigTheme from='navbar'/>
               <Tooltip title="Notifications">
                 <IconButton>
                   <Badge
@@ -100,13 +95,13 @@ export const Navbar = ({onNavOpen, navHeight}: Props) => {
                   </Badge>
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Settings">
+              {/* <Tooltip title="Settings">
                 <IconButton onClick={handleSettings}>
                     <SvgIcon fontSize="small">
                       <SettingsIcon/>
                     </SvgIcon>
                 </IconButton>
-              </Tooltip>
+              </Tooltip> */}
               <Avatar
                 onClick={accountPopover.handleOpen}
                 ref={accountPopover.anchorRef}
