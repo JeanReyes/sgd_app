@@ -13,25 +13,26 @@ import {
 import { LoginLayout } from '../../components/layouts';
 import { useAuth } from '../../hooks/useContext';
 import { ConfigTheme } from '../../components/configTheme/ConfigTheme';
+import Link from 'next/link';
 
-const Login = () => {
+const CambiarContraseña = () => {
     const router = useRouter();
     const { signIn } = useAuth();
     const [method, setMethod] = useState('email');
 
     const formik = useFormik({
         initialValues: {
-            email: 'nes@company.cl',
-            password: 'Password123!',
+            password: 'nes@company.cl',
+            password2: 'Password123!',
             submit: null
         },
         validationSchema: Yup.object({
-        email: Yup
+        password: Yup
             .string()
             .email('Must be a valid email')
             .max(255)
             .required('Email es requerido'),
-        password: Yup
+        password2: Yup
             .string()
             .max(255)
             .required('Password es requerido')
@@ -40,8 +41,8 @@ const Login = () => {
         try {
             console.log("estamos logueando");
             
-            await signIn(values.email, values.password);
-            router.push('/');
+            // await signIn(values.email, values.password);
+            // router.push('/');
         } catch (err) {
             helpers.setStatus({ success: false });
             helpers.setErrors({ submit: 'Datos de acceso incorrectos' });
@@ -58,7 +59,7 @@ const Login = () => {
     <>
         <Head>
             <title>
-            Login SGD
+                Cambiar contraseña
             </title>
         </Head>
         <LoginLayout>
@@ -91,9 +92,8 @@ const Login = () => {
                             }}
                         >
                             <Typography variant="h4">
-                                Acceso
+                                Cambiar Contraseña
                             </Typography>
-                            <ConfigTheme from='login' sx={{marginLeft: 2, padding: 1}}/>
                         </Box>
                     </Stack>
                     <form
@@ -102,26 +102,26 @@ const Login = () => {
                     >
                         <Stack spacing={3}>
                             <TextField
-                                error={!!(formik.touched.email && formik.errors.email)}
-                                fullWidth
-                                helperText={formik.touched.email && formik.errors.email}
-                                label="Email Address"
-                                name="email"
-                                onBlur={formik.handleBlur}
-                                onChange={formik.handleChange}
-                                type="email"
-                                value={formik.values.email}
-                            />
-                            <TextField
                                 error={!!(formik.touched.password && formik.errors.password)}
                                 fullWidth
                                 helperText={formik.touched.password && formik.errors.password}
-                                label="Password"
+                                label="Introduzca su nueva contraseña"
                                 name="password"
                                 onBlur={formik.handleBlur}
                                 onChange={formik.handleChange}
                                 type="password"
                                 value={formik.values.password}
+                            />
+                            <TextField
+                                error={!!(formik.touched.password2 && formik.errors.password2)}
+                                fullWidth
+                                helperText={formik.touched.password2 && formik.errors.password2}
+                                label="Repita su nueva contraseña"
+                                name="password2"
+                                onBlur={formik.handleBlur}
+                                onChange={formik.handleChange}
+                                type="password"
+                                value={formik.values.password2}
                             />
                         </Stack>
                         {formik.errors.submit && (
@@ -140,17 +140,18 @@ const Login = () => {
                             type="submit"
                             variant="contained"
                         >
-                            Continuar
+                            Cambiar Contraseña
                         </Button>
-                        <Button
-                            fullWidth
-                            size="large"
-                            sx={{ mt: 3 }}
-                            onClick={handleRecoveryPass}
-                            // variant="contained"
-                        >
-                            ¿Olvidaste tu contraseña ?
-                        </Button>
+                        <Box sx={{display: 'flex', alignItems: 'flex-end'}}>
+                            <Link href={'/auth/login/'}>Inicia sesión</Link>
+                            <Typography
+                                // color="error"
+                                sx={{ mt: 3, ml: 1 }}
+                                variant="body2"
+                            >
+                                con tu nueva contraseña
+                            </Typography>
+                        </Box>
                     </form>
                 </div>
                 </Box>
@@ -160,4 +161,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default CambiarContraseña;

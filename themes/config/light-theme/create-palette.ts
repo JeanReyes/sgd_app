@@ -1,6 +1,6 @@
-import { common } from '@mui/material/colors';
+import { common, grey } from '@mui/material/colors';
 import { alpha } from '@mui/material/styles';
-import { error, indigo, info, neutral, success, warning } from './colors';
+import { error, indigo, info, neutral, success, warning } from '../colors';
 
 export function createPalette() {
   return {
@@ -13,7 +13,7 @@ export function createPalette() {
       selected: alpha(neutral[900], 0.12)
     },
     background: {
-      default: common.white,
+      default: grey[100],
       paper: common.white
     },
     divider: '#F2F4F7',
@@ -21,7 +21,7 @@ export function createPalette() {
     info,
     mode: 'light',
     neutral,
-    primary: indigo,
+    primary: indigo, // colo template
     success,
     text: {
       primary: neutral[900],

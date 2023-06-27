@@ -1,4 +1,5 @@
-import PropTypes from 'prop-types';
+
+import { useContext, useState } from 'react';
 import BellIcon from '@heroicons/react/24/solid/BellIcon';
 import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
 import Bars3Icon from '@heroicons/react/24/solid/Bars3Icon';
@@ -6,46 +7,43 @@ import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
 import {
   Avatar,
   Badge,
-  Box,
-  Grid,
   IconButton,
   Stack,
   SvgIcon,
   Tooltip,
-  useMediaQuery
+  AppBar,
+  useTheme
 } from '@mui/material';
-import { alpha } from '@mui/material/styles';
 import { usePopover } from '../../../hooks/usePopover';
 import { AccountPopover } from './AccountPopover';
-
-const SIDE_NAV_WIDTH = 280;
-const TOP_NAV_HEIGHT = 64;
+import SettingsIcon from '@mui/icons-material/Settings';
+import { SgdContext } from '../../../context/App/SgdContext';
+import { Settings } from '../Settings/Settings';
+import { grey } from '@mui/material/colors';
+import { ConfigTheme } from '../../configTheme/ConfigTheme';
 
 interface Props {
-  onNavOpen: () => void
+  onNavOpen: () => void;
+  sideWidth: number;
+  navHeight: number;
 }
 
-export const Navbar = ({onNavOpen}: Props) => {
-
-  const lgUp = useMediaQuery((theme) => (theme as any).breakpoints.up('lg'));
+export const Navbar = ({onNavOpen, navHeight}: Props) => {
+  const { theme } = useContext(SgdContext);
+  const [toggle, setToggle] = useState(false)
   const accountPopover = usePopover();
+  const isLight = theme === 'light'
+  
+  const handleSettings = () => {
+    setToggle(!toggle)
+  }
 
   return (
     <>
-      <Box
+      <AppBar
         component="header"
         sx={{
-          backdropFilter: 'blur(6px)',
-          backgroundColor: (theme) => alpha(theme.palette.background.default, 0.8),
-          position: 'sticky',
-          left: {
-            lg: `${SIDE_NAV_WIDTH}px`
-          },
-          top: 0,
-          width: {
-            lg: `calc(100% - ${SIDE_NAV_WIDTH}px)`
-          },
-          zIndex: (theme) => theme.zIndex.appBar
+          borderBottom: `0.5px solid ${!isLight && grey[200] }`
         }}
       >
           <Stack
@@ -54,7 +52,7 @@ export const Navbar = ({onNavOpen}: Props) => {
             justifyContent="space-between"
             spacing={2}
             sx={{
-              minHeight: TOP_NAV_HEIGHT,
+              minHeight: navHeight,
               px: 2
             }}
           >
@@ -63,13 +61,13 @@ export const Navbar = ({onNavOpen}: Props) => {
               direction="row"
               spacing={2}
             >
-              {!lgUp && (
+              {/* {!lgUp && ( */}
                 <IconButton onClick={onNavOpen}>
                   <SvgIcon fontSize="small">
                     <Bars3Icon />
                   </SvgIcon>
                 </IconButton>
-              )}
+              {/* )}  */}
               <Tooltip title="Search">
                 <IconButton>
                   <SvgIcon fontSize="small">
@@ -83,13 +81,7 @@ export const Navbar = ({onNavOpen}: Props) => {
               direction="row"
               spacing={2}
             >
-              <Tooltip title="Contacts">
-                <IconButton>
-                  <SvgIcon fontSize="small">
-                    <UsersIcon />
-                  </SvgIcon>
-                </IconButton>
-              </Tooltip>
+              <ConfigTheme from='navbar'/>
               <Tooltip title="Notifications">
                 <IconButton>
                   <Badge
@@ -103,6 +95,13 @@ export const Navbar = ({onNavOpen}: Props) => {
                   </Badge>
                 </IconButton>
               </Tooltip>
+              {/* <Tooltip title="Settings">
+                <IconButton onClick={handleSettings}>
+                    <SvgIcon fontSize="small">
+                      <SettingsIcon/>
+                    </SvgIcon>
+                </IconButton>
+              </Tooltip> */}
               <Avatar
                 onClick={accountPopover.handleOpen}
                 ref={accountPopover.anchorRef}
@@ -115,12 +114,13 @@ export const Navbar = ({onNavOpen}: Props) => {
               />
             </Stack>
           </Stack>
-      </Box>
+      </AppBar>
       <AccountPopover
         anchorEl={accountPopover.anchorRef.current}
         open={accountPopover.open}
         onClose={accountPopover.handleClose}
       />
+      <Settings toggle={toggle} title='Settings' anchor='right' handleSettings={handleSettings}/>
     </>
   );
 };

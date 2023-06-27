@@ -1,9 +1,8 @@
 import { createTheme } from '@mui/material';
-import { grey, red } from '@mui/material/colors';
-import { createPalette } from './config/create-palette';
-import { createComponents } from './config/create-components';
-import { createShadows } from './config/create-shadows';
-import { createTypography } from './config/create-typography';
+import { createPalette } from './config/light-theme/create-palette';
+import { createComponents } from './config/light-theme/create-components';
+import { createShadows } from './config/light-theme/create-shadows';
+import { createTypography } from './config/light-theme/create-typography';
 
 export const lightTheme = () => {
     const palette: Object = createPalette();
@@ -12,22 +11,6 @@ export const lightTheme = () => {
     const typography: Object = createTypography();
 
     return createTheme({
-        // palette: {
-        //     ...palette,
-        //     mode: 'light',
-        //     background: {
-        //         default: grey[300]
-        //     },
-        //     primary: {
-        //         main: '#4a148c'
-        //     },
-        //     secondary: {
-        //         main: '#19857b'
-        //     },
-        //     error: {
-        //         main: red.A400
-        //     },
-        // },
         palette,
         components,
         shadows,

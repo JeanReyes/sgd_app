@@ -1,12 +1,12 @@
 import { AuthState } from "./AuthProvider"
 import { User } from "../../interface/Auth"
 
-export type SGDAction = 
+export type AuthAction = 
 | { type: 'init-login', payload?: User }
 | { type: 'sign-in', payload: User }
 | { type: 'sing-out' }
 
-export const AuthReducer = (state: AuthState, action: SGDAction): AuthState => { 
+export const AuthReducer = (state: AuthState, action: AuthAction): AuthState => { 
     const { type } = action
     if(type === 'init-login') {
         return {

@@ -22,7 +22,7 @@ export default function Home() {
                                 Elija una opción:
                             </Typography>
 
-                            <Button variant="contained">Contained</Button>
+                            <Button variant="contained" >Contained</Button>
                             <Button variant="text">Crear documento</Button>
                             <Button variant="outlined">Outlined</Button>    
                         </Grid>

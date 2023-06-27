@@ -23,11 +23,31 @@ export function createComponents(config: any) {
         }
       }
     },
+    MuiAppBar: {
+        defaultProps: {
+            elevation: 0
+        },
+        styleOverrides: {
+            root: {
+                // backgroundColor: 'red'
+                color: '#fff'
+            }
+        }
+    },
+    MuiIconButton:{
+      styleOverrides: {
+        root: {
+            // backgroundColor: 'red'
+            color: '#fff'
+        }
+    }
+    },
     MuiButton: {
       styleOverrides: {
         root: {
           borderRadius: '12px',
-          textTransform: 'none'
+          textTransform: 'none',
+          // backgroundColor: 'red'
         },
         sizeSmall: {
           padding: '6px 16px'
@@ -49,41 +69,41 @@ export function createComponents(config: any) {
         }
       }
     },
-    MuiCard: {
-      styleOverrides: {
-        root: {
-          borderRadius: 20,
-          [`&.${paperClasses.elevation1}`]: {
-            boxShadow: '0px 5px 22px rgba(0, 0, 0, 0.04), 0px 0px 0px 0.5px rgba(0, 0, 0, 0.03)'
-          }
-        }
-      }
-    },
-    MuiCardContent: {
-      styleOverrides: {
-        root: {
-          padding: '32px 24px',
-          '&:last-child': {
-            paddingBottom: '32px'
-          }
-        }
-      }
-    },
-    MuiCardHeader: {
-      defaultProps: {
-        titleTypographyProps: {
-          variant: 'h6'
-        },
-        subheaderTypographyProps: {
-          variant: 'body2'
-        }
-      },
-      styleOverrides: {
-        root: {
-          padding: '32px 24px 16px'
-        }
-      }
-    },
+    // MuiCard: {
+    //   styleOverrides: {
+    //     root: {
+    //       borderRadius: 10,
+    //       [`&.${paperClasses.elevation1}`]: {
+    //         boxShadow: '0px 5px 22px rgba(0, 0, 0, 0.04), 0px 0px 0px 0.5px rgba(0, 0, 0, 0.03)'
+    //       }
+    //     }
+    //   }
+    // },
+    // MuiCardContent: {
+    //   styleOverrides: {
+    //     root: {
+    //       padding: '32px 24px',
+    //       '&:last-child': {
+    //         paddingBottom: '32px'
+    //       }
+    //     }
+    //   }
+    // },
+    // MuiCardHeader: {
+    //   defaultProps: {
+    //     titleTypographyProps: {
+    //       variant: 'h6'
+    //     },
+    //     subheaderTypographyProps: {
+    //       variant: 'body2'
+    //     }
+    //   },
+    //   styleOverrides: {
+    //     root: {
+    //       padding: '32px 24px 16px'
+    //     }
+    //   }
+    // },
     MuiCssBaseline: {
       styleOverrides: {
         '*': {
@@ -263,38 +283,47 @@ export function createComponents(config: any) {
         }
       }
     },
-    MuiTableCell: {
-      styleOverrides: {
-        root: {
-          borderBottomColor: palette.divider,
-          padding: '15px 16px'
-        }
-      }
-    },
-    MuiTableHead: {
-      styleOverrides: {
-        root: {
-          borderBottom: 'none',
-          [`& .${tableCellClasses.root}`]: {
-            borderBottom: 'none',
-            backgroundColor: palette.neutral[50],
-            color: palette.neutral[700],
-            fontSize: 12,
-            fontWeight: 600,
-            lineHeight: 1,
-            letterSpacing: 0.5,
-            textTransform: 'uppercase'
-          },
-          [`& .${tableCellClasses.paddingCheckbox}`]: {
-            paddingTop: 4,
-            paddingBottom: 4
-          }
-        }
-      }
-    },
+    // MuiTableCell: {
+    //   styleOverrides: {
+    //     root: {
+    //       borderBottomColor: palette.divider,
+    //       padding: '15px 16px'
+    //     }
+    //   }
+    // },
+    // MuiTableHead: {
+    //   styleOverrides: {
+    //     root: {
+    //       borderBottom: 'none',
+    //       [`& .${tableCellClasses.root}`]: {
+    //         borderBottom: 'none',
+    //         backgroundColor: palette.neutral[50],
+    //         color: palette.neutral[700],
+    //         fontSize: 12,
+    //         fontWeight: 600,
+    //         lineHeight: 1,
+    //         letterSpacing: 0.5,
+    //         textTransform: 'uppercase'
+    //       },
+    //       [`& .${tableCellClasses.paddingCheckbox}`]: {
+    //         paddingTop: 4,
+    //         paddingBottom: 4
+    //       }
+    //     }
+    //   }
+    // },
     MuiTextField: {
       defaultProps: {
         variant: 'filled'
+      }
+    },
+    MuiButtonBase: {
+      styleOverrides: {
+        root: {
+          borderBottomColor: palette.divider,
+          padding: '15px 16px',
+          color: 'black'
+        }
       }
     }
   };
