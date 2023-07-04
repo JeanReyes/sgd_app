@@ -28,6 +28,5 @@ export const SgdReducer = (state: SgdState, action: SgdAction ): SgdState => {
             openNav: action.payload
         }
     }
-
     return state
 }

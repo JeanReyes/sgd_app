@@ -3,8 +3,8 @@ import { Layout } from '../../components/layouts'
 import { Grid, Divider, Card, CardHeader, CardContent, TextField, Button, useMediaQuery, MenuItem, Typography } from '@mui/material';
 import { TableDefault } from '../../components/ui/Tables/Table';
 import { ItemSolicitud } from '../../interface/Sgd';
-import { AddItem } from '../../components/solicitud/ingresarSolicitud/AddItem';
-import { CalculateSolicitud } from '../../components/solicitud/calculateSolicitud/CalculateSolicitud';
+import { AddItem } from '../../components/solicitud/add/addItem/AddItem';
+import { CalculateSolicitud } from '../../components/solicitud/add/calculateSolicitud/CalculateSolicitud';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
@@ -75,7 +75,7 @@ const Solicitud = () => {
         console.log("values", values); 
     }, [values])
     
-
+    
     return (
         <Layout>
             <Card>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { TableSolicitud } from '../../ui/Tables/TableListarSolicitud';
-import { Solicitud } from '../../../pages/solicitud/list';
+import { Solicitud } from '../../../interface/Sgd';
 
 interface Props {
     header: string[];
@@ -8,6 +8,7 @@ interface Props {
 }
 
 export const ListarSolicitud = ({ header, items }: Props) => {
+  // aqui puede ir los filters avanzados
   return (
     <TableSolicitud header={header} items={ items }/>
   )

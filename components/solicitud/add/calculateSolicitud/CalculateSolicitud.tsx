@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
 import { Button, FormControl, FormControlLabel, FormLabel, Grid, MenuItem, Radio, RadioGroup, TextField, Typography } from '@mui/material'
-import { ItemSolicitud } from '../../../interface/Sgd';
+import { ItemSolicitud } from '../../../../interface/Sgd';
 
 interface Calculate {
     neto: number;
@@ -25,8 +25,8 @@ export const CalculateSolicitud = ({ items }: Props) => {
             return items.map((item) => {
                 return {
                     neto: (Number(item.precio) * Number(item.quantity)),
-                    iva: iva === 'afecto' ? ((Number(item.precio) * Number(item.quantity)) * 0.19) : 0,
-                    bruto: iva === 'afecto' ? ((Number(item.precio) * Number(item.quantity)) * 1.19) : (Number(item.precio) * Number(item.quantity))
+                    iva: iva === 'afecto' ? Math.round(((Number(item.precio) * Number(item.quantity)) * 0.19)) : 0,
+                    bruto: iva === 'afecto' ? Math.round(((Number(item.precio) * Number(item.quantity)) * 1.19)) : (Number(item.precio) * Number(item.quantity))
                 }
             })
        })

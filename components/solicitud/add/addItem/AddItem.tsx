@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Grid, TextField, MenuItem, Button, useMediaQuery } from '@mui/material';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { ItemSolicitud } from '../../../interface/Sgd';
+import { ItemSolicitud } from '../../../../interface/Sgd';
 
 const initItem = {
     quantity: '',
