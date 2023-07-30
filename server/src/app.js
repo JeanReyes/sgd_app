@@ -2,7 +2,61 @@ const express = require('express');
 const app = express();
 const port = 8080;
 
-const statusItem =  [
+
+const calculate = {
+    total_neto: '100',
+    iva: '19',
+    total_bruto: '119',
+    destino: 'mi casa',
+    programa: 'San Cli',
+    observacion: 'data fake'
+}
+
+const Items = [
+    {
+        quantity: '2',
+        unidad_medida: 'kilo',
+        detail: 'campras varias',
+        classification: 'clasificación',
+        precio: '100'
+    },
+    {
+        quantity: '2',
+        unidad_medida: 'kilo',
+        detail: 'campras varias',
+        classification: 'clasificación',
+        precio: '100'
+    },
+    {
+        quantity: '2',
+        unidad_medida: 'kilo',
+        detail: 'campras varias',
+        classification: 'clasificación',
+        precio: '100'
+    },  {
+        quantity: '2',
+        unidad_medida: 'kilo',
+        detail: 'campras varias',
+        classification: 'clasificación',
+        precio: '100'
+    },
+    {
+        quantity: '2',
+        unidad_medida: 'kilo',
+        detail: 'campras varias',
+        classification: 'clasificación',
+        precio: '100'
+    },
+    {
+        quantity: '2',
+        unidad_medida: 'kilo',
+        detail: 'campras varias',
+        classification: 'clasificación',
+        precio: '100'
+    }
+]
+
+const SolicitudStates =  [
     {
           unidad: '(1) VºBº Unidad Requirientes',
           fecha: '12/12/2023',
@@ -61,57 +115,67 @@ const statusItem =  [
       }
 ]
 
-const ItemsFake = [
-{
-    id: '1234',
-    fecha_creacion: '12/12/2023',
-    creador: 'Clitobars Gonzalez',
-    numero_solicitud: '40235',
-    area: 'Administracion',
-    firma: 'Firma xxx',
-    status: statusItem
-},
-{
-    id: '12',
-    fecha_creacion: '12/12/2023',
-    creador: 'Clitobars Gonzalez',
-    numero_solicitud: '40235',
-    area: 'Administracion',
-    firma: 'Firma xxx',
-    status: statusItem
-},
-{
-    id: '1213',
-    fecha_creacion: '12/12/2023',
-    creador: 'Clitobars Gonzalez',
-    numero_solicitud: '40235',
-    area: 'Administracion',
-    firma: 'Firma xxx',
-    status: statusItem
-}
+const Solicitudes = [
+    {
+        id: '1234',
+        fecha_creacion: '12/12/2023',
+        creador: 'Clitobars Gonzalez',
+        numero_solicitud: '40235',
+        area: 'Administracion',
+        firma: 'Firma xxx',
+        status: SolicitudStates,
+        items: Items,
+        calculate: calculate
+    },
+    {
+        id: '12',
+        fecha_creacion: '12/12/2023',
+        creador: 'Clitobars Gonzalez',
+        numero_solicitud: '40235',
+        area: 'Administracion',
+        firma: 'Firma xxx',
+        status: SolicitudStates,
+        items: Items,
+        calculate: calculate
+    },
+    {
+        id: '1213',
+        fecha_creacion: '12/12/2023',
+        creador: 'Clitobars Gonzalez',
+        numero_solicitud: '40235',
+        area: 'Administracion',
+        firma: 'Firma xxx',
+        status: SolicitudStates,
+        items: Items,
+        calculate: calculate
+    }
 ]
 
-const item = {
-    id: '1234',
-    fecha_creacion: '12/12/2023',
-    creador: 'Clitobars Gonzalez',
-    numero_solicitud: '40235',
-    area: 'Administracion',
-    firma: 'Firma xxx',
-    status: statusItem
-}
+
+
+// const item = {
+//     id: '1234',
+//     fecha_creacion: '12/12/2023',
+//     creador: 'Clitobars Gonzalez',
+//     numero_solicitud: '40235',
+//     area: 'Administracion',
+//     unidad: 'Omil'
+//     firma: 'Firma xxx',
+//     status: SolicitudStates,
+//     calculate: calculate
+// }
   
 //solicitud
 
 app.get('/solicitudes', (req, res) => {
     res.status(200).json({
-        data: ItemsFake
+        data: Solicitudes
     })
 });
 
 app.get('/solicitudes/:id', (req, res) => {
     const id = req.params.id;
-    const solicitud = ItemsFake.find(s => s.id === id);
+    const solicitud = Solicitudes.find(s => s.id === id);
     if (!solicitud) {
        return res.status(404).json({ error: 'Solicitud no encontrada' });
     } 

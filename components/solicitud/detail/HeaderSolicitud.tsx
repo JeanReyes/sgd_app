@@ -9,7 +9,7 @@ interface Props {
 
 export const HeaderSolicitud = ({fecha, type_solicitud, unidad}: Props) => {
   return (
-    <Card sx={{marginBottom: 4}}>
+    <Card sx={{marginBottom: 2}}>
       <Grid sx={{display:'flex', justifyContent: 'center', flexDirection: 'column', width: '100%', padding: 2}} container spacing={2}>
         <Grid item sx={{textAlign: 'center'}}> Fecha: { fecha }</Grid>
         <Grid item sx={{textAlign: 'center'}}> Tipo de compra: { type_solicitud }</Grid>

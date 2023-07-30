@@ -51,5 +51,16 @@ export interface Status {
     numero_solicitud: string,
     area: string,
     firma: string,
+    items: ItemSolicitud []
     status: Status []
+    calculate: CalculateSolicitud
   }
+
+export interface CalculateSolicitud {
+    total_neto: string;
+    iva: string;
+    total_bruto: string;
+    destino: string;
+    programa: string;
+    observacion: string;
+}
