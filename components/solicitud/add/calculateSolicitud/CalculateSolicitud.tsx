@@ -75,9 +75,9 @@ export const CalculateSolicitud = ({ items }: Props) => {
                     </FormControl>
                 </Grid>
                 <Grid lg={3} md={3} sm={6} xs={12} item>
-                    <Typography>Total Neto: {formatPrice(totalCalculate?.neto)}</Typography>
-                    <Typography>Iva: {formatPrice(totalCalculate?.iva)}</Typography>
-                    <Typography>Total Bruto: {formatPrice(totalCalculate?.bruto)}</Typography>
+                    <Typography>Total Neto: $ {formatPrice(totalCalculate?.neto)}</Typography>
+                    <Typography>Iva: $ {formatPrice(totalCalculate?.iva)}</Typography>
+                    <Typography>Total Bruto: $ {formatPrice(totalCalculate?.bruto)}</Typography>
                 </Grid>
                 <Grid lg={3} md={3} sm={6} xs={12} item>
                     <TextField
@@ -120,8 +120,14 @@ export const CalculateSolicitud = ({ items }: Props) => {
                     </TextField> 
                 </Grid>
                 <Grid lg={3} md={3} sm={6} xs={12} item>
-                    <Button variant="contained">Cargar Archivos</Button>
-                    <ModalBase/>
+                    
+                    <ModalBase
+                        activator={(open) => (<Button onClick={open} variant="contained">Cargar Archivos</Button>)}
+                    >
+                        <>
+                            Falta vista y funcionalidad para cargar archivos
+                        </>
+                    </ModalBase>
                     <Typography>Archivos adjuntos: </Typography>
                 </Grid>
             </Grid>

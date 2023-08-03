@@ -1,19 +1,22 @@
 /* eslint-disable react/display-name */
-import * as React from 'react';
 import clsx from 'clsx';
 import { styled, Box, Theme } from '@mui/system';
 import Modal from '@mui/base/Modal';
+import {useState, forwardRef} from 'react';
 
-export const  ModalBase = () => {
-  const [open, setOpen] = React.useState(false);
+interface Props {
+    children: JSX.Element
+    activator: (open: () => void) => JSX.Element
+}
+
+export const  ModalBase = ({children, activator}: Props) => {
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   return (
     <div>
-      <TriggerButton type="button" onClick={handleOpen}>
-        Open modal
-      </TriggerButton>
+      {activator(handleOpen)}
       <StyledModal
         aria-labelledby="unstyled-modal-title"
         aria-describedby="unstyled-modal-description"
@@ -22,15 +25,14 @@ export const  ModalBase = () => {
         slots={{ backdrop: StyledBackdrop }}
       >
         <Box sx={style}>
-          <h2 id="unstyled-modal-title">Text in a modal</h2>
-          <p id="unstyled-modal-description">Aliquid amet deserunt earum!</p>
+            {children}
         </Box>
       </StyledModal>
     </div>
   );
 }
 
-const Backdrop = React.forwardRef<
+const Backdrop = forwardRef<
   HTMLDivElement,
   { open?: boolean; className: string }
 >((props, ref) => {
