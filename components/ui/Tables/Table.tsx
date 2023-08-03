@@ -17,7 +17,7 @@ interface Props {
     handleRemoveItem: (index: number) => void
 }
 
-const initItem: ItemSolicitud [] = new Array(3).fill({ quantity: '', unidad_medida: '', detail: '', classification: '', precio: '' })
+const initItem: ItemSolicitud [] = new Array(1).fill({ quantity: '', unidad_medida: '', detail: '', classification: '', precio: '' })
 export const TableDefault = ({ header, items, handleRemoveItem }: Props) => {
   const [dataItems, setDataItems] = useState([] as ItemSolicitud []);
 

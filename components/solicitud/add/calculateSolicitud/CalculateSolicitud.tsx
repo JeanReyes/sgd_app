@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, FormControl, FormControlLabel, FormLabel, Grid, MenuItem, Radio, RadioGroup, TextField, Typography, Box } from '@mui/material'
 import { ItemSolicitud } from '../../../../interface/Sgd';
 import { formatPrice } from '../../../../utils/methods';
+import { ModalBase } from '../../../ui/modal/Modal';
 
 interface Calculate {
     neto: number;
@@ -120,6 +121,7 @@ export const CalculateSolicitud = ({ items }: Props) => {
                 </Grid>
                 <Grid lg={3} md={3} sm={6} xs={12} item>
                     <Button variant="contained">Cargar Archivos</Button>
+                    <ModalBase/>
                     <Typography>Archivos adjuntos: </Typography>
                 </Grid>
             </Grid>
