@@ -59,7 +59,7 @@ export const SgdProvider = ({ children, company }: Props) => {
             handleSetTheme,
             handleSettingApp,
             handleSideNav,
-            Solicitud,
+            // Solicitud,
         }}>
             {children}
         </SgdContext.Provider>
