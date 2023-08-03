@@ -27,8 +27,6 @@ const initItem = {
 
 const Solicitud = () => {
 
-    const lgMd = useMediaQuery((theme) => (theme as any).breakpoints.up('md'));
-
     const [items, setItems] = useState<ItemSolicitud[]>([]);
 
     const { values, errors, touched, handleChange, handleBlur, resetForm } = useFormik({
