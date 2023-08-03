@@ -3,7 +3,7 @@ import React from 'react'
 import { CalculateSolicitud } from '../../../interface/Sgd'
 
 interface Props {
-    calculate: CalculateSolicitud
+    calculate?: CalculateSolicitud
 }
 
 export const CalculateDetail = ({calculate}: Props) => {
@@ -13,26 +13,26 @@ export const CalculateDetail = ({calculate}: Props) => {
             <Grid lg={6} md={6} sm={6} xs={12} item > 
                 <Grid container sx={{display:'flex', justifyContent: 'center', flexDirection: 'column', width: '100%', padding: 2}}>
                     <Grid item>
-                        Total neto: {calculate.total_neto}
+                        Total neto: {calculate?.total_neto}
                     </Grid>
                     <Grid item>
-                        Iva: { calculate.iva }
+                        Iva: { calculate?.iva }
                     </Grid>
                     <Grid item>
-                        Total Bruto: { calculate.total_bruto }
+                        Total Bruto: { calculate?.total_bruto }
                     </Grid>
                 </Grid>
             </Grid>
             <Grid lg={6} md={6} sm={6} xs={12} item> 
                 <Grid container sx={{display:'flex', justifyContent: 'center', flexDirection: 'column', width: '100%', padding: 2}}>
                     <Grid item>
-                        Destino: {calculate.destino}
+                        Destino: {calculate?.destino}
                     </Grid>
                     <Grid item>
-                        Programa: { calculate.programa }
+                        Programa: { calculate?.programa }
                     </Grid>
                     <Grid item>
-                        Observación: { calculate.observacion }
+                        Observación: { calculate?.observacion }
                     </Grid>
                 </Grid>
             </Grid>

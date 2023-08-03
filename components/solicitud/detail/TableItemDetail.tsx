@@ -5,7 +5,7 @@ import { ItemSolicitud } from '../../../interface/Sgd';
 
 interface Props {
     header: string [];
-    items: ItemSolicitud [];
+    items?: ItemSolicitud [];
 }
 export const TableItemDetail = ({header, items}: Props) => {
     return (
@@ -17,7 +17,7 @@ export const TableItemDetail = ({header, items}: Props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((row, index) => (
+              {items?.map((row, index) => (
                 <TableRow
                   key={index}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

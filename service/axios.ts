@@ -2,8 +2,8 @@ import axios from "axios";
 import { Solicitud } from "../interface/Sgd";
 
 const newAxios = axios.create({
-    baseURL: 'http://localhost:8080',
-    headers: { 'Content-Type': 'application/json'}
+    baseURL: '/api',
+    // headers: { 'Content-Type': 'application/json'}
 });
 
 //crear objecto de respuesta al front
@@ -19,5 +19,5 @@ export const getAllSolicitud = async (url: string): Promise<Solicitud []> => {
 
 export const getOneSolicitud = async (url: string): Promise<Solicitud> => {
     const response = await newAxios.get<any>(`${url}`)
-    return response.data
+    return response.data.data
 }
