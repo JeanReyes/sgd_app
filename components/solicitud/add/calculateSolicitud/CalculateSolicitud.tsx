@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button, FormControl, FormControlLabel, FormLabel, Grid, MenuItem, Radio, RadioGroup, TextField, Typography } from '@mui/material'
 import { ItemSolicitud } from '../../../../interface/Sgd';
+import { formatPrice } from '../../../../utils/methods';
 
 interface Calculate {
     neto: number;
@@ -67,15 +68,15 @@ export const CalculateSolicitud = ({ items }: Props) => {
                         onChange={(e) => handleTypeCalculate(e)}
                     >
                         <FormControlLabel value="afecto" control={<Radio />} label="Afecto" />
-                        <FormControlLabel value="excento" control={<Radio />} label="Excento" />
+                        <FormControlLabel value="exento" control={<Radio />} label="Exento" />
                     </RadioGroup>
                 </FormControl>
             </Grid>
             <Grid lg={3} md={3} sm={6} xs={12} item>
                 {iva}
-                <Typography>Total Neto: {totalCalculate?.neto}</Typography>
-                <Typography>Iva: {totalCalculate?.iva}</Typography>
-                <Typography>Total Bruto: {totalCalculate?.bruto}</Typography>
+                <Typography>Total Neto: {formatPrice(totalCalculate?.neto)}</Typography>
+                <Typography>Iva: {formatPrice(totalCalculate?.iva)}</Typography>
+                <Typography>Total Bruto: {formatPrice(totalCalculate?.bruto)}</Typography>
             </Grid>
             <Grid lg={3} md={3} sm={6} xs={12} item>
                 <TextField
@@ -119,7 +120,7 @@ export const CalculateSolicitud = ({ items }: Props) => {
             </Grid>
             <Grid lg={3} md={3} sm={6} xs={12} item>
                 <Button variant="contained">Cargar Archivos</Button>
-                <Typography>Archivos adejuntos: </Typography>
+                <Typography>Archivos adjuntos: </Typography>
             </Grid>
         </Grid>
     )

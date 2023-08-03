@@ -8,6 +8,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { ItemSolicitud } from '../../../interface/Sgd';
 import { Button } from '@mui/material';
+import { formatPrice } from '../../../utils/methods';
 
 interface Props {
     header: string [];
@@ -15,14 +16,16 @@ interface Props {
     handleRemoveItem: (index: number) => void
 }
 
-const initItem: ItemSolicitud [] = new Array(5).fill({ quantity: '', unidad_medida: '', detail: '', classification: '', precio: '' })
+const initItem: ItemSolicitud [] = new Array(3).fill({ quantity: '', unidad_medida: '', detail: '', classification: '', precio: '' })
 export const TableDefault = ({ header, items, handleRemoveItem }: Props) => {
   const [dataItems, setDataItems] = useState([] as ItemSolicitud []);
 
+  //TODO: agregado de items por defecto.
   useEffect(() => {
     if(items.length > 0) {
       if (initItem.length) {
         initItem.length = initItem.length - 1;
+        
       }
       setDataItems(() => {
         return [
@@ -55,7 +58,7 @@ export const TableDefault = ({ header, items, handleRemoveItem }: Props) => {
               <TableCell align="right">{row.unidad_medida}</TableCell>
               <TableCell align="right">{row.detail}</TableCell>
               <TableCell align="right">{row.classification}</TableCell>
-              <TableCell align="right">{row.precio}</TableCell>
+              <TableCell align="right">$ { formatPrice(row.precio)}</TableCell>
               <TableCell align="right"><Button onClick={() => handleRemoveItem(index)}>X</Button></TableCell>
             </TableRow>
           ))}
