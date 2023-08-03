@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
-import { Button, FormControl, FormControlLabel, FormLabel, Grid, MenuItem, Radio, RadioGroup, TextField, Typography } from '@mui/material'
+import { Button, FormControl, FormControlLabel, FormLabel, Grid, MenuItem, Radio, RadioGroup, TextField, Typography, Box } from '@mui/material'
 import { ItemSolicitud } from '../../../../interface/Sgd';
 import { formatPrice } from '../../../../utils/methods';
 
@@ -56,71 +56,73 @@ export const CalculateSolicitud = ({ items }: Props) => {
     }, [itemCalculateIva])
 
     return (
-        <Grid container sx={{paddingTop: 2}}>
-            <Grid lg={3} md={3} sm={6} xs={12} item>
-                <FormControl>
-                    <FormLabel id="demo-radio-buttons-group-label">IVA</FormLabel>
-                    <RadioGroup
-                        aria-labelledby="demo-radio-buttons-group-label"
-                        defaultValue="afecto"
-                        name="radio-buttons-group"
-                        value={iva}
-                        onChange={(e) => handleTypeCalculate(e)}
+        <Box sx={{padding: 1, border: .5}}>
+            <Grid container sx={{paddingTop: 2}}>
+                <Grid lg={3} md={3} sm={6} xs={12} item>
+                    <FormControl>
+                        <FormLabel id="demo-radio-buttons-group-label">IVA</FormLabel>
+                        <RadioGroup
+                            aria-labelledby="demo-radio-buttons-group-label"
+                            defaultValue="afecto"
+                            name="radio-buttons-group"
+                            value={iva}
+                            onChange={(e) => handleTypeCalculate(e)}
+                        >
+                            <FormControlLabel value="afecto" control={<Radio />} label="Afecto" />
+                            <FormControlLabel value="exento" control={<Radio />} label="Exento" />
+                        </RadioGroup>
+                    </FormControl>
+                </Grid>
+                <Grid lg={3} md={3} sm={6} xs={12} item>
+                    <Typography>Total Neto: {formatPrice(totalCalculate?.neto)}</Typography>
+                    <Typography>Iva: {formatPrice(totalCalculate?.iva)}</Typography>
+                    <Typography>Total Bruto: {formatPrice(totalCalculate?.bruto)}</Typography>
+                </Grid>
+                <Grid lg={3} md={3} sm={6} xs={12} item>
+                    <TextField
+                        sx={{width: '100%', paddingRight:2, position: 'relative', bottom: 4 }}
+                        id="standard-select-currency"
+                        // id="standard-select-currency-native"
+                        label="Destino"
+                        defaultValue={'kilo'}
+                        select
+                        variant="standard"
+                        name='unidad_medida'
+                        // value={values.unidad_medida}
+                        // error={!!(touched.unidad_medida && errors.unidad_medida)}
+                        // helperText={touched.unidad_medida && errors.unidad_medida}
+                        // onBlur={handleBlur}
+                        // onChange={handleChange}
                     >
-                        <FormControlLabel value="afecto" control={<Radio />} label="Afecto" />
-                        <FormControlLabel value="exento" control={<Radio />} label="Exento" />
-                    </RadioGroup>
-                </FormControl>
+                    
+                        <MenuItem value={'kilo'}>kilo</MenuItem>
+                        <MenuItem value={'kilo2'}>Kilo2</MenuItem>
+                    </TextField> 
+                    <TextField
+                        sx={{width: '100%', paddingRight:2, position: 'relative', bottom: 4 }}
+                        id="standard-select-currency"
+                        // id="standard-select-currency-native"
+                        label="Programa"
+                        defaultValue={'kilo'}
+                        select
+                        variant="standard"
+                        name='unidad_medida'
+                        // value={values.unidad_medida}
+                        // error={!!(touched.unidad_medida && errors.unidad_medida)}
+                        // helperText={touched.unidad_medida && errors.unidad_medida}
+                        // onBlur={handleBlur}
+                        // onChange={handleChange}
+                    >
+                    
+                        <MenuItem value={'kilo'}>kilo</MenuItem>
+                        <MenuItem value={'kilo2'}>Kilo2</MenuItem>
+                    </TextField> 
+                </Grid>
+                <Grid lg={3} md={3} sm={6} xs={12} item>
+                    <Button variant="contained">Cargar Archivos</Button>
+                    <Typography>Archivos adjuntos: </Typography>
+                </Grid>
             </Grid>
-            <Grid lg={3} md={3} sm={6} xs={12} item>
-                <Typography>Total Neto: {formatPrice(totalCalculate?.neto)}</Typography>
-                <Typography>Iva: {formatPrice(totalCalculate?.iva)}</Typography>
-                <Typography>Total Bruto: {formatPrice(totalCalculate?.bruto)}</Typography>
-            </Grid>
-            <Grid lg={3} md={3} sm={6} xs={12} item>
-                <TextField
-                    sx={{width: '100%', paddingRight:2, position: 'relative', bottom: 4 }}
-                    id="standard-select-currency"
-                    // id="standard-select-currency-native"
-                    label="Destino"
-                    defaultValue={'kilo'}
-                    select
-                    variant="standard"
-                    name='unidad_medida'
-                    // value={values.unidad_medida}
-                    // error={!!(touched.unidad_medida && errors.unidad_medida)}
-                    // helperText={touched.unidad_medida && errors.unidad_medida}
-                    // onBlur={handleBlur}
-                    // onChange={handleChange}
-                >
-                
-                    <MenuItem value={'kilo'}>kilo</MenuItem>
-                    <MenuItem value={'kilo2'}>Kilo2</MenuItem>
-                </TextField> 
-                <TextField
-                    sx={{width: '100%', paddingRight:2, position: 'relative', bottom: 4 }}
-                    id="standard-select-currency"
-                    // id="standard-select-currency-native"
-                    label="Programa"
-                    defaultValue={'kilo'}
-                    select
-                    variant="standard"
-                    name='unidad_medida'
-                    // value={values.unidad_medida}
-                    // error={!!(touched.unidad_medida && errors.unidad_medida)}
-                    // helperText={touched.unidad_medida && errors.unidad_medida}
-                    // onBlur={handleBlur}
-                    // onChange={handleChange}
-                >
-                
-                    <MenuItem value={'kilo'}>kilo</MenuItem>
-                    <MenuItem value={'kilo2'}>Kilo2</MenuItem>
-                </TextField> 
-            </Grid>
-            <Grid lg={3} md={3} sm={6} xs={12} item>
-                <Button variant="contained">Cargar Archivos</Button>
-                <Typography>Archivos adjuntos: </Typography>
-            </Grid>
-        </Grid>
+        </Box>
     )
 }

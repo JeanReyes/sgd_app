@@ -135,7 +135,6 @@ const Solicitud = () => {
                                         variant="standard" 
                                         disabled
                                         value={values.fecha_ingreso}
-                                        // defaultValue={values.fecha_ingreso}
                                         onChange={handleChange}
                                         InputLabelProps={{
                                             shrink: true,
@@ -148,24 +147,25 @@ const Solicitud = () => {
                                             width: '100%',
                                             paddingRight:2
                                         }}
-                                        id="standard-basic" label="Área" variant="standard" 
-                                    //   value={}
-                                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                            console.log(event.target.value);
-                                            
-                                    }}/>     
+                                        id="standard-basic" 
+                                        label="Área" 
+                                        variant="standard" 
+                                        name='area'
+                                        value={values.area}
+                                        onChange={handleChange}
+                                    />     
                                 </Grid>
                                 <Grid lg={4} md={4} sm={12} xs={12} item>
                                     <TextField 
                                     sx={{
                                         width: '100%'
                                     }}
-                                    id="standard-basic" label="Unidad" variant="standard" 
-                                //   value={}
-                                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                        console.log(event.target.value);
-                                    
-                                    }}/>
+                                    id="standard-basic" 
+                                    name='unidad'
+                                    label="Unidad" 
+                                    variant="standard" 
+                                    value={values.unidad}
+                                    onChange={handleChange}/>
                                 
                                 </Grid>
                             </Grid>
