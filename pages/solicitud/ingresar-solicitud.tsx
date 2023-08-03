@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { Layout } from '../../components/layouts'
-import { Grid, Divider, Card, CardHeader, CardContent, TextField, Button, useMediaQuery, MenuItem, Typography, Box } from '@mui/material';
+import { Grid, Divider, Card, CardHeader, CardContent, TextField, Stack, useMediaQuery, MenuItem, Typography, Box } from '@mui/material';
 import { TableDefault } from '../../components/ui/Tables/Table';
 import { ItemSolicitud } from '../../interface/Sgd';
 import { AddItem } from '../../components/solicitud/add/addItem/AddItem';
 import { CalculateSolicitud } from '../../components/solicitud/add/calculateSolicitud/CalculateSolicitud';
 import { useFormik } from 'formik';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import * as Yup from 'yup';
+import { formatDateToDdMmYyyy } from '../../utils/methods';
 
 const headerSolicitud = ['N°','Cantidad', 'Unidad de Medida', 'Detalle o Descripción', 'Clasificación Presupuestaria', 'Precio Neto', '']
 
 const initItem = {
     numero_solicitud: '',
     tipo_compra: '',
-    fecha_ingreso: '',
+    fecha_ingreso: '2023-08-03',
     area: '',
     unidad: '',
     afecto: '',
@@ -32,7 +30,6 @@ const Solicitud = () => {
     const lgMd = useMediaQuery((theme) => (theme as any).breakpoints.up('md'));
 
     const [items, setItems] = useState<ItemSolicitud[]>([]);
-    const [value, setValue] = useState(null);
 
     const { values, errors, touched, handleChange, handleBlur, resetForm } = useFormik({
         initialValues: initItem,
@@ -74,6 +71,11 @@ const Solicitud = () => {
             return [...clone]
         })
     }
+
+    useEffect(() => {
+        console.log("values", values);
+        
+    },[values])
     
     return (
         <Layout>
@@ -81,6 +83,7 @@ const Solicitud = () => {
                 <CardHeader title={'Nueva Solicitud de compra'}/>
                 <Divider />
                 <CardContent>
+                <Stack component="form" noValidate spacing={3}>
                     <Grid sx={{width: '100%', paddingBottom: 2}} container>
                         <Grid sx={{paddingRight: 4}} lg={6} md={6} sm={6} xs={12} item>
                             <Grid sx={{width: '100%', paddingBottom: 4}} container>
@@ -120,31 +123,24 @@ const Solicitud = () => {
                             {/* datos generales */}
                             <Grid sx={{width: '100%', paddingBottom: 4}} container>
                                 <Grid lg={4} md={4} sm={12} xs={12} item>
-                                    {/* <TextField 
+                                    <TextField 
                                         sx={{
                                             width: '100%',
                                             paddingRight:2
                                         }}
-                                        id="standard-basic" label="Fecha de ingreso:" variant="standard" 
-                                    //   value={}
-                                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                            console.log(event.target.value);
-
-                                    }}/> */}
-                                {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DatePicker
-                                        label="Helper text example"
-                                        value={value}
-                                        onChange={(newValue) => {
-                                            setValue(newValue);
+                                        id="date" 
+                                        label="Fecha de ingreso"
+                                        name="fecha_ingresos"
+                                        type="date"
+                                        variant="standard" 
+                                        disabled
+                                        value={values.fecha_ingreso}
+                                        // defaultValue={values.fecha_ingreso}
+                                        onChange={handleChange}
+                                        InputLabelProps={{
+                                            shrink: true,
                                         }}
-                                        // renderInput={(params: any) => (
-                                        //     <TextField {...params} helperText={params?.inputProps?.placeholder} />
-                                        // )}
                                     />
-                                    
-                                </LocalizationProvider> */}
-                                    
                                 </Grid>
                                 <Grid lg={4} md={4} sm={12} xs={12} item>
                                     <TextField 
@@ -206,6 +202,7 @@ const Solicitud = () => {
 
                     {/* calculate */}
                     <CalculateSolicitud items={items}/>
+                </Stack>
                 </CardContent>
             </Card>
         </Layout>

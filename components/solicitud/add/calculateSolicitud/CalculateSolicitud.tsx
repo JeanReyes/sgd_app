@@ -73,7 +73,6 @@ export const CalculateSolicitud = ({ items }: Props) => {
                 </FormControl>
             </Grid>
             <Grid lg={3} md={3} sm={6} xs={12} item>
-                {iva}
                 <Typography>Total Neto: {formatPrice(totalCalculate?.neto)}</Typography>
                 <Typography>Iva: {formatPrice(totalCalculate?.iva)}</Typography>
                 <Typography>Total Bruto: {formatPrice(totalCalculate?.bruto)}</Typography>
