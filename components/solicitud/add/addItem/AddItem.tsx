@@ -7,29 +7,37 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { ItemSolicitud } from '../../../../interface/Sgd';
 import { formatPrice } from '../../../../utils/methods';
 
-const initItem = {
-    quantity: '',
-    unidad_medida: '',
-    detail: '',
-    classification: '',
-    precio: ''
-}
+// const initItem = {
+//     quantity: '',
+//     unidad_medida: '',
+//     detail: '',
+//     classification: '',
+//     precio: ''
+// }
 
 interface Props {
-    addItems: (values: ItemSolicitud) => void
+    editItem?: {item: ItemSolicitud, index: number}
+    addItems: (values: ItemSolicitud) => void;
+    handleSetEditItem: (value: {item: ItemSolicitud, index: number}) => void;
 }
 
-export const AddItem = ({addItems}: Props) => {
+export const AddItem = ({editItem, addItems, handleSetEditItem}: Props) => {
     const lgMd = useMediaQuery((theme) => (theme as any).breakpoints.up('md'));
     const [ disabledButton, setDisabledButton ] = useState(true);
-    const [price, setPrice] = useState('');
-      
+    const [initItem, setEditItem] = useState({
+        quantity: '',
+        unidad_medida: '',
+        detail: '',
+        classification: '',
+        precio: ''
+    })
     
-    const { values, errors, touched, handleChange, handleBlur, resetForm } = useFormik({
+    
+    const { values, errors, touched, handleChange, handleBlur, resetForm, setValues } = useFormik({
         initialValues: initItem,
         validationSchema: Yup.object({
         quantity: Yup
-            .number().typeError('Debe ser número').min(0, 'El valor mínimo es 0.').max(250, 'El valor máximo es 250.')
+            .number().typeError('Debe ser número').min(1, 'El valor mínimo es 1.').max(250, 'El valor máximo es 250.')
             .required('requerido'),
         unidad_medida: Yup
             .string()
@@ -38,7 +46,7 @@ export const AddItem = ({addItems}: Props) => {
             .string()
             .required('requerido'),
         classification: Yup
-            .string()
+            .number().typeError('Debe ser número')
             .required('requerido'),
         precio: Yup
             .number().typeError('Debe ser número').min(0, 'El valor mínimo es 0.')
@@ -59,17 +67,49 @@ export const AddItem = ({addItems}: Props) => {
         } 
     }
 
- 
+    const handleButtonEvent = () => {
+        console.log("editItem",editItem);
+        console.log(Object.keys(editItem as any).length);
+        
+        
+        if (Object.keys(editItem as {item: ItemSolicitud, index: number}).length !== 0) {
+            setDisabledButton(true) 
+            handleSetEditItem({
+                item: values,
+                index: editItem?.index as number
+            })
+            resetForm()
+            // if(Object.keys(errors).length) {
+            //     return;  
+            // } else {     
+            //     setDisabledButton(true) 
+            //     addItems(values)
+            //     resetForm()
+            // } 
+            
+        } else {
+            handleAddItem()
+        }
+    }
 
+ 
+    // habilitar y desactivar button
     useEffect(() => {
         if(Object.keys(errors).length === 0 && Object.keys(touched).length !== 0) {
             setDisabledButton(false) 
         } else {
             setDisabledButton(true)
         }
-        
-    }, [errors])
+    }, [errors]);
 
+    useEffect(() => {
+        if(editItem)
+        if (Object.keys(editItem).length !== 0) {
+            setEditItem(editItem.item)
+            setValues(editItem.item)
+            setDisabledButton(false) 
+        }
+    }, [editItem])
 
   return (
     <Box sx={{marginBottom: 5}}>
@@ -158,7 +198,14 @@ export const AddItem = ({addItems}: Props) => {
                     </Box>
                 </Grid>
                 <Grid lg={1} md={1} sm={12} xs={12} sx={{ paddingLeft: lgMd ? 2 : 0}} item>
-                    <Button sx={{width:'100%', m:0, marginTop: lgMd ? 0 : 2}} disabled={disabledButton} variant="contained" onClick={handleAddItem}>Ingresar</Button>  
+                    <Button 
+                        sx={{width:'100%', m:0, marginTop: lgMd ? 0 : 2}} 
+                        disabled={disabledButton} 
+                        variant="contained" 
+                        onClick={handleButtonEvent}
+                        >
+                            Ingresar
+                    </Button>  
                 </Grid>
             </Grid>  
         </Box>

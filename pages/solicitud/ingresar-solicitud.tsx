@@ -9,7 +9,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { formatDateToDdMmYyyy } from '../../utils/methods';
 
-const headerSolicitud = ['N°','Cantidad', 'Unidad de Medida', 'Detalle o Descripción', 'Clasificación Presupuestaria', 'Precio Neto', '']
+const headerSolicitud = ['N°','Cantidad', 'Unidad de Medida', 'Detalle o Descripción', 'Clasificación Presupuestaria', 'Precio Unitario', 'Precio total', '']
 
 const initItem = {
     numero_solicitud: '',
@@ -28,6 +28,7 @@ const initItem = {
 const Solicitud = () => {
 
     const [items, setItems] = useState<ItemSolicitud[]>([]);
+    const [editItem, setEditItem] = useState({} as {item: ItemSolicitud, index: number})
 
     const { values, errors, touched, handleChange, handleBlur, resetForm } = useFormik({
         initialValues: initItem,
@@ -62,6 +63,7 @@ const Solicitud = () => {
         })
     }
 
+
     const handleRemoveItem = (index: number) => {
         const clone = items
         clone.splice(index, 1)
@@ -70,10 +72,23 @@ const Solicitud = () => {
         })
     }
 
-    useEffect(() => {
-        console.log("values", values);
+    const handleEditItem = (item: ItemSolicitud, index: number) => {
+        setEditItem({item, index})  
+    }
+
+    const handleSetEditItem = (value: {item: ItemSolicitud, index: number}) => {
+        const newArray = items
+        newArray[value.index] = value.item
+        console.log("newArray", newArray);
         
-    },[values])
+        setItems(() => {
+            return [...newArray]
+        })
+    }
+
+    // useEffect(() => {
+    //     console.log("values", values);
+    // },[values])
     
     return (
         <Layout>
@@ -194,9 +209,9 @@ const Solicitud = () => {
                         </Grid>         
                     </Grid>
                     {/* row */}
-                    <AddItem addItems={handleAddItem}/>  
+                    <AddItem addItems={handleAddItem} editItem={editItem} handleSetEditItem={handleSetEditItem}/>  
                     {/* table*/}
-                    <TableDefault header={headerSolicitud} items={items} handleRemoveItem={handleRemoveItem}/>
+                    <TableDefault header={headerSolicitud} items={items} handleRemoveItem={handleRemoveItem} handleEditItem={handleEditItem}/>
 
                     {/* calculate */}
                     <CalculateSolicitud items={items}/>

@@ -32,10 +32,8 @@ export const  ModalBase = ({children, activator}: Props) => {
   );
 }
 
-const Backdrop = forwardRef<
-  HTMLDivElement,
-  { open?: boolean; className: string }
->((props, ref) => {
+const Backdrop = forwardRef<HTMLDivElement,{ open?: boolean; className: string }>((props, ref) => {
+
   const { open, className, ...other } = props;
   return (
     <div
@@ -44,6 +42,7 @@ const Backdrop = forwardRef<
       {...other}
     />
   );
+  
 });
 
 const blue = {
