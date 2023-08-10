@@ -68,10 +68,7 @@ export const AddItem = ({editItem, addItems, handleSetEditItem}: Props) => {
     }
 
     const handleButtonEvent = () => {
-        console.log("editItem",editItem);
-        console.log(Object.keys(editItem as any).length);
-        
-        
+ 
         if (Object.keys(editItem as {item: ItemSolicitud, index: number}).length !== 0) {
             setDisabledButton(true) 
             handleSetEditItem({

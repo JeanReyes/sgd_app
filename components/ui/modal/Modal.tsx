@@ -2,21 +2,32 @@
 import clsx from 'clsx';
 import { styled, Box, Theme } from '@mui/system';
 import Modal from '@mui/base/Modal';
-import {useState, forwardRef} from 'react';
+import {useState, forwardRef, useImperativeHandle } from 'react';
 
 interface Props {
-    children: JSX.Element
-    activator: (open: () => void) => JSX.Element
+    children: JSX.Element;
+    activator?: (open: () => void) => JSX.Element;
 }
 
-export const  ModalBase = ({children, activator}: Props) => {
+export interface ModalBaseMethods {
+  handleOpen: () => void;
+  handleClose: () => void;
+}
+
+export const  ModalBase = forwardRef<ModalBaseMethods, Props>(({children, activator}, ref) => {
   const [open, setOpen] = useState(false);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  useImperativeHandle(ref, () => ({
+    handleOpen,
+    handleClose
+  }))
+
   return (
     <div>
-      {activator(handleOpen)}
+      { activator && activator(handleOpen)}
       <StyledModal
         aria-labelledby="unstyled-modal-title"
         aria-describedby="unstyled-modal-description"
@@ -30,7 +41,7 @@ export const  ModalBase = ({children, activator}: Props) => {
       </StyledModal>
     </div>
   );
-}
+})
 
 const Backdrop = forwardRef<HTMLDivElement,{ open?: boolean; className: string }>((props, ref) => {
 

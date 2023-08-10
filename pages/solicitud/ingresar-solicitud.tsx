@@ -7,7 +7,6 @@ import { AddItem } from '../../components/solicitud/add/addItem/AddItem';
 import { CalculateSolicitud } from '../../components/solicitud/add/calculateSolicitud/CalculateSolicitud';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { formatDateToDdMmYyyy } from '../../utils/methods';
 
 const headerSolicitud = ['N°','Cantidad', 'Unidad de Medida', 'Detalle o Descripción', 'Clasificación Presupuestaria', 'Precio Unitario', 'Precio total', '']
 
@@ -72,24 +71,18 @@ const Solicitud = () => {
         })
     }
 
-    const handleEditItem = (item: ItemSolicitud, index: number) => {
+    const handleEditItem = ({item, index}: {item: ItemSolicitud, index: number}) => {
         setEditItem({item, index})  
     }
 
     const handleSetEditItem = (value: {item: ItemSolicitud, index: number}) => {
-        const newArray = items
-        newArray[value.index] = value.item
-        console.log("newArray", newArray);
-        
+        const newItem = items
+        newItem[value.index] = value.item
         setItems(() => {
-            return [...newArray]
+            return [...newItem]
         })
     }
 
-    // useEffect(() => {
-    //     console.log("values", values);
-    // },[values])
-    
     return (
         <Layout>
             <Card>
@@ -187,7 +180,7 @@ const Solicitud = () => {
                             <Grid container spacing={2} sx={{display:'flex', justifyContent:'end'}}>
                                 <Grid lg={6} md={6} sm={6} xs={12} item>
                                     <Box sx={{padding: .5, marginBottom: 1, border: .5}}>
-                                        <Typography fontSize={12} variant='h4'>Compra agil menor a 10 utm</Typography>
+                                        <Typography fontSize={12} variant='h4'>Compra ágil menor a 10 utm</Typography>
                                     </Box>
                                     <Card sx={{padding: .5, maxHeight: 150, border: .5, overflowY: 'scroll'}}>
                                         <CardContent>

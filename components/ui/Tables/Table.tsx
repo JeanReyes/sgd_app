@@ -15,7 +15,7 @@ interface Props {
     header: string [];
     items: ItemSolicitud [];
     handleRemoveItem: (index: number) => void;
-    handleEditItem: (item: ItemSolicitud, index: number) => void;
+    handleEditItem: (value: {item: ItemSolicitud, index: number}) => void;
 }
 
 const initItem: ItemSolicitud [] = new Array(1).fill({ quantity: '', unidad_medida: '', detail: '', classification: '', precio: '' })
@@ -51,20 +51,20 @@ export const TableDefault = ({ header, items, handleRemoveItem, handleEditItem }
             </TableRow>
           </TableHead>
           <TableBody>
-            {dataItems.map((row, index) => (
+            {dataItems.map((item, index) => (
               <TableRow
                 key={index}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell component="th" align="right"> {index + 1} </TableCell>
-                <TableCell component="th" align="right"> {row.quantity} </TableCell>
-                <TableCell align="right">{row.unidad_medida}</TableCell>
-                <TableCell align="right">{row.detail}</TableCell>
-                <TableCell align="right">{row.classification}</TableCell>
-                <TableCell align="right">$ { formatPrice(row.precio)}</TableCell>
-                <TableCell align="right">$ { formatPrice((Number(row.precio) * Number(row.quantity))) }</TableCell>
+                <TableCell component="th" align="right"> {item.quantity} </TableCell>
+                <TableCell align="right">{item.unidad_medida}</TableCell>
+                <TableCell align="right">{item.detail}</TableCell>
+                <TableCell align="right">{item.classification}</TableCell>
+                <TableCell align="right">$ { formatPrice(item.precio)}</TableCell>
+                <TableCell align="right">$ { formatPrice((Number(item.precio) * Number(item.quantity))) }</TableCell>
                 <TableCell align="right">
-                  <Button onClick={() => handleEditItem(row, index)}>edit</Button>
+                  <Button onClick={() => handleEditItem({item, index})}>edit</Button>
                   <Button onClick={() => handleRemoveItem(index)}>X</Button>
                 </TableCell>
               </TableRow>
