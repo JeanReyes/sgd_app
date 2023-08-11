@@ -15,7 +15,7 @@ import { useAuth } from '../../hooks/useContext';
 import { ConfigTheme } from '../../components/configTheme/ConfigTheme';
 import Link from 'next/link';
 import { ModalBase, ModalBaseMethods } from '../../components/ui/modal/Modal';
-import { ChangePassword } from '../../components/ui/modal/ChangePassword';
+import { ChangePassword } from '../../components/ui/modal/components/ChangePassword';
 
 const CambiarContraseña = () => {
     const router = useRouter();

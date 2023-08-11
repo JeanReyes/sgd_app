@@ -120,12 +120,12 @@ export const CalculateSolicitud = ({ items }: Props) => {
                     </TextField> 
                 </Grid>
                 <Grid lg={3} md={3} sm={6} xs={12} item>
-                    
+                    {/* VISTA ADJUNTAR DOCUMENTOS */}
                     <ModalBase
                         activator={(open) => (<Button onClick={open} variant="contained">Cargar Archivos</Button>)}
                     >
                         <>
-                            Falta vista y funcionalidad para cargar archivos
+                            Falta vista y funcionalidad para cargar archivos Falta vista y funcionalidad para cargar archivos Falta vista y funcionalidad para cargar archivos Falta vista y funcionalidad para cargar archivos 
                         </>
                     </ModalBase>
                     <Typography>Archivos adjuntos: </Typography>
