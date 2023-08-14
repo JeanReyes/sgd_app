@@ -1,14 +1,74 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react'
 import { Layout } from '../../components/layouts'
-import { Grid, Divider, Card, CardHeader, CardContent, TextField, Stack, useMediaQuery, MenuItem, Typography, Box } from '@mui/material';
+import { Grid, Divider, Card, CardHeader, CardContent, TextField, Stack, useMediaQuery, MenuItem, Typography, Box, Button } from '@mui/material';
 import { TableDefault } from '../../components/ui/Tables/Table';
 import { ItemSolicitud } from '../../interface/Sgd';
 import { AddItem } from '../../components/solicitud/add/addItem/AddItem';
 import { CalculateSolicitud } from '../../components/solicitud/add/calculateSolicitud/CalculateSolicitud';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { formatPrice } from '../../utils/methods';
+
+export interface Calculate {
+    neto: number;
+    iva: number;
+    bruto: number;
+}
+
+interface IReglasSolicitud {
+    type: string,
+    rules: {
+        min: number;
+        max: number;
+    }
+    requisitos: string []
+}
 
 const headerSolicitud = ['N°','Cantidad', 'Unidad de Medida', 'Detalle o Descripción', 'Clasificación Presupuestaria', 'Precio Unitario', 'Precio total', '']
+
+const TypeSolicitud1 = {
+    type: 'Compra agil menor a 10 utm',
+    rules: {
+        min: 0,
+        max: 10
+    },
+    requisitos: [
+        'Debe adjuntar programa Municipal 1',
+        'Debe adjuntar Subprograma Municipal 1',
+        'Debe adjuntar mínimo 3 cotizaciones 1'
+    ]
+}
+const TypeSolicitud2 = {
+    type: 'Compra ágil mayor a 10 utm y menor a 20 utm',
+    rules: {
+        min: 10,
+        max: 20
+    },
+    requisitos: [
+        'Debe adjuntar programa Municipal 2',
+        'Debe adjuntar Subprograma Municipal 2',
+        'Debe adjuntar mínimo 3 cotizaciones 2'
+    ]
+}
+const TypeSolicitud3 = {
+    type: 'compra ágil mayor a 20 utm y menor a 30 utm',
+    rules: {
+        min: 20,
+        max: 30
+    },
+    requisitos: [
+        'Debe adjuntar programa Municipal 3',
+        'Debe adjuntar Subprograma Municipal 3',
+        'Debe adjuntar mínimo 3 cotizaciones 3'
+    ]
+}
+
+const TypesSolicitud: IReglasSolicitud [] = [
+    TypeSolicitud1,
+    TypeSolicitud2,
+    TypeSolicitud3
+]
 
 const initItem = {
     numero_solicitud: '',
@@ -28,6 +88,9 @@ const Solicitud = () => {
 
     const [items, setItems] = useState<ItemSolicitud[]>([]);
     const [editItem, setEditItem] = useState({} as {item: ItemSolicitud, index: number})
+    const [totalCalculate, setTotalCalculate] = useState<Calculate>({} as Calculate)
+    const [utm, setUtm] = useState(63326);
+    const [clasification, setClasification] = useState(TypesSolicitud[0] as IReglasSolicitud)
 
     const { values, errors, touched, handleChange, handleBlur, resetForm } = useFormik({
         initialValues: initItem,
@@ -75,13 +138,44 @@ const Solicitud = () => {
         setEditItem({item, index})  
     }
 
+    const handleSetTotalCalculate = (total: Calculate) => {
+        setTotalCalculate(total)
+    }
+
     const handleSetEditItem = (value: {item: ItemSolicitud, index: number}) => {
         const newItem = items
         newItem[value.index] = value.item
         setItems(() => {
-            return [...newItem]
+            return [...newItem];
         })
     }
+
+    const applicationClassification = () => {
+        const { bruto } = totalCalculate;
+        const calculation = (bruto / utm) > 0 ? (bruto / utm) : 0;
+        
+        if (calculation === 0) return TypesSolicitud[0];
+
+        const objetoEnRango = TypesSolicitud.find((item: IReglasSolicitud) => {
+            const min = item.rules.min
+            const max = item.rules.max
+            return calculation >= min && calculation <= max 
+        });
+        
+        if (objetoEnRango) {
+            setClasification(objetoEnRango as IReglasSolicitud)
+        } else {
+            setClasification( {} as IReglasSolicitud) // retorno la primera siempre
+        }
+    }
+
+    useEffect(() => {
+        applicationClassification()
+    },[totalCalculate])
+
+    useEffect(() => {
+        setEditItem({} as {item: ItemSolicitud, index: number})
+    },[items])
 
     return (
         <Layout>
@@ -121,8 +215,8 @@ const Solicitud = () => {
                                         onBlur={handleBlur}
                                         onChange={handleChange}
                                     >
-                                    <MenuItem value={'kilo'}>kilo</MenuItem>
-                                    <MenuItem value={'kilo2'}>Kilo2</MenuItem>
+                                    <MenuItem value={'kilo'}>Compra ágil</MenuItem>
+                                    <MenuItem value={'kilo2'}>Otro</MenuItem>
                                     </TextField>
                                 </Grid>
                             </Grid>
@@ -179,23 +273,32 @@ const Solicitud = () => {
                         <Grid lg={6} md={6} sm={6} xs={12} item>
                             <Grid container spacing={2} sx={{display:'flex', justifyContent:'end'}}>
                                 <Grid lg={6} md={6} sm={6} xs={12} item>
-                                    <Box sx={{padding: .5, marginBottom: 1, border: .5}}>
-                                        <Typography fontSize={12} variant='h4'>Compra ágil menor a 10 utm</Typography>
-                                    </Box>
-                                    <Card sx={{padding: .5, maxHeight: 150, border: .5, overflowY: 'scroll'}}>
-                                        <CardContent>
-                                            <Typography fontSize={16} >Requisitos a considerar</Typography>
-                                            <Typography fontSize={12}> - Debe adjuntar programa Municipal</Typography>
-                                            <Typography fontSize={12}> - Debe adjuntar Subprograma Municipal</Typography>
-                                            <Typography fontSize={12}> - Debe adjuntar mínimo 3 cotizaciones</Typography>
-                            
-                                        </CardContent>
-                                    </Card>
+                                  {
+                                    ( Object.keys(clasification).length > 0 )
+                                    ? <>
+                                        <Box sx={{padding: .5, marginBottom: 1, border: .5}}>
+                                            <Typography fontSize={12} variant='h4'> {clasification?.type} </Typography>
+                                        </Box>
+                                        <Card sx={{padding: .5, maxHeight: 150, border: .5, overflowY: 'scroll'}}>
+                                            <CardContent>
+                                                <Typography fontSize={16} >Requisitos a considerar</Typography>
+                                                {
+                                                    clasification.requisitos?.map((item, index) => (
+                                                        <Typography key={index} fontSize={12}> - { item }</Typography>
+                                                    ))
+                                                }
+                                                {/* <Typography fontSize={12}> - Debe adjuntar Subprograma Municipal</Typography>
+                                                <Typography fontSize={12}> - Debe adjuntar mínimo 3 cotizaciones</Typography> */}
+                                            </CardContent>
+                                        </Card>
+                                    </>
+                                     : 'No clasifica para la compra seleccionada'
+                                  }
                                     <Typography
                                          variant='h6'
                                          sx={{marginTop: 3}}
                                     >
-                                        Valor UTM del día: $ 63.326
+                                        Valor UTM del día: $ {formatPrice(utm)}
                                     </Typography>
                                 </Grid>
                             </Grid>  
@@ -207,7 +310,13 @@ const Solicitud = () => {
                     <TableDefault header={headerSolicitud} items={items} handleRemoveItem={handleRemoveItem} handleEditItem={handleEditItem}/>
 
                     {/* calculate */}
-                    <CalculateSolicitud items={items}/>
+                    <CalculateSolicitud items={items} totalCalculate={totalCalculate} handleSetTotalCalculate={handleSetTotalCalculate}/>
+                    <Button 
+                        variant="contained"
+                        disabled={!(Object.keys(clasification).length > 0 && totalCalculate.bruto > 0)}
+                    >
+                        Agregar documentos
+                    </Button>
                 </Stack>
                 </CardContent>
             </Card>

@@ -7,13 +7,13 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { ItemSolicitud } from '../../../../interface/Sgd';
 import { formatPrice } from '../../../../utils/methods';
 
-// const initItem = {
-//     quantity: '',
-//     unidad_medida: '',
-//     detail: '',
-//     classification: '',
-//     precio: ''
-// }
+const initItem = {
+    quantity: '',
+    unidad_medida: '',
+    detail: '',
+    classification: '',
+    precio: ''
+}
 
 interface Props {
     editItem?: {item: ItemSolicitud, index: number}
@@ -24,7 +24,7 @@ interface Props {
 export const AddItem = ({editItem, addItems, handleSetEditItem}: Props) => {
     const lgMd = useMediaQuery((theme) => (theme as any).breakpoints.up('md'));
     const [ disabledButton, setDisabledButton ] = useState(true);
-    const [initItem, setEditItem] = useState({
+    const [initItem, setAddItem] = useState({
         quantity: '',
         unidad_medida: '',
         detail: '',
@@ -63,7 +63,7 @@ export const AddItem = ({editItem, addItems, handleSetEditItem}: Props) => {
         } else {     
             setDisabledButton(true) 
             addItems(values)
-            resetForm()
+            resetForm() 
         } 
     }
 
@@ -76,14 +76,6 @@ export const AddItem = ({editItem, addItems, handleSetEditItem}: Props) => {
                 index: editItem?.index as number
             })
             resetForm()
-            // if(Object.keys(errors).length) {
-            //     return;  
-            // } else {     
-            //     setDisabledButton(true) 
-            //     addItems(values)
-            //     resetForm()
-            // } 
-            
         } else {
             handleAddItem()
         }
@@ -92,17 +84,25 @@ export const AddItem = ({editItem, addItems, handleSetEditItem}: Props) => {
  
     // habilitar y desactivar button
     useEffect(() => {
-        if(Object.keys(errors).length === 0 && Object.keys(touched).length !== 0) {
-            setDisabledButton(false) 
+        if (editItem?.item) { // estamos editando
+            if(Object.keys(errors).length === 0) {
+                setDisabledButton(false)
+            } else {
+                setDisabledButton(true)
+            }
         } else {
-            setDisabledButton(true)
+            if(Object.keys(errors).length === 0 && Object.keys(touched).length !== 0) {
+                setDisabledButton(false) 
+            } else {
+                setDisabledButton(true)
+            }
         }
-    }, [errors]);
+    }, [errors, touched]);
 
     useEffect(() => {
         if(editItem)
         if (Object.keys(editItem).length !== 0) {
-            setEditItem(editItem.item)
+            setAddItem(editItem.item)
             setValues(editItem.item)
             setDisabledButton(false) 
         }
@@ -111,7 +111,7 @@ export const AddItem = ({editItem, addItems, handleSetEditItem}: Props) => {
   return (
     <Box sx={{marginBottom: 5}}>
         <Box sx={{padding: 1, maxWidth: 150, borderLeft: .5, borderTop: .5, borderRight: .5}}>
-            Ingreso de item:
+            {editItem?.item ? 'Editar' : 'Ingreso'} de item:
         </Box>
         <Box sx={{padding: 1, border: .5}}>
             <Grid sx={{display:'flex', width: '100%', paddingBottom: 4}} container>

@@ -24,15 +24,17 @@ export const TableDefault = ({ header, items, handleRemoveItem, handleEditItem }
 
   //TODO: agregado de items por defecto.
   useEffect(() => {
-    if(items.length > 0) {
-      if (initItem.length) {
-        initItem.length = initItem.length - 1;
-        
+    const tableDefault = [...initItem];
+    if(items.length > 0) { // agrego items
+      console.log("initItem.length", initItem.length);
+      
+      if (tableDefault.length) {
+        tableDefault.length = tableDefault.length - 1; 
       }
       setDataItems(() => {
         return [
           ...items,
-          ...initItem
+          ...tableDefault
         ]
       })
     } else {
