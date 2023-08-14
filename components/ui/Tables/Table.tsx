@@ -24,15 +24,15 @@ export const TableDefault = ({ header, items, handleRemoveItem, handleEditItem }
 
   //TODO: agregado de items por defecto.
   useEffect(() => {
-    if(items.length > 0) {
-      if (initItem.length) {
-        initItem.length = initItem.length - 1;
-        
+    const tableDefault = [...initItem];
+    if(items.length > 0) { // agrego items
+      if (tableDefault.length) {
+        tableDefault.length = tableDefault.length - 1; 
       }
       setDataItems(() => {
         return [
           ...items,
-          ...initItem
+          ...tableDefault
         ]
       })
     } else {
@@ -64,6 +64,8 @@ export const TableDefault = ({ header, items, handleRemoveItem, handleEditItem }
                 <TableCell align="right">$ { formatPrice(item.precio)}</TableCell>
                 <TableCell align="right">$ { formatPrice((Number(item.precio) * Number(item.quantity))) }</TableCell>
                 <TableCell align="right">
+                  {/* <Button disabled={items.length === 0} onClick={() => handleEditItem({item, index})}>edit</Button>
+                  <Button disabled={items.length === 0} onClick={() => handleRemoveItem(index)}>X</Button> */}
                   <Button onClick={() => handleEditItem({item, index})}>edit</Button>
                   <Button onClick={() => handleRemoveItem(index)}>X</Button>
                 </TableCell>

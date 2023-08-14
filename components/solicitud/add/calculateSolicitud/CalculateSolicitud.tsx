@@ -1,24 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
-import { Button, FormControl, FormControlLabel, FormLabel, Grid, MenuItem, Radio, RadioGroup, TextField, Typography, Box } from '@mui/material'
+import { Button, FormControl, FormControlLabel, FormLabel, Grid, MenuItem, Radio, RadioGroup, TextField, Typography, Box, CardContent, CardActions, Card, TableContainer, Paper, Table, TableHead, TableRow, TableCell } from '@mui/material'
 import { ItemSolicitud } from '../../../../interface/Sgd';
 import { formatPrice } from '../../../../utils/methods';
 import { ModalBase } from '../../../ui/modal/Modal';
+import { Calculate } from '../../../../pages/solicitud/ingresar-solicitud';
 
-interface Calculate {
-    neto: number;
-    iva: number;
-    bruto: number;
-}
 
 interface Props {
-    calculateIva?: number;
     items: ItemSolicitud []
+    totalCalculate: Calculate;
+    handleSetTotalCalculate: (total: Calculate) => void;
 }
 
-export const CalculateSolicitud = ({ items }: Props) => {
-    
-    const [totalCalculate, setTotalCalculate] = useState<Calculate>()
+export const CalculateSolicitud = ({ items, totalCalculate, handleSetTotalCalculate }: Props) => {
+
     const [itemCalculateIva, setItemCalculateIva] = useState<Calculate []>()
     const [iva, setIva] = useState<string>('afecto');
 
@@ -41,7 +37,7 @@ export const CalculateSolicitud = ({ items }: Props) => {
             calculate.iva = calculate.iva + item.iva
             calculate.bruto = calculate.bruto + item.bruto
         }
-        setTotalCalculate(calculate)
+        handleSetTotalCalculate(calculate)
     }
 
     const handleTypeCalculate = (e: React.ChangeEvent<HTMLInputElement>)=> {
@@ -58,8 +54,8 @@ export const CalculateSolicitud = ({ items }: Props) => {
 
     return (
         <Box sx={{padding: 1, border: .5}}>
-            <Grid container sx={{paddingTop: 2}}>
-                <Grid lg={3} md={3} sm={6} xs={12} item>
+            <Grid container sx={{paddingTop: 2}} spacing={2}>
+                <Grid lg={2} md={2} sm={6} xs={12} item>
                     <FormControl>
                         <FormLabel id="demo-radio-buttons-group-label">IVA</FormLabel>
                         <RadioGroup
@@ -74,10 +70,25 @@ export const CalculateSolicitud = ({ items }: Props) => {
                         </RadioGroup>
                     </FormControl>
                 </Grid>
-                <Grid lg={3} md={3} sm={6} xs={12} item>
-                    <Typography>Total Neto: $ {formatPrice(totalCalculate?.neto)}</Typography>
-                    <Typography>Iva: $ {formatPrice(totalCalculate?.iva)}</Typography>
-                    <Typography>Total Bruto: $ {formatPrice(totalCalculate?.bruto)}</Typography>
+                <Grid lg={4} md={4} sm={6} xs={12} item>
+                    <TableContainer component={Paper} sx={{width: '90%'}}>
+                        <Table size="small" aria-label="a dense table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography>Total Neto: </Typography> </TableCell>
+                                    <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography> $ {formatPrice(totalCalculate?.neto)}</Typography> </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography>Iva: </Typography> </TableCell>
+                                    <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography> $ {formatPrice(totalCalculate?.iva)}</Typography> </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography>Total Bruto: </Typography> </TableCell>
+                                    <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography> $ {formatPrice(totalCalculate?.bruto)}</Typography> </TableCell>
+                                </TableRow>
+                            </TableHead>
+                        </Table>
+                    </TableContainer>    
                 </Grid>
                 <Grid lg={3} md={3} sm={6} xs={12} item>
                     <TextField

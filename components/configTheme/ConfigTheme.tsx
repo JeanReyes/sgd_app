@@ -60,8 +60,6 @@ function MUISwitch({defaultChecked, theme, handleSetTheme}: PropsMUISwitch) {
     }
     
     useEffect(() => {
-        console.log("check", checked);
-        
         handleConfig()
     }, [checked])
   
