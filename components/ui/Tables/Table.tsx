@@ -64,10 +64,10 @@ export const TableDefault = ({ header, items, handleRemoveItem, handleEditItem }
                 <TableCell align="right">$ { formatPrice(item.precio)}</TableCell>
                 <TableCell align="right">$ { formatPrice((Number(item.precio) * Number(item.quantity))) }</TableCell>
                 <TableCell align="right">
-                  {/* <Button disabled={items.length === 0} onClick={() => handleEditItem({item, index})}>edit</Button>
-                  <Button disabled={items.length === 0} onClick={() => handleRemoveItem(index)}>X</Button> */}
-                  <Button onClick={() => handleEditItem({item, index})}>edit</Button>
-                  <Button onClick={() => handleRemoveItem(index)}>X</Button>
+                  <Button disabled={items.length === 0} onClick={() => handleEditItem({item, index})}>edit</Button>
+                  <Button disabled={items.length === 0} onClick={() => handleRemoveItem(index)}>X</Button>
+                  {/* <Button onClick={() => handleEditItem({item, index})}>edit</Button>
+                  <Button onClick={() => handleRemoveItem(index)}>X</Button> */}
                 </TableCell>
               </TableRow>
             ))}
