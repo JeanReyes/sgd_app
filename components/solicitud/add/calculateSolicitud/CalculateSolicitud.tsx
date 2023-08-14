@@ -71,28 +71,24 @@ export const CalculateSolicitud = ({ items, totalCalculate, handleSetTotalCalcul
                     </FormControl>
                 </Grid>
                 <Grid lg={4} md={4} sm={6} xs={12} item>
-                        <TableContainer component={Paper}>
-                            <Table size="small" aria-label="a dense table">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography>Total Neto: </Typography> </TableCell>
-                                        <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography> $ {formatPrice(totalCalculate?.neto)}</Typography> </TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography>Iva: </Typography> </TableCell>
-                                        <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography> $ {formatPrice(totalCalculate?.iva)}</Typography> </TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography>Total Bruto: </Typography> </TableCell>
-                                        <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography> $ {formatPrice(totalCalculate?.bruto)}</Typography> </TableCell>
-                                    </TableRow>
-                                </TableHead>
-                            </Table>
-                        </TableContainer>
-                            {/* <Typography>Total Neto: $ {formatPrice(totalCalculate?.neto)}</Typography>
-                            <Typography>Iva: $ {formatPrice(totalCalculate?.iva)}</Typography>
-                            <Typography>Total Bruto: $ {formatPrice(totalCalculate?.bruto)}</Typography> */}
-                   
+                    <TableContainer component={Paper} sx={{width: '90%'}}>
+                        <Table size="small" aria-label="a dense table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography>Total Neto: </Typography> </TableCell>
+                                    <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography> $ {formatPrice(totalCalculate?.neto)}</Typography> </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography>Iva: </Typography> </TableCell>
+                                    <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography> $ {formatPrice(totalCalculate?.iva)}</Typography> </TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography>Total Bruto: </Typography> </TableCell>
+                                    <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography> $ {formatPrice(totalCalculate?.bruto)}</Typography> </TableCell>
+                                </TableRow>
+                            </TableHead>
+                        </Table>
+                    </TableContainer>    
                 </Grid>
                 <Grid lg={3} md={3} sm={6} xs={12} item>
                     <TextField

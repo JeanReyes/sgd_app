@@ -272,7 +272,7 @@ const Solicitud = () => {
                         </Grid>
                         <Grid lg={6} md={6} sm={6} xs={12} item>
                             <Grid container spacing={2} sx={{display:'flex', justifyContent:'end'}}>
-                                <Grid lg={6} md={6} sm={6} xs={12} item>
+                                <Grid lg={8} md={10} sm={10} xs={12} item>
                                   {
                                     ( Object.keys(clasification).length > 0 )
                                     ? <>
@@ -315,7 +315,7 @@ const Solicitud = () => {
                         variant="contained"
                         disabled={!(Object.keys(clasification).length > 0 && totalCalculate.bruto > 0)}
                     >
-                        Agregar documentos
+                        Agregar
                     </Button>
                 </Stack>
                 </CardContent>

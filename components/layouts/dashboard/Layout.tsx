@@ -164,7 +164,7 @@ export const Layout = withAuthGuard(({children}: Props) => {
                                 sx={{
                                     // flexGrow: 1,
                                     // py: 8,
-                                    p: lgMd ? 8 : 3
+                                    p: 4
                                 }}
                             >
                                 {children}
