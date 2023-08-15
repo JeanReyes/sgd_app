@@ -96,13 +96,13 @@ export const Navbar = ({onNavOpen, navHeight}: Props) => {
                   </Badge>
                 </IconButton>
               </Tooltip>
-              {/* <Tooltip title="Settings">
+              <Tooltip title="Settings">
                 <IconButton onClick={handleSettings}>
                     <SvgIcon fontSize="small">
                       <SettingsIcon/>
                     </SvgIcon>
                 </IconButton>
-              </Tooltip> */}
+              </Tooltip>
               <Avatar
                 onClick={accountPopover.handleOpen}
                 ref={accountPopover.anchorRef}

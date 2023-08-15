@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Layout } from '../../components/layouts'
 import { Grid, Divider, Card, CardHeader, CardContent, TextField, Stack, useMediaQuery, MenuItem, Typography, Box, Button } from '@mui/material';
 import { TableDefault } from '../../components/ui/Tables/Table';
@@ -9,6 +9,13 @@ import { CalculateSolicitud } from '../../components/solicitud/add/calculateSoli
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { formatPrice } from '../../utils/methods';
+import { ModalBase, ModalBaseMethods } from '../../components/ui/modal/Modal';
+
+/**
+ * la solicitud va a pasar por 3 estados, add-field, add-files, listo
+ */
+
+export type Step = 'add-field' | 'add-files'
 
 export interface Calculate {
     neto: number;
@@ -94,6 +101,8 @@ const Solicitud = () => {
     const [totalCalculate, setTotalCalculate] = useState<Calculate>({} as Calculate)
     const [utm, setUtm] = useState(63326);
     const [clasification, setClasification] = useState(TypesSolicitud[0] as IReglasSolicitud);
+    const [step, setStep] = useState<Step>('add-field');
+    const childRef = useRef<ModalBaseMethods>(null);
     const [borderStyle, setBorderStyle] = useState({
         border: '.5px solid', // Color y estilo original del borde
         boxShadow: 'none', // Sombra inicial
@@ -122,6 +131,11 @@ const Solicitud = () => {
             console.log("estamos enviando form");
         }
     });
+
+    const isReadyFields = () => {
+        if ((Object.keys(clasification).length > 0 && totalCalculate.bruto > 0)) return true;
+        return false;
+    }
 
     const handleAddItem = (values:ItemSolicitud ) => {
         setItems((prev) => {
@@ -194,6 +208,11 @@ const Solicitud = () => {
               });
             }, 1000); // Cambiar el tiempo a tu preferencia
         }
+    }
+
+    const handleModalFiled = () => {
+        setStep('add-files')
+        childRef.current?.handleOpen()
     }
 
     useEffect(() => {
@@ -304,6 +323,12 @@ const Solicitud = () => {
                         <Grid lg={6} md={6} sm={6} xs={12} item>
                             <Grid container spacing={2} sx={{display:'flex', justifyContent:'end'}}>
                                 <Grid lg={8} md={10} sm={10} xs={12} item>
+                                    <Typography
+                                         variant='h6'
+                                         sx={{marginBottom: 2}}
+                                    >
+                                        Valor UTM del día: $ {formatPrice(utm)}
+                                    </Typography>
                                   {
                                     ( Object.keys(clasification).length > 0 )
                                     ? <>
@@ -328,12 +353,6 @@ const Solicitud = () => {
                                     </>
                                      : 'No clasifica para la compra seleccionada'
                                   }
-                                    <Typography
-                                         variant='h6'
-                                         sx={{marginTop: 3}}
-                                    >
-                                        Valor UTM del día: $ {formatPrice(utm)}
-                                    </Typography>
                                 </Grid>
                             </Grid>  
                         </Grid>         
@@ -344,15 +363,23 @@ const Solicitud = () => {
                     <TableDefault header={headerSolicitud} items={items} handleRemoveItem={handleRemoveItem} handleEditItem={handleEditItem}/>
 
                     {/* calculate */}
-                    <CalculateSolicitud items={items} totalCalculate={totalCalculate} handleSetTotalCalculate={handleSetTotalCalculate}/>
+                    <CalculateSolicitud items={items} totalCalculate={totalCalculate} handleSetTotalCalculate={handleSetTotalCalculate} step={step}/>
                     <Button 
                         variant="contained"
-                        disabled={!(Object.keys(clasification).length > 0 && totalCalculate.bruto > 0)}
+                        disabled={!isReadyFields()}
+                        onClick={() => handleModalFiled()}
+
                     >
-                        Agregar
+                        Agregar Solicitud
                     </Button>
                 </Stack>
                 </CardContent>
+                <ModalBase ref={childRef}>
+                    <>
+                        <p>Solicitud creada, ahora debe ingresar los documentos asociados</p>
+                        <Button onClick={() => childRef.current?.handleClose()}>ok</Button>
+                    </>
+                </ModalBase>
             </Card>
         </Layout>
     )
