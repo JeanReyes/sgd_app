@@ -311,7 +311,7 @@ const Solicitud = () => {
                                             <Box sx={{padding: .5, marginBottom: 1}}>
                                                 <Typography fontSize={14} variant='h4'> {clasification?.type} </Typography>
                                             </Box>
-                                            <Card sx={{padding: .5, maxHeight: 150, overflowY: 'scroll'}}>
+                                            <Card sx={{padding: .5, height: 120, overflowY: 'scroll'}}>
                                                 <CardContent>
                                                     <Typography fontSize={14} >Requisitos a considerar</Typography>
                                                     {
