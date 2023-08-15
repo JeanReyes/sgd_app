@@ -79,7 +79,7 @@ export const CalculateSolicitud = ({ items, totalCalculate, handleSetTotalCalcul
                                     <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography> $ {formatPrice(totalCalculate?.neto)}</Typography> </TableCell>
                                 </TableRow>
                                 <TableRow>
-                                    <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography>Iva: </Typography> </TableCell>
+                                    <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography>IVA: </Typography> </TableCell>
                                     <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography> $ {formatPrice(totalCalculate?.iva)}</Typography> </TableCell>
                                 </TableRow>
                                 <TableRow>

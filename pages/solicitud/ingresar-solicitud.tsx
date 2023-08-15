@@ -25,7 +25,7 @@ interface IReglasSolicitud {
     requisitos: string []
 }
 
-const headerSolicitud = ['N°','Cantidad', 'Unidad de Medida', 'Detalle o Descripción', 'Clasificación Presupuestaria', 'Precio Unitario', 'Precio total', '']
+const headerSolicitud = ['N°','Cantidad', 'Unidad de Medida', 'Detalle o Descripción', 'Clasificación Presupuestaria', 'Precio Unitario', 'Subtotal', '']
 
 const TypeSolicitud1 = {
     type: 'Compra agil menor a 10 utm',
@@ -35,8 +35,7 @@ const TypeSolicitud1 = {
     },
     requisitos: [
         'Debe adjuntar programa Municipal 1',
-        'Debe adjuntar Subprograma Municipal 1',
-        'Debe adjuntar mínimo 3 cotizaciones 1'
+        'Debe adjuntar Subprograma Municipal 1'
     ]
 }
 const TypeSolicitud2 = {
@@ -48,6 +47,7 @@ const TypeSolicitud2 = {
     requisitos: [
         'Debe adjuntar programa Municipal 2',
         'Debe adjuntar Subprograma Municipal 2',
+        'Debe adjuntar mínimo 3 cotizaciones 2',
         'Debe adjuntar mínimo 3 cotizaciones 2'
     ]
 }
@@ -58,6 +58,9 @@ const TypeSolicitud3 = {
         max: 30
     },
     requisitos: [
+        'Debe adjuntar programa Municipal 3',
+        'Debe adjuntar Subprograma Municipal 3',
+        'Debe adjuntar mínimo 3 cotizaciones 3',
         'Debe adjuntar programa Municipal 3',
         'Debe adjuntar Subprograma Municipal 3',
         'Debe adjuntar mínimo 3 cotizaciones 3'
@@ -90,7 +93,11 @@ const Solicitud = () => {
     const [editItem, setEditItem] = useState({} as {item: ItemSolicitud, index: number})
     const [totalCalculate, setTotalCalculate] = useState<Calculate>({} as Calculate)
     const [utm, setUtm] = useState(63326);
-    const [clasification, setClasification] = useState(TypesSolicitud[0] as IReglasSolicitud)
+    const [clasification, setClasification] = useState(TypesSolicitud[0] as IReglasSolicitud);
+    const [borderStyle, setBorderStyle] = useState({
+        border: '.5px solid', // Color y estilo original del borde
+        boxShadow: 'none', // Sombra inicial
+      });
 
     const { values, errors, touched, handleChange, handleBlur, resetForm } = useFormik({
         initialValues: initItem,
@@ -139,7 +146,9 @@ const Solicitud = () => {
     }
 
     const handleSetTotalCalculate = (total: Calculate) => {
-        setTotalCalculate(total)
+        setTotalCalculate(() => {
+            return total
+        })
     }
 
     const handleSetEditItem = (value: {item: ItemSolicitud, index: number}) => {
@@ -154,7 +163,7 @@ const Solicitud = () => {
         const { bruto } = totalCalculate;
         const calculation = (bruto / utm) > 0 ? (bruto / utm) : 0;
         
-        if (calculation === 0) return TypesSolicitud[0];
+        if (calculation === 0) return;
 
         const objetoEnRango = TypesSolicitud.find((item: IReglasSolicitud) => {
             const min = item.rules.min
@@ -169,13 +178,35 @@ const Solicitud = () => {
         }
     }
 
+    const changeBorderStyle = () => {
+        const { bruto } = totalCalculate;
+        if (!bruto) return
+
+        if (totalCalculate) {
+            setBorderStyle({
+                border: '.5px solid #28a745', // Color verde para el borde (éxito)
+                boxShadow: '0 0 10px rgba(40, 167, 69, 0.5)', // Sombra verde
+            });
+            setTimeout(() => {
+              setBorderStyle({
+                border: '.5px solid', // Volver al color original
+                boxShadow: 'none', // Quitar la sombra
+              });
+            }, 1000); // Cambiar el tiempo a tu preferencia
+        }
+    }
+
     useEffect(() => {
-        applicationClassification()
+        applicationClassification();
     },[totalCalculate])
 
     useEffect(() => {
         setEditItem({} as {item: ItemSolicitud, index: number})
     },[items])
+
+    useEffect(() => {
+        changeBorderStyle();
+    }, [clasification])
 
     return (
         <Layout>
@@ -276,21 +307,24 @@ const Solicitud = () => {
                                   {
                                     ( Object.keys(clasification).length > 0 )
                                     ? <>
-                                        <Box sx={{padding: .5, marginBottom: 1, border: .5}}>
-                                            <Typography fontSize={12} variant='h4'> {clasification?.type} </Typography>
+                                        <Box sx={{...borderStyle}}>
+                                            <Box sx={{padding: .5, marginBottom: 1}}>
+                                                <Typography fontSize={14} variant='h4'> {clasification?.type} </Typography>
+                                            </Box>
+                                            <Card sx={{padding: .5, height: 120, overflowY: 'scroll'}}>
+                                                <CardContent>
+                                                    <Typography fontSize={14} >Requisitos a considerar</Typography>
+                                                    {
+                                                        clasification.requisitos?.map((item, index) => (
+                                                            <Typography key={index} fontSize={12}> - { item }</Typography>
+                                                        ))
+                                                    }
+                                                    {/* <Typography fontSize={12}> - Debe adjuntar Subprograma Municipal</Typography>
+                                                    <Typography fontSize={12}> - Debe adjuntar mínimo 3 cotizaciones</Typography> */}
+                                                </CardContent>
+                                            </Card>
+
                                         </Box>
-                                        <Card sx={{padding: .5, maxHeight: 150, border: .5, overflowY: 'scroll'}}>
-                                            <CardContent>
-                                                <Typography fontSize={16} >Requisitos a considerar</Typography>
-                                                {
-                                                    clasification.requisitos?.map((item, index) => (
-                                                        <Typography key={index} fontSize={12}> - { item }</Typography>
-                                                    ))
-                                                }
-                                                {/* <Typography fontSize={12}> - Debe adjuntar Subprograma Municipal</Typography>
-                                                <Typography fontSize={12}> - Debe adjuntar mínimo 3 cotizaciones</Typography> */}
-                                            </CardContent>
-                                        </Card>
                                     </>
                                      : 'No clasifica para la compra seleccionada'
                                   }
