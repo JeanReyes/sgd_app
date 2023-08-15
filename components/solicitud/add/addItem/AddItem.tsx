@@ -84,19 +84,19 @@ export const AddItem = ({editItem, addItems, handleSetEditItem}: Props) => {
  
     // habilitar y desactivar button
     useEffect(() => {
-        // if (editItem?.item) { // estamos editando
-        //     if(Object.keys(errors).length === 0) {
-        //         setDisabledButton(false)
-        //     } else {
-        //         setDisabledButton(true)
-        //     }
-        // } else {
+        if (editItem?.item) { // estamos editando
+            if(Object.keys(errors).length === 0) {
+                setDisabledButton(false)
+            } else {
+                setDisabledButton(true)
+            }
+        } else {
             if(Object.keys(errors).length === 0 && Object.keys(touched).length !== 0) {
                 setDisabledButton(false) 
             } else {
                 setDisabledButton(true)
             }
-        // }
+        }
     }, [errors, touched]);
 
     useEffect(() => {
