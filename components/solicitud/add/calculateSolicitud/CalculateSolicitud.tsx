@@ -12,9 +12,11 @@ interface Props {
     totalCalculate: Calculate;
     step: Step;
     handleSetTotalCalculate: (total: Calculate) => void;
+    handleOpenDrawer: () => void;
+    isReadyFields: () => boolean;
 }
 
-export const CalculateSolicitud = ({ items, totalCalculate, step, handleSetTotalCalculate }: Props) => {
+export const CalculateSolicitud = ({ items, totalCalculate, step, handleSetTotalCalculate, handleOpenDrawer, isReadyFields }: Props) => {
 
     const [itemCalculateIva, setItemCalculateIva] = useState<Calculate []>()
     const [iva, setIva] = useState<string>('afecto');
@@ -72,24 +74,22 @@ export const CalculateSolicitud = ({ items, totalCalculate, step, handleSetTotal
                     </FormControl>
                 </Grid>
                 <Grid lg={4} md={4} sm={6} xs={12} item>
-                    <TableContainer component={Paper} sx={{width: '90%'}}>
-                        <Table size="small" aria-label="a dense table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography>Total Neto: </Typography> </TableCell>
-                                    <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography> $ {formatPrice(totalCalculate?.neto)}</Typography> </TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography>IVA: </Typography> </TableCell>
-                                    <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography> $ {formatPrice(totalCalculate?.iva)}</Typography> </TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography>Total Bruto: </Typography> </TableCell>
-                                    <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography> $ {formatPrice(totalCalculate?.bruto)}</Typography> </TableCell>
-                                </TableRow>
-                            </TableHead>
-                        </Table>
-                    </TableContainer>    
+                    <table style={{width: '85%'}}>
+                        <tbody>
+                            <tr>
+                                <td > <Typography> Total Neto: </Typography></td>
+                                <td style={{float: 'right'}}> <Typography> $ {formatPrice(totalCalculate?.neto)}</Typography></td>
+                            </tr>
+                            <tr>
+                                <td > <Typography> IVA: </Typography></td>
+                                <td style={{float: 'right'}}> <Typography> $ {formatPrice(totalCalculate?.iva)}</Typography></td>
+                            </tr>
+                            <tr>
+                                <td > <Typography>Total Bruto: </Typography></td>
+                                <td style={{float: 'right'}}> <Typography> $ {formatPrice(totalCalculate?.bruto)}</Typography></td>
+                            </tr>
+                        </tbody>
+                    </table>   
                 </Grid>
                 <Grid lg={3} md={3} sm={6} xs={12} item>
                     <TextField
@@ -133,7 +133,13 @@ export const CalculateSolicitud = ({ items, totalCalculate, step, handleSetTotal
                 </Grid>
                 <Grid lg={3} md={3} sm={6} xs={12} item>
                     {/* VISTA ADJUNTAR DOCUMENTOS */}
-                    <Button disabled={step === 'add-files' ? false : true} variant="contained">Cargar Archivos</Button>
+                    <Button 
+                        disabled={(step === 'add-files' && isReadyFields()) ? false : true}
+                        variant="contained"
+                        onClick={handleOpenDrawer}
+                    >
+                        Cargar Archivos
+                    </Button>
                 </Grid>
             </Grid>
         </Box>

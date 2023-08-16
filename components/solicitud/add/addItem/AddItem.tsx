@@ -34,8 +34,7 @@ export const AddItem = ({editItem, addItems, handleSetEditItem}: Props) => {
     const styledBaseButton = {
         width: '100%',
     }
-    
-    
+      
     const { values, errors, touched, handleChange, handleBlur, resetForm, setValues } = useFormik({
         initialValues: initItem,
         validationSchema: Yup.object({
@@ -84,23 +83,18 @@ export const AddItem = ({editItem, addItems, handleSetEditItem}: Props) => {
         }
     }
 
- 
     // habilitar y desactivar button
-    useEffect(() => {
-        
+    useEffect(() => {   
         if (editItem?.item) { // estamos editando
-            console.log("editand", editItem?.item);
             if(Object.keys(errors).length !== 0) {
-                console.log("existen errores");
-                
+                // existen errores
                 setDisabledButton(true)
             } else {
-                console.log("no existen errores");
+                // no existen errores
                 setDisabledButton(false)
             }
         } else {
-            console.log("creando");
-            
+            // creando
             if(Object.keys(errors).length === 0 && Object.keys(touched).length !== 0) {
                 setDisabledButton(false) 
             } else {
@@ -184,24 +178,22 @@ export const AddItem = ({editItem, addItems, handleSetEditItem}: Props) => {
                             onChange={handleChange}/>     
                     </Grid>
                     <Grid lg={2} md={2} sm={12} xs={12} item>
-                        {/* <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}> */}
-                            <TextField
-                                sx={{ ...styledBaseButton }}
-                                id="standard-basic" label="Precio Neto" variant="standard" 
-                                name='precio'
-                                value={formatPrice(values.precio)}
-                                error={!!(touched.precio && errors.precio)}
-                                helperText={touched.precio && errors.precio}
-                                onBlur={handleBlur}
-                                onChange={(e) => {
-                                    const inputPrice = e.target.value.replace(/\D/g, '');
-                                    handleChange({ target: { name: 'precio', value: inputPrice } });
-                                }}
-                                InputProps={{
-                                    startAdornment: <InputAdornment position="start">$</InputAdornment>,
-                                }}
-                            />
-                        {/* </Box> */}
+                        <TextField
+                            sx={{ ...styledBaseButton }}
+                            id="standard-basic" label="Precio Neto" variant="standard" 
+                            name='precio'
+                            value={formatPrice(values.precio)}
+                            error={!!(touched.precio && errors.precio)}
+                            helperText={touched.precio && errors.precio}
+                            onBlur={handleBlur}
+                            onChange={(e) => {
+                                const inputPrice = e.target.value.replace(/\D/g, '');
+                                handleChange({ target: { name: 'precio', value: inputPrice } });
+                            }}
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                            }}
+                        />
                     </Grid>
                 </Grid>  
             </Box>
@@ -214,7 +206,7 @@ export const AddItem = ({editItem, addItems, handleSetEditItem}: Props) => {
                 }} 
             >
                 <Button  
-                    // color={disabledButton ? (editItem?.item ? 'warning': 'success') : 'none'}
+                    color={!disabledButton ? (editItem?.item ? 'warning': 'success') : 'inherit'}
                     disabled={disabledButton} 
                     variant="contained" 
                     onClick={handleButtonEvent}

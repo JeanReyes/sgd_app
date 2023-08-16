@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
 import { Box } from '@mui/material';
 import Table from '@mui/material/Table';
@@ -10,17 +11,26 @@ import Paper from '@mui/material/Paper';
 import { ItemSolicitud } from '../../../interface/Sgd';
 import { Button } from '@mui/material';
 import { formatPrice } from '../../../utils/methods';
+import { Step } from '../../../pages/solicitud/ingresar-solicitud';
 
 interface Props {
     header: string [];
     items: ItemSolicitud [];
+    step: Step;
     handleRemoveItem: (index: number) => void;
     handleEditItem: (value: {item: ItemSolicitud, index: number}) => void;
+    isReadyFields: () => boolean;
 }
 
 const initItem: ItemSolicitud [] = new Array(1).fill({ quantity: '', unidad_medida: '', detail: '', classification: '', precio: '' })
-export const TableDefault = ({ header, items, handleRemoveItem, handleEditItem }: Props) => {
+export const TableDefault = ({ header, items, step, handleRemoveItem, handleEditItem, isReadyFields }: Props) => {
   const [dataItems, setDataItems] = useState([] as ItemSolicitud []);
+
+  const disabledButtons = () => {
+    if (items.length !== 0 && step === 'add-field') return false;
+    if (items.length === 0 && step === 'add-field') return true;
+    return true
+  }
 
   //TODO: agregado de items por defecto.
   useEffect(() => {
@@ -39,7 +49,6 @@ export const TableDefault = ({ header, items, handleRemoveItem, handleEditItem }
       setDataItems(initItem)
     }
   },[items]);
-
 
   return (
     <Box sx={{padding: 1, border: .5}}>
@@ -64,8 +73,8 @@ export const TableDefault = ({ header, items, handleRemoveItem, handleEditItem }
                 <TableCell align="right">$ { formatPrice(item.precio)}</TableCell>
                 <TableCell align="right">$ { formatPrice((Number(item.precio) * Number(item.quantity))) }</TableCell>
                 <TableCell align="right">
-                  <Button disabled={items.length === 0} onClick={() => handleEditItem({item, index})}>edit</Button>
-                  <Button disabled={items.length === 0} onClick={() => handleRemoveItem(index)}>X</Button>
+                  <Button disabled={disabledButtons()} onClick={() => handleEditItem({item, index})}>edit</Button>
+                  <Button disabled={disabledButtons()} onClick={() => handleRemoveItem(index)}>X</Button>
                 </TableCell>
               </TableRow>
             ))}

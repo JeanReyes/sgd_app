@@ -18,10 +18,10 @@ import { usePopover } from '../../../hooks/usePopover';
 import { AccountPopover } from './AccountPopover';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { SgdContext } from '../../../context/App/SgdContext';
-import { Settings } from '../Settings/Settings';
 import { grey } from '@mui/material/colors';
 import { ConfigTheme } from '../../configTheme/ConfigTheme';
 import Image from 'next/image';
+import { BaseDrawer } from '../drawer/BaseDrawer';
 
 interface Props {
   onNavOpen: () => void;
@@ -31,13 +31,8 @@ interface Props {
 
 export const Navbar = ({onNavOpen, navHeight}: Props) => {
   const { theme } = useContext(SgdContext);
-  const [toggle, setToggle] = useState(false)
   const accountPopover = usePopover();
   const isLight = theme === 'light'
-  
-  const handleSettings = () => {
-    setToggle(!toggle)
-  }
 
   return (
     <>
@@ -96,13 +91,13 @@ export const Navbar = ({onNavOpen, navHeight}: Props) => {
                   </Badge>
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Settings">
+              {/* <Tooltip title="Settings">
                 <IconButton onClick={handleSettings}>
                     <SvgIcon fontSize="small">
                       <SettingsIcon/>
                     </SvgIcon>
                 </IconButton>
-              </Tooltip>
+              </Tooltip> */}
               <Avatar
                 onClick={accountPopover.handleOpen}
                 ref={accountPopover.anchorRef}
@@ -121,7 +116,6 @@ export const Navbar = ({onNavOpen, navHeight}: Props) => {
         open={accountPopover.open}
         onClose={accountPopover.handleClose}
       />
-      <Settings toggle={toggle} title='Settings' anchor='right' handleSettings={handleSettings}/>
     </>
   );
 };

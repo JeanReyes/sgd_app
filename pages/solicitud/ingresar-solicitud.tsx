@@ -10,6 +10,8 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { formatPrice } from '../../utils/methods';
 import { ModalBase, ModalBaseMethods } from '../../components/ui/modal/Modal';
+import { BaseDrawer, DrawerBaseMethods } from '../../components/ui/drawer/BaseDrawer';
+import { AddFiles } from '../../components/ui/drawer/components/AddFiles';
 
 /**
  * la solicitud va a pasar por 3 estados, add-field, add-files, listo
@@ -103,6 +105,7 @@ const Solicitud = () => {
     const [clasification, setClasification] = useState(TypesSolicitud[0] as IReglasSolicitud);
     const [step, setStep] = useState<Step>('add-field');
     const childRef = useRef<ModalBaseMethods>(null);
+    const refDrawer = useRef<DrawerBaseMethods>(null);
     const [borderStyle, setBorderStyle] = useState({
         border: '.5px solid', // Color y estilo original del borde
         boxShadow: 'none', // Sombra inicial
@@ -215,6 +218,10 @@ const Solicitud = () => {
         childRef.current?.handleOpen()
     }
 
+    const handleOpenDrawer = () => {
+        refDrawer.current?.handleSettings()
+    }
+
     useEffect(() => {
         applicationClassification();
     },[totalCalculate])
@@ -234,6 +241,7 @@ const Solicitud = () => {
                 <Divider />
                 <CardContent>
                 <Stack component="form" noValidate spacing={3}>
+                    {/* HEADER SOLICITUD */}
                     <Grid sx={{width: '100%', paddingBottom: 2}} container>
                         <Grid sx={{paddingRight: 4}} lg={6} md={6} sm={6} xs={12} item>
                             <Grid sx={{width: '100%', paddingBottom: 4}} container>
@@ -360,26 +368,46 @@ const Solicitud = () => {
                     {/* row */}
                     <AddItem addItems={handleAddItem} editItem={editItem} handleSetEditItem={handleSetEditItem}/>  
                     {/* table*/}
-                    <TableDefault header={headerSolicitud} items={items} handleRemoveItem={handleRemoveItem} handleEditItem={handleEditItem}/>
+                    <TableDefault 
+                        header={headerSolicitud} 
+                        items={items} 
+                        step={step} 
+                        handleRemoveItem={handleRemoveItem} 
+                        handleEditItem={handleEditItem}
+                        isReadyFields={isReadyFields}
+                    />
 
                     {/* calculate */}
-                    <CalculateSolicitud items={items} totalCalculate={totalCalculate} handleSetTotalCalculate={handleSetTotalCalculate} step={step}/>
+                    <CalculateSolicitud 
+                        items={items} 
+                        step={step} 
+                        totalCalculate={totalCalculate} 
+                        handleSetTotalCalculate={handleSetTotalCalculate} 
+                        handleOpenDrawer={handleOpenDrawer}
+                        isReadyFields={isReadyFields}
+                    />
                     <Button 
                         variant="contained"
                         disabled={!isReadyFields()}
                         onClick={() => handleModalFiled()}
-
                     >
                         Agregar Solicitud
                     </Button>
                 </Stack>
+
                 </CardContent>
+                {/* MODAL ARCHIVOS */}
                 <ModalBase ref={childRef}>
-                    <>
+                    <Box sx={{textAlign: 'center'}}>
                         <p>Solicitud creada, ahora debe ingresar los documentos asociados</p>
                         <Button onClick={() => childRef.current?.handleClose()}>ok</Button>
-                    </>
+                    </Box>
                 </ModalBase>
+
+                {/* AGREGAR ARCHIVOS */}
+                <BaseDrawer ref={refDrawer} width='700' title={`Requisitos de solicitud`} anchor='right'>
+                    <AddFiles requisitos={clasification.requisitos}/>
+                </BaseDrawer>
             </Card>
         </Layout>
     )
