@@ -56,9 +56,9 @@ export const CalculateSolicitud = ({ items, totalCalculate, step, handleSetTotal
     }, [itemCalculateIva])
 
     return (
-        <Box sx={{padding: 1, border: .5}}>
-            <Grid container sx={{paddingTop: 2}} spacing={2}>
-                <Grid lg={2} md={2} sm={6} xs={12} item>
+        <Box sx={{ display: 'flex', justifyContent: 'center', padding: 1, border: .5,}}>
+            <Grid container sx={{ display:'flex', alignItems: 'center', paddingTop: 2, width: '85%'}} spacing={2}>
+                <Grid lg={4} md={4} sm={6} xs={12} item>
                     <FormControl>
                         <FormLabel id="demo-radio-buttons-group-label">IVA</FormLabel>
                         <RadioGroup
@@ -91,7 +91,7 @@ export const CalculateSolicitud = ({ items, totalCalculate, step, handleSetTotal
                         </tbody>
                     </table>   
                 </Grid>
-                <Grid lg={3} md={3} sm={6} xs={12} item>
+                <Grid lg={4} md={4} sm={6} xs={12} item>
                     <TextField
                         sx={{width: '100%', paddingRight:2, position: 'relative', bottom: 4 }}
                         id="standard-select-currency"
@@ -131,8 +131,9 @@ export const CalculateSolicitud = ({ items, totalCalculate, step, handleSetTotal
                         <MenuItem value={'kilo2'}>Kilo2</MenuItem>
                     </TextField> 
                 </Grid>
+                  {/* VISTA ADJUNTAR DOCUMENTOS 
                 <Grid lg={3} md={3} sm={6} xs={12} item>
-                    {/* VISTA ADJUNTAR DOCUMENTOS */}
+                   
                     <Button 
                         disabled={(step === 'add-files' && isReadyFields()) ? false : true}
                         variant="contained"
@@ -140,7 +141,7 @@ export const CalculateSolicitud = ({ items, totalCalculate, step, handleSetTotal
                     >
                         Cargar Archivos
                     </Button>
-                </Grid>
+                </Grid> */}
             </Grid>
         </Box>
     )

@@ -12,6 +12,8 @@ import { formatPrice } from '../../utils/methods';
 import { ModalBase, ModalBaseMethods } from '../../components/ui/modal/Modal';
 import { BaseDrawer, DrawerBaseMethods } from '../../components/ui/drawer/BaseDrawer';
 import { AddFiles } from '../../components/ui/drawer/components/AddFiles';
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 /**
  * la solicitud va a pasar por 3 estados, add-field, add-files, listo
@@ -222,6 +224,17 @@ const Solicitud = () => {
         refDrawer.current?.handleSettings()
     }
 
+    const isAddFiles = () => {
+        if ((step === 'add-files' && isReadyFields())) return false 
+        return true;
+    }
+
+    const disabledButtons = () => {
+        if (items.length !== 0 && step === 'add-field') return false;
+        if (items.length === 0 && step === 'add-field') return true;
+        return true
+      }
+
     useEffect(() => {
         applicationClassification();
     },[totalCalculate])
@@ -237,7 +250,37 @@ const Solicitud = () => {
     return (
         <Layout>
             <Card>
-                <CardHeader title={'Nueva Solicitud de compra'}/>
+                <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center'
+                }}>
+                    <CardHeader title={'Nueva Solicitud de compra'}/>
+                    {/* toolbar */}
+                    <div style={{paddingRight: '20px'}}>
+                        <Grid container gap={1}>
+                            <Grid item>
+                                <Button 
+                                    variant="contained"
+                                    disabled={disabledButtons() ? true : (step === 'add-field' && isReadyFields()) ? false : true}
+                                    onClick={() => handleModalFiled()}
+                                >
+                                    <AddCircleIcon/>
+                                </Button>
+                            </Grid>
+                            <Grid item>
+                                <Button 
+                                    disabled={isAddFiles()}
+                                    variant="contained"
+                                    onClick={handleOpenDrawer}
+                                >
+                                    {/* Cargar Archivos */}
+                                    <NoteAddIcon/>
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </div>
+                </Box>
                 <Divider />
                 <CardContent>
                 <Stack component="form" noValidate spacing={3}>
@@ -366,7 +409,11 @@ const Solicitud = () => {
                         </Grid>         
                     </Grid>
                     {/* row */}
-                    <AddItem addItems={handleAddItem} editItem={editItem} handleSetEditItem={handleSetEditItem}/>  
+                    <AddItem 
+                        addItems={handleAddItem} 
+                        editItem={editItem} 
+                        handleSetEditItem={handleSetEditItem}
+                    />  
                     {/* table*/}
                     <TableDefault 
                         header={headerSolicitud} 
@@ -386,13 +433,13 @@ const Solicitud = () => {
                         handleOpenDrawer={handleOpenDrawer}
                         isReadyFields={isReadyFields}
                     />
-                    <Button 
+                    {/* <Button 
                         variant="contained"
                         disabled={!isReadyFields()}
                         onClick={() => handleModalFiled()}
                     >
                         Agregar Solicitud
-                    </Button>
+                    </Button> */}
                 </Stack>
 
                 </CardContent>

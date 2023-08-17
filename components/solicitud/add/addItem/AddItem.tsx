@@ -6,14 +6,9 @@ import * as Yup from 'yup';
 import InputAdornment from '@mui/material/InputAdornment';
 import { ItemSolicitud } from '../../../../interface/Sgd';
 import { formatPrice } from '../../../../utils/methods';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import EditIcon from '@mui/icons-material/Edit';
 
-const initItem = {
-    quantity: '',
-    unidad_medida: '',
-    detail: '',
-    classification: '',
-    precio: ''
-}
 
 interface Props {
     editItem?: {item: ItemSolicitud, index: number}
@@ -211,13 +206,14 @@ export const AddItem = ({editItem, addItems, handleSetEditItem}: Props) => {
                     variant="contained" 
                     onClick={handleButtonEvent}
                     sx={{
-                        
-                        width:'40%',
+                        width:'20px',
                         m:0,
                         marginTop: lgMd ? 0 : 2
                     }}
                 >
-                    {editItem?.item ? 'editar' : 'ingresar'}
+                    
+                    {/* {editItem?.item ? 'editar' : 'ingresar'} */}
+                    {editItem?.item ? <EditIcon/> : <AddCircleIcon/>}
                 </Button>  
             </Grid>
         </Box>
