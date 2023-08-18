@@ -229,6 +229,7 @@ const Solicitud = () => {
         return true;
     }
 
+    // mover este metodo
     const disabledButtons = () => {
         if (items.length !== 0 && step === 'add-field') return false;
         if (items.length === 0 && step === 'add-field') return true;
