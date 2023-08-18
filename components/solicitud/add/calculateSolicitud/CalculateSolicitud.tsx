@@ -4,16 +4,19 @@ import { Button, FormControl, FormControlLabel, FormLabel, Grid, MenuItem, Radio
 import { ItemSolicitud } from '../../../../interface/Sgd';
 import { formatPrice } from '../../../../utils/methods';
 import { ModalBase } from '../../../ui/modal/Modal';
-import { Calculate } from '../../../../pages/solicitud/ingresar-solicitud';
+import { Calculate, Step } from '../../../../pages/solicitud/ingresar-solicitud';
 
 
 interface Props {
     items: ItemSolicitud []
     totalCalculate: Calculate;
+    step: Step;
     handleSetTotalCalculate: (total: Calculate) => void;
+    handleOpenDrawer: () => void;
+    isReadyFields: () => boolean;
 }
 
-export const CalculateSolicitud = ({ items, totalCalculate, handleSetTotalCalculate }: Props) => {
+export const CalculateSolicitud = ({ items, totalCalculate, step, handleSetTotalCalculate, handleOpenDrawer, isReadyFields }: Props) => {
 
     const [itemCalculateIva, setItemCalculateIva] = useState<Calculate []>()
     const [iva, setIva] = useState<string>('afecto');
@@ -53,9 +56,9 @@ export const CalculateSolicitud = ({ items, totalCalculate, handleSetTotalCalcul
     }, [itemCalculateIva])
 
     return (
-        <Box sx={{padding: 1, border: .5}}>
-            <Grid container sx={{paddingTop: 2}} spacing={2}>
-                <Grid lg={2} md={2} sm={6} xs={12} item>
+        <Box sx={{ display: 'flex', justifyContent: 'center', padding: 1, border: .5,}}>
+            <Grid container sx={{ display:'flex', alignItems: 'center', paddingTop: 2, width: '85%'}} spacing={2}>
+                <Grid lg={4} md={4} sm={6} xs={12} item>
                     <FormControl>
                         <FormLabel id="demo-radio-buttons-group-label">IVA</FormLabel>
                         <RadioGroup
@@ -71,26 +74,24 @@ export const CalculateSolicitud = ({ items, totalCalculate, handleSetTotalCalcul
                     </FormControl>
                 </Grid>
                 <Grid lg={4} md={4} sm={6} xs={12} item>
-                    <TableContainer component={Paper} sx={{width: '90%'}}>
-                        <Table size="small" aria-label="a dense table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography>Total Neto: </Typography> </TableCell>
-                                    <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography> $ {formatPrice(totalCalculate?.neto)}</Typography> </TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography>IVA: </Typography> </TableCell>
-                                    <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography> $ {formatPrice(totalCalculate?.iva)}</Typography> </TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography>Total Bruto: </Typography> </TableCell>
-                                    <TableCell component="th" align="right" sx={{width: '50%'}}> <Typography> $ {formatPrice(totalCalculate?.bruto)}</Typography> </TableCell>
-                                </TableRow>
-                            </TableHead>
-                        </Table>
-                    </TableContainer>    
+                    <table style={{width: '85%'}}>
+                        <tbody>
+                            <tr>
+                                <td > <Typography> Total Neto: </Typography></td>
+                                <td style={{float: 'right'}}> <Typography> $ {formatPrice(totalCalculate?.neto)}</Typography></td>
+                            </tr>
+                            <tr>
+                                <td > <Typography> IVA: </Typography></td>
+                                <td style={{float: 'right'}}> <Typography> $ {formatPrice(totalCalculate?.iva)}</Typography></td>
+                            </tr>
+                            <tr>
+                                <td > <Typography>Total Bruto: </Typography></td>
+                                <td style={{float: 'right'}}> <Typography> $ {formatPrice(totalCalculate?.bruto)}</Typography></td>
+                            </tr>
+                        </tbody>
+                    </table>   
                 </Grid>
-                <Grid lg={3} md={3} sm={6} xs={12} item>
+                <Grid lg={4} md={4} sm={6} xs={12} item>
                     <TextField
                         sx={{width: '100%', paddingRight:2, position: 'relative', bottom: 4 }}
                         id="standard-select-currency"
@@ -130,17 +131,17 @@ export const CalculateSolicitud = ({ items, totalCalculate, handleSetTotalCalcul
                         <MenuItem value={'kilo2'}>Kilo2</MenuItem>
                     </TextField> 
                 </Grid>
+                  {/* VISTA ADJUNTAR DOCUMENTOS 
                 <Grid lg={3} md={3} sm={6} xs={12} item>
-                    {/* VISTA ADJUNTAR DOCUMENTOS */}
-                    <ModalBase
-                        activator={(open) => (<Button onClick={open} variant="contained">Cargar Archivos</Button>)}
+                   
+                    <Button 
+                        disabled={(step === 'add-files' && isReadyFields()) ? false : true}
+                        variant="contained"
+                        onClick={handleOpenDrawer}
                     >
-                        <>
-                            Falta vista y funcionalidad para cargar archivos Falta vista y funcionalidad para cargar archivos Falta vista y funcionalidad para cargar archivos Falta vista y funcionalidad para cargar archivos 
-                        </>
-                    </ModalBase>
-                    <Typography>Archivos adjuntos: </Typography>
-                </Grid>
+                        Cargar Archivos
+                    </Button>
+                </Grid> */}
             </Grid>
         </Box>
     )

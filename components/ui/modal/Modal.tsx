@@ -14,7 +14,7 @@ export interface ModalBaseMethods {
   handleClose: () => void;
 }
 
-export const  ModalBase = forwardRef<ModalBaseMethods, Props>(({children, activator}, ref) => {
+export const ModalBase = forwardRef<ModalBaseMethods, Props>(({children, activator}, ref) => {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);

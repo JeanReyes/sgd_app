@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Layout } from '../../components/layouts'
 import { Grid, Divider, Card, CardHeader, CardContent, TextField, Stack, useMediaQuery, MenuItem, Typography, Box, Button } from '@mui/material';
 import { TableDefault } from '../../components/ui/Tables/Table';
@@ -9,6 +9,17 @@ import { CalculateSolicitud } from '../../components/solicitud/add/calculateSoli
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { formatPrice } from '../../utils/methods';
+import { ModalBase, ModalBaseMethods } from '../../components/ui/modal/Modal';
+import { BaseDrawer, DrawerBaseMethods } from '../../components/ui/drawer/BaseDrawer';
+import { AddFiles } from '../../components/ui/drawer/components/AddFiles';
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+
+/**
+ * la solicitud va a pasar por 3 estados, add-field, add-files, listo
+ */
+
+export type Step = 'add-field' | 'add-files'
 
 export interface Calculate {
     neto: number;
@@ -94,6 +105,9 @@ const Solicitud = () => {
     const [totalCalculate, setTotalCalculate] = useState<Calculate>({} as Calculate)
     const [utm, setUtm] = useState(63326);
     const [clasification, setClasification] = useState(TypesSolicitud[0] as IReglasSolicitud);
+    const [step, setStep] = useState<Step>('add-field');
+    const childRef = useRef<ModalBaseMethods>(null);
+    const refDrawer = useRef<DrawerBaseMethods>(null);
     const [borderStyle, setBorderStyle] = useState({
         border: '.5px solid', // Color y estilo original del borde
         boxShadow: 'none', // Sombra inicial
@@ -122,6 +136,11 @@ const Solicitud = () => {
             console.log("estamos enviando form");
         }
     });
+
+    const isReadyFields = () => {
+        if ((Object.keys(clasification).length > 0 && totalCalculate.bruto > 0)) return true;
+        return false;
+    }
 
     const handleAddItem = (values:ItemSolicitud ) => {
         setItems((prev) => {
@@ -196,6 +215,27 @@ const Solicitud = () => {
         }
     }
 
+    const handleModalFiled = () => {
+        setStep('add-files')
+        childRef.current?.handleOpen()
+    }
+
+    const handleOpenDrawer = () => {
+        refDrawer.current?.handleSettings()
+    }
+
+    const isAddFiles = () => {
+        if ((step === 'add-files' && isReadyFields())) return false 
+        return true;
+    }
+
+    // mover este metodo
+    const disabledButtons = () => {
+        if (items.length !== 0 && step === 'add-field') return false;
+        if (items.length === 0 && step === 'add-field') return true;
+        return true
+      }
+
     useEffect(() => {
         applicationClassification();
     },[totalCalculate])
@@ -211,10 +251,41 @@ const Solicitud = () => {
     return (
         <Layout>
             <Card>
-                <CardHeader title={'Nueva Solicitud de compra'}/>
+                <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center'
+                }}>
+                    <CardHeader title={'Nueva Solicitud de compra'}/>
+                    {/* toolbar */}
+                    <div style={{paddingRight: '20px'}}>
+                        <Grid container gap={1}>
+                            <Grid item>
+                                <Button 
+                                    variant="contained"
+                                    disabled={disabledButtons() ? true : (step === 'add-field' && isReadyFields()) ? false : true}
+                                    onClick={() => handleModalFiled()}
+                                >
+                                    <AddCircleIcon/>
+                                </Button>
+                            </Grid>
+                            <Grid item>
+                                <Button 
+                                    disabled={isAddFiles()}
+                                    variant="contained"
+                                    onClick={handleOpenDrawer}
+                                >
+                                    {/* Cargar Archivos */}
+                                    <NoteAddIcon/>
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </div>
+                </Box>
                 <Divider />
                 <CardContent>
                 <Stack component="form" noValidate spacing={3}>
+                    {/* HEADER SOLICITUD */}
                     <Grid sx={{width: '100%', paddingBottom: 2}} container>
                         <Grid sx={{paddingRight: 4}} lg={6} md={6} sm={6} xs={12} item>
                             <Grid sx={{width: '100%', paddingBottom: 4}} container>
@@ -304,6 +375,12 @@ const Solicitud = () => {
                         <Grid lg={6} md={6} sm={6} xs={12} item>
                             <Grid container spacing={2} sx={{display:'flex', justifyContent:'end'}}>
                                 <Grid lg={8} md={10} sm={10} xs={12} item>
+                                    <Typography
+                                         variant='h6'
+                                         sx={{marginBottom: 2}}
+                                    >
+                                        Valor UTM del día: $ {formatPrice(utm)}
+                                    </Typography>
                                   {
                                     ( Object.keys(clasification).length > 0 )
                                     ? <>
@@ -328,31 +405,57 @@ const Solicitud = () => {
                                     </>
                                      : 'No clasifica para la compra seleccionada'
                                   }
-                                    <Typography
-                                         variant='h6'
-                                         sx={{marginTop: 3}}
-                                    >
-                                        Valor UTM del día: $ {formatPrice(utm)}
-                                    </Typography>
                                 </Grid>
                             </Grid>  
                         </Grid>         
                     </Grid>
                     {/* row */}
-                    <AddItem addItems={handleAddItem} editItem={editItem} handleSetEditItem={handleSetEditItem}/>  
+                    <AddItem 
+                        addItems={handleAddItem} 
+                        editItem={editItem} 
+                        handleSetEditItem={handleSetEditItem}
+                    />  
                     {/* table*/}
-                    <TableDefault header={headerSolicitud} items={items} handleRemoveItem={handleRemoveItem} handleEditItem={handleEditItem}/>
+                    <TableDefault 
+                        header={headerSolicitud} 
+                        items={items} 
+                        step={step} 
+                        handleRemoveItem={handleRemoveItem} 
+                        handleEditItem={handleEditItem}
+                        isReadyFields={isReadyFields}
+                    />
 
                     {/* calculate */}
-                    <CalculateSolicitud items={items} totalCalculate={totalCalculate} handleSetTotalCalculate={handleSetTotalCalculate}/>
-                    <Button 
+                    <CalculateSolicitud 
+                        items={items} 
+                        step={step} 
+                        totalCalculate={totalCalculate} 
+                        handleSetTotalCalculate={handleSetTotalCalculate} 
+                        handleOpenDrawer={handleOpenDrawer}
+                        isReadyFields={isReadyFields}
+                    />
+                    {/* <Button 
                         variant="contained"
-                        disabled={!(Object.keys(clasification).length > 0 && totalCalculate.bruto > 0)}
+                        disabled={!isReadyFields()}
+                        onClick={() => handleModalFiled()}
                     >
-                        Agregar
-                    </Button>
+                        Agregar Solicitud
+                    </Button> */}
                 </Stack>
+
                 </CardContent>
+                {/* MODAL ARCHIVOS */}
+                <ModalBase ref={childRef}>
+                    <Box sx={{textAlign: 'center'}}>
+                        <p>Solicitud creada, ahora debe ingresar los documentos asociados</p>
+                        <Button onClick={() => childRef.current?.handleClose()}>ok</Button>
+                    </Box>
+                </ModalBase>
+
+                {/* AGREGAR ARCHIVOS */}
+                <BaseDrawer ref={refDrawer} width='700' title={`Requisitos de solicitud`} anchor='right'>
+                    <AddFiles requisitos={clasification.requisitos}/>
+                </BaseDrawer>
             </Card>
         </Layout>
     )
