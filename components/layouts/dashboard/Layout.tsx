@@ -100,6 +100,12 @@ interface Props {
 
 export const Layout = withAuthGuard(({children}: Props) => {
     const { openNav, handleSideNav } = useContext(SgdContext);
+    const [styledBody, setStyledBody] = useState({
+        paddingTop: 4,
+        paddingBottom: 4,
+        paddingLeft: 4,
+        paddingRight: 4
+    })
     // console.log("openNav",openNav);
     
     // const [openNav, handleSideNav] = useState(false);
@@ -135,6 +141,36 @@ export const Layout = withAuthGuard(({children}: Props) => {
         handlePathnameChange();
     },[pathname]);
 
+    useEffect(() => {
+        // console.log("open", openNav);
+        // console.log("lgMd", lgMd);
+        
+        // validar version mobile
+        const handleSetStyles = () => {
+            if (!openNav && lgMd) {
+                setStyledBody({
+                    // paddingTop: 4,
+                    // paddingBottom: 4,
+                    // paddingLeft: 30,
+                    // paddingRight: 30
+                    paddingTop: 4,
+                    paddingBottom: 4,
+                    paddingLeft: 4,
+                    paddingRight: 4
+                })
+            } else {
+                setStyledBody({
+                    paddingTop: 4,
+                    paddingBottom: 4,
+                    paddingLeft: 4,
+                    paddingRight: 4
+                })
+            }   
+        }
+        
+        handleSetStyles();
+    }, [openNav, lgMd])
+
     return (
         <>
             <Navbar onNavOpen={() => handleSideNav(!openNav)} sideWidth={SIDE_NAV_WIDTH} navHeight={TOP_NAV_HEIGHT}/>
@@ -144,7 +180,7 @@ export const Layout = withAuthGuard(({children}: Props) => {
                     position: 'fixed',
                     top: TOP_NAV_HEIGHT,
                     width: '100%',
-                    height: '100%'
+                    height:  `calc(100% - ${TOP_NAV_HEIGHT}px)`
                 }}
             >
                 <SideNav 
@@ -160,12 +196,9 @@ export const Layout = withAuthGuard(({children}: Props) => {
                     <LayoutRoot>
                         <LayoutContainer>
                             <Box
+                                className='fade-effect'
                                 component="main"
-                                sx={{
-                                    // flexGrow: 1,
-                                    // py: 8,
-                                    p: lgMd ? 8 : 3
-                                }}
+                                sx={{...styledBody}}
                             >
                                 {children}
                             </Box>

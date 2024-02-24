@@ -18,9 +18,10 @@ import { usePopover } from '../../../hooks/usePopover';
 import { AccountPopover } from './AccountPopover';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { SgdContext } from '../../../context/App/SgdContext';
-import { Settings } from '../Settings/Settings';
 import { grey } from '@mui/material/colors';
 import { ConfigTheme } from '../../configTheme/ConfigTheme';
+import Image from 'next/image';
+import { BaseDrawer } from '../drawer/BaseDrawer';
 
 interface Props {
   onNavOpen: () => void;
@@ -30,13 +31,8 @@ interface Props {
 
 export const Navbar = ({onNavOpen, navHeight}: Props) => {
   const { theme } = useContext(SgdContext);
-  const [toggle, setToggle] = useState(false)
   const accountPopover = usePopover();
   const isLight = theme === 'light'
-  
-  const handleSettings = () => {
-    setToggle(!toggle)
-  }
 
   return (
     <>
@@ -109,9 +105,9 @@ export const Navbar = ({onNavOpen, navHeight}: Props) => {
                   cursor: 'pointer',
                   height: 40,
                   width: 40
-                }}
-                src="./avatar-siegbert-gottfried.png"
-              />
+                }}>
+                  <Image src="/avatar-siegbert-gottfried.png" alt="Avatar" width={40} height={40} />
+                </Avatar>
             </Stack>
           </Stack>
       </AppBar>
@@ -120,7 +116,6 @@ export const Navbar = ({onNavOpen, navHeight}: Props) => {
         open={accountPopover.open}
         onClose={accountPopover.handleClose}
       />
-      <Settings toggle={toggle} title='Settings' anchor='right' handleSettings={handleSettings}/>
     </>
   );
 };

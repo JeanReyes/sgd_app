@@ -6,8 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { ItemSolicitud } from '../../../interface/Sgd';
-import { Solicitud } from '../../../pages/solicitud/list';
+import { Solicitud } from '../../../interface/Sgd';
 import { Button } from '@mui/material';
 import { useRouter } from 'next/router';
 
@@ -27,7 +26,6 @@ export const TableSolicitud = ({ header, items }: Props) => {
 const handleStatusSolicitud = (id: string) => {
     router.push(`/solicitud/detail/${id}`)
 }
-
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="a dense table">

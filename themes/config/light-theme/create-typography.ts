@@ -12,7 +12,8 @@ export const createTypography = () => {
       lineHeight: 1.57
     },
     button: {
-      fontWeight: 600
+      fontWeight: 600,
+      textTransform: 'capitalize',
     },
     caption: {
       fontSize: '0.75rem',
@@ -34,7 +35,7 @@ export const createTypography = () => {
       fontWeight: 600,
       letterSpacing: '0.5px',
       lineHeight: 2.5,
-      textTransform: 'uppercase'
+      // textTransform: 'uppercase'
     },
     h1: {
       fontFamily: '\'Plus Jakarta Sans\', sans-serif',
