@@ -1,17 +1,20 @@
 
+import{ useState, useRef } from 'react'
 import Head from 'next/head';
-import{ useState } from 'react'
 import { LoginLayout } from '../../components/layouts';
 import { Box, Button, Stack, TextField, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import { useAuth } from '../../hooks';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { ModalBase, ModalBaseMethods } from '../../components/ui/modal/Modal';
+import { ResetPassword } from '../../components/ui/modal/components/ResetPassword';
 
 const Contraseña = () => {
     const router = useRouter();
     const { signIn } = useAuth();
     const [method, setMethod] = useState('email');
+    const childRef = useRef<ModalBaseMethods>(null);
 
     const formik = useFormik({
         initialValues: {
@@ -26,18 +29,27 @@ const Contraseña = () => {
             .required('Email es requerido')
         }),
         onSubmit: async (values, helpers) => {
-        try {
-            console.log("estamos cambiando contraseña");
-            
-            // await signIn(values.email, values.password);
-            router.push('/auth/cambiar-contrasena/');
-        } catch (err) {
-            helpers.setStatus({ success: false });
-            helpers.setErrors({ submit: (err as any).message });
-            helpers.setSubmitting(false);
-        }
+            try {
+                console.log("estamos cambiando contraseña");
+                if (childRef.current) {
+                    childRef.current.handleOpen()  // Activa el método en el componente hijo
+                }
+                
+                // await signIn(values.email, values.password);
+                // router.push('/auth/cambiar-contrasena/');
+            } catch (err) {
+                helpers.setStatus({ success: false });
+                helpers.setErrors({ submit: (err as any).message });
+                helpers.setSubmitting(false);
+            }
         }
     });
+
+    const handleCloseModal = () => {
+        childRef.current?.handleClose()
+        router.push('/auth/cambiar-contrasena/');
+    }
+
     return (
         <>
             <Head>
@@ -78,6 +90,20 @@ const Contraseña = () => {
                                     Restablecer contraseña 
                                 </Typography>
                             </Box>
+                            <ModalBase
+                                ref={childRef}
+                            >
+                               <ResetPassword
+                                    email={formik.values.email}
+                               >
+                                    <Button
+                                        variant="contained"
+                                        onClick={handleCloseModal}
+                                    >
+                                        Ok
+                                    </Button>
+                               </ResetPassword>
+                            </ModalBase>
                         </Stack>
                         <Stack
                             spacing={1}
@@ -90,7 +116,7 @@ const Contraseña = () => {
                                 }}
                             >
                                 <Typography>
-                                Introduzca su correo electrónico para enviarle las instrucciones para restablecer su contraseña de manera segura.  
+                                    Introduzca su correo electrónico para enviarle las instrucciones para restablecer su contraseña de manera segura.  
                                 </Typography>
                             </Box>
                         </Stack>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
@@ -14,11 +14,14 @@ import { LoginLayout } from '../../components/layouts';
 import { useAuth } from '../../hooks/useContext';
 import { ConfigTheme } from '../../components/configTheme/ConfigTheme';
 import Link from 'next/link';
+import { ModalBase, ModalBaseMethods } from '../../components/ui/modal/Modal';
+import { ChangePassword } from '../../components/ui/modal/components/ChangePassword';
 
 const CambiarContraseña = () => {
     const router = useRouter();
     const { signIn } = useAuth();
     const [method, setMethod] = useState('email');
+    const childRef = useRef<ModalBaseMethods>(null);
 
     const formik = useFormik({
         initialValues: {
@@ -39,7 +42,7 @@ const CambiarContraseña = () => {
         }),
         onSubmit: async (values, helpers) => {
         try {
-            console.log("estamos logueando");
+            childRef.current?.handleOpen()
             
             // await signIn(values.email, values.password);
             // router.push('/');
@@ -52,8 +55,13 @@ const CambiarContraseña = () => {
     });
 
     const handleRecoveryPass = () => {
-        router.push('/auth/recuperar-contrasena/')
+        router.push('/auth/login/')
     }
+    const handleCloseModal = () => {
+        childRef.current?.handleClose()
+        router.push('/auth/login/')
+    }
+
 
   return (
     <>
@@ -142,7 +150,7 @@ const CambiarContraseña = () => {
                         >
                             Cambiar Contraseña
                         </Button>
-                        <Box sx={{display: 'flex', alignItems: 'flex-end'}}>
+                        {/* <Box sx={{display: 'flex', alignItems: 'flex-end'}}>
                             <Link href={'/auth/login/'}>Inicia sesión</Link>
                             <Typography
                                 // color="error"
@@ -151,7 +159,19 @@ const CambiarContraseña = () => {
                             >
                                 con tu nueva contraseña
                             </Typography>
-                        </Box>
+                        </Box> */}
+                        <ModalBase
+                            ref={childRef}
+                        >
+                            <ChangePassword>
+                                <Button
+                                    variant="contained"
+                                    onClick={handleCloseModal}
+                                >
+                                    Iniciar sesión
+                                </Button>
+                            </ChangePassword>
+                        </ModalBase>
                     </form>
                 </div>
                 </Box>

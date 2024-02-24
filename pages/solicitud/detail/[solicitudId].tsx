@@ -1,85 +1,86 @@
-import React from 'react'
+'use client'
+import {useState, useEffect} from 'react';
 import { Layout } from '../../../components/layouts'
-import { StatusSolicitud } from '../../../components/statusSolicitud/StatusSolicitud'
-import { Box, Grid, Typography } from '@mui/material'
+import { StatusSolicitud } from '../../../components/solicitud/detail/StatusSolicitud'
+import { Box, Button, Grid, Typography } from '@mui/material'
+import { HeaderSolicitud } from '../../../components/solicitud/detail/HeaderSolicitud'
+import { GetStaticPaths, GetStaticProps } from 'next'
+import { getOneSolicitud } from '../../../service/axios'
+import { Solicitud } from '../../../interface/Sgd'
+import { TableItemDetail } from '../../../components/solicitud/detail/TableItemDetail'
+import { CalculateDetail } from '../../../components/solicitud/detail/CalculateDetail'
 
-const DataFake =  [
-    {
-      unidad: '(1) VºBº Unidad Requirientes',
-      fecha: '12/12/2023',
-      firma: 'definir firma',
-      observacion: 'Esta es una observación',
-      status: 'aprovado'
-  },
-  {
-      unidad: '(2) VºBº Dirección U.',
-      fecha: '13/12/2023',
-      firma: 'definir firma',
-      observacion: 'Esta es una observación',
-      status: 'aprovado'
-  },
-  {
-      unidad: '(3) VºBº Administrador Municipal.',
-      fecha: '13/12/2023',
-      firma: 'definir firma',
-      observacion: 'Esta es una observación',
-      status: 'aprovado'
-  },
-  {
-      unidad: '(4) VºBº Dirección de control.',
-      fecha: '13/12/2023',
-      firma: 'definir firma',
-      observacion: 'Esta es una observación',
-      status: 'aprovado'
-  },
-  {
-      unidad: '(5) VºBº Departamento de Contabilidad, Finanzas y Presupuesto',
-      fecha: '13/12/2023',
-      firma: 'definir firma',
-      observacion: 'Esta es una observación',
-      status: 'aprovado'
-  },
-  {
-      unidad: '(6) VºBº Dirección de Administración y Finanzas.',
-      fecha: '13/12/2023',
-      firma: 'definir firma',
-      observacion: 'Esta es una observación',
-      status: 'revision'
-  },
-  {
-      unidad: '(7) VºBº Dirección de Asesoria Jurídica.',
-      fecha: '13/12/2023',
-      firma: 'definir firma',
-      observacion: 'Esta es una observación',
-      status: 'pendiente'
-  },
-  {
-      unidad: '(8) VºBº Unidad de Compras.',
-      fecha: '13/12/2023',
-      firma: 'definir firma',
-      observacion: 'Esta es una observación',
-      status: 'pendiente'
-  }
-]
 
-const Estado = () => {
-    // llamat api con la solicitud para ir a buscar estado
+const headerSolicitud = ['N°','Cantidad', 'Unidad de Medida', 'Detalle o Descripción', 'Clasificación Presupuestaria', 'Precio Neto', '']
+
+interface Props {
+    solicitud: Solicitud;
+    id: string;
+}
+
+const Estado = ({id, solicitud}: Props) => {
+    //TODO: validar llamada a api del item
+    const [stateSolicitud, setSolicitud] = useState({} as Solicitud);
+
+    const load = async() => {
+        const solicitud =  await getOneSolicitud(`/solicitudes/${id}`)
+        setSolicitud(solicitud)
+      }
+      useEffect(() => {
+        load()
+      }, [])
+      
     return (
         <Layout>
-            <Box>
-                <Box  sx={{marginBottom: 3}}>
-                    <Typography variant='h2'>
-                        Detalle solicitud
-                    </Typography> 
+            {
+                stateSolicitud &&
+                <Box>
+                    <Box sx={{marginBottom: 3}}>
+                        <Typography variant='h4'>
+                            Detalle Solicitud de compra Nro {stateSolicitud.id}
+                        </Typography> 
+                    </Box>
+                    <Grid container sx={{width: '100%'}}>
+                        <Grid item sx={{width: '100%'}}>
+                            <HeaderSolicitud fecha={stateSolicitud.fecha_creacion} type_solicitud={'Agil'} unidad={stateSolicitud.area}/>
+                        </Grid>
+
+                        <Grid item sx={{width: '100%'}}>
+                            <TableItemDetail header={headerSolicitud} items={stateSolicitud.items}/>
+                            <CalculateDetail calculate={stateSolicitud.calculate}/>
+                        </Grid>
+
+                        <Grid spacing={2} container item>
+                            {
+                                stateSolicitud?.status?.map(({unidad, fecha, firma, observacion, status}) => (<StatusSolicitud key={unidad} unidad={unidad} fecha={fecha} firma={firma} observacion={observacion} status={status}/>))
+                            }
+                        </Grid>
+                    </Grid>
                 </Box>
-                <Grid container spacing={2}>
-                    {
-                        DataFake.map(({unidad, fecha, firma, observacion, status}) => (<StatusSolicitud key={unidad} unidad={unidad} fecha={fecha} firma={firma} observacion={observacion} status={status}/>))
-                    }
-                </Grid>
-            </Box>
+            }
+          
         </Layout>
     )
 }
+export const getStaticPaths: GetStaticPaths = async () => { 
+    return {
+        paths: [],
+        fallback: 'blocking'  // 'blocking' = para que pueda aceptar mas solicituides / false se restringe solo a los paths.
+    }
+}
+
+export const getStaticProps: GetStaticProps = async({params}) => {
+    const { solicitudId } = params as any
+  
+    // const solicitud =  await getOneSolicitud(`/solicitudes/${solicitudId}`)
+   
+    return {
+      props: {
+        // dataLis: list
+        id: solicitudId,
+        solicitud:{}
+      }
+    }
+  }
 
 export default Estado

@@ -33,3 +33,34 @@ export interface NewSolicitud {
     destino: string;
     programa: string;
 }
+
+// Solicitud List
+
+export interface Status {
+    unidad: string;
+    fecha: string;
+    firma: string;
+    observacion: string;
+    status: string
+  } 
+  
+  export interface Solicitud {
+    id: string,
+    fecha_creacion: string,
+    creador: string,
+    numero_solicitud: string,
+    area: string,
+    firma: string,
+    items: ItemSolicitud []
+    status: Status []
+    calculate: CalculateSolicitud
+  }
+
+export interface CalculateSolicitud {
+    total_neto: string;
+    iva: string;
+    total_bruto: string;
+    destino: string;
+    programa: string;
+    observacion: string;
+}

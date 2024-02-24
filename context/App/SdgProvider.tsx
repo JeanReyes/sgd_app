@@ -2,17 +2,20 @@ import React, { useEffect, useReducer } from 'react';
 import { SgdContext } from './SgdContext';
 import { SgdReducer } from './sgdReducer';
 import { ThemeSgd } from '../../interface/Auth';
+import { Solicitud } from '../../interface/Sgd';
 
 export interface SgdState {
     theme: ThemeSgd;
     settingApp: boolean;
-    openNav: boolean
+    openNav: boolean,
+    selectSolicitud: Solicitud
 }
 
 const SGD_INITIAL_APP: SgdState = {
     theme: 'light',
     settingApp: false,
-    openNav: false
+    openNav: false,
+    selectSolicitud: {} as Solicitud
 }
 
 interface Props {
@@ -36,6 +39,13 @@ export const SgdProvider = ({ children, company }: Props) => {
         dispatch({type: 'change-sideNav', payload: openNav})
     }
 
+    const Solicitud = () => {
+        return {
+            selectSolicitud: (data: Solicitud) => {
+            }
+        }
+    }
+
     useEffect(() => {
         if(currentTheme) {
             dispatch({type: 'set-theme', payload: currentTheme})
@@ -48,7 +58,8 @@ export const SgdProvider = ({ children, company }: Props) => {
             company,
             handleSetTheme,
             handleSettingApp,
-            handleSideNav
+            handleSideNav,
+            // Solicitud,
         }}>
             {children}
         </SgdContext.Provider>
