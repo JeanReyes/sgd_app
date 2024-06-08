@@ -16,6 +16,7 @@ export default function Home() {
                     <FormControl>
                         <FormLabel>
                             <Typography variant='h3'>Bienvenido a SGD </Typography>
+                            hola mundo
                         </FormLabel>
                         <Grid>
                             <Typography> 
