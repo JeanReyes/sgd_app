@@ -1,55 +1,47 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useRef, useState } from 'react';
-import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
-import { useAuth } from '../../../hooks/useContext';
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router";
+import PropTypes from "prop-types";
+import { useAuth } from "../../../hooks/useContext";
 
 interface Props {
-    children: JSX.Element;
+  children: JSX.Element;
 }
 
-export const AuthGuard = ({children}: Props) => {
-    const router = useRouter();
-    const { isAuthenticated } = useAuth();
-    const ignore = useRef(false);
-    const [checked, setChecked] = useState(false);
+export const AuthGuard = ({ children }: Props) => {
+  const router = useRouter();
+  const { isAuthenticated } = useAuth();
+  const ignore = useRef(false);
+  const [checked, setChecked] = useState(false);
 
-    // Only do authentication check on component mount.
-    // This flow allows you to manually redirect the user after sign-out, otherwise this will be
-    // triggered and will automatically redirect to sign-in page.
-
-    useEffect(() => {
-        if (!router.isReady) {
-            return;
-        }
-
-        // Prevent from calling twice in development mode with React.StrictMode enabled
-        if (ignore.current) {
-            return;
-        }
-
-        ignore.current = true;
-
-        if (!isAuthenticated) {
-            console.log('Not authenticated, redirecting');
-            router.replace({
-                pathname: '/auth/login',
-                query: router.asPath !== '/' ? { continueUrl: router.asPath } : undefined
-            })
-            .catch(console.error);
-        } else {
-            setChecked(true);
-        }
-        },
-        [router.isReady]
-    );
-
-    if (!checked) {
-        return null;
+  useEffect(() => {
+    if (!router.isReady) {
+      return;
     }
 
-    // If got here, it means that the redirect did not occur, and that tells us that the user is
-    // authenticated / authorized.
+    if (ignore.current) {
+      return;
+    }
 
-    return children;
+    ignore.current = true;
+
+    if (!isAuthenticated) {
+      console.log("Not authenticated, redirecting");
+      router
+        .replace({
+          pathname: "/auth/login",
+          query:
+            router.asPath !== "/" ? { continueUrl: router.asPath } : undefined,
+        })
+        .catch(console.error);
+    } else {
+      setChecked(true);
+    }
+  }, [router.isReady]);
+
+  if (!checked) {
+    return null;
+  }
+
+  return children;
 };
