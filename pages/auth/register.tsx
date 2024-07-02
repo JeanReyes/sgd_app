@@ -1,157 +1,193 @@
-import Head from 'next/head';
-import NextLink from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { Box, Button, Link, Stack, TextField, Typography } from '@mui/material';
-import { LoginLayout } from '../../components/layouts';
+import Head from "next/head";
+import NextLink from "next/link";
+import { useRouter } from "next/navigation";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import {
+  Box,
+  Button,
+  Link,
+  MenuItem,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { LoginLayout } from "../../components/layouts";
+import { useAuth } from "../../hooks";
 // import { useAuth } from 'src/hooks/use-auth';
-
 
 const Page = () => {
   const router = useRouter();
-//   const auth = useAuth();
+  const { resisterUser } = useAuth();
+  //   const auth = useAuth();
   const formik = useFormik({
     initialValues: {
-      email: '',
-      name: '',
-      password: '',
-      submit: null
+      correo: "",
+      nombres: "",
+      apellidos: "",
+      password: "",
+      dni: "",
+      role: "ADMIN",
+      submit: null,
     },
     validationSchema: Yup.object({
-      email: Yup
-        .string()
-        .email('Must be a valid email')
+      correo: Yup.string()
+        .email("Must be a valid email")
         .max(255)
-        .required('Email is required'),
-      name: Yup
-        .string()
-        .max(255)
-        .required('Name is required'),
-      password: Yup
-        .string()
-        .max(255)
-        .required('Password is required')
+        .required("Email is required"),
+      nombres: Yup.string().max(255).required("Nombres son requeridos"),
+      apellidos: Yup.string().max(255).required("Apellidos son requeridos"),
+      password: Yup.string().max(255).required("Contraseña es requerida"),
+      dni: Yup.string().max(255).required("Dni es requerido"),
     }),
     onSubmit: async (values, helpers) => {
       try {
         // await auth.signUp(values.email, values.name, values.password);
-        router.push('/');
-      } catch (err:  any) {
+        const response = await resisterUser(values);
+        console.log(response);
+      } catch (err: any) {
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });
         helpers.setSubmitting(false);
       }
-    }
+    },
   });
 
   return (
     <>
       <Head>
-        <title>
-          Register | Devias Kit
-        </title>
+        <title>Registro de Usuario</title>
       </Head>
       <LoginLayout>
         <Box
-            sx={{
-            flex: '1 1 auto',
-            alignItems: 'center',
-            display: 'flex',
-            justifyContent: 'center'
-            }}
+          sx={{
+            flex: "1 1 auto",
+            alignItems: "center",
+            display: "flex",
+            justifyContent: "center",
+          }}
         >
-            <Box
+          <Box
             sx={{
-                maxWidth: 550,
-                px: 3,
-                py: '100px',
-                width: '100%'
+              maxWidth: 550,
+              px: 3,
+              py: "100px",
+              width: "100%",
             }}
-            >
+          >
             <div>
-                <Stack
-                spacing={1}
-                sx={{ mb: 3 }}
-                >
-                <Typography variant="h4">
-                    Register SGD
-                </Typography>
-                <Typography
-                    color="text.secondary"
-                    variant="body2"
-                >
-                    Already have an account?
-                    &nbsp;
-                    <Link
+              <Stack spacing={1} sx={{ mb: 3 }}>
+                <Typography variant="h4">Register SGD</Typography>
+                <Typography color="text.secondary" variant="body2">
+                  ¿Ya tienes una cuenta? &nbsp;
+                  <Link
                     component={NextLink}
                     href="/auth/login"
                     underline="hover"
                     variant="subtitle2"
-                    >
-                    Log SGD
-                    </Link>
+                  >
+                    Login SGD
+                  </Link>
                 </Typography>
-                </Stack>
-                <form
-                noValidate
-                onSubmit={formik.handleSubmit}
-                >
+              </Stack>
+              <form noValidate onSubmit={formik.handleSubmit}>
                 <Stack spacing={3}>
-                    <TextField
-                    error={!!(formik.touched.name && formik.errors.name)}
+                  <TextField
+                    error={!!(formik.touched.nombres && formik.errors.nombres)}
                     fullWidth
-                    helperText={formik.touched.name && formik.errors.name}
-                    label="Name"
-                    name="name"
+                    helperText={formik.touched.nombres && formik.errors.nombres}
+                    label="Nombres"
+                    name="nombres"
                     onBlur={formik.handleBlur}
                     onChange={formik.handleChange}
-                    value={formik.values.name}
-                    />
-                    <TextField
-                    error={!!(formik.touched.email && formik.errors.email)}
+                    value={formik.values.nombres}
+                  />
+                  <TextField
+                    error={
+                      !!(formik.touched.apellidos && formik.errors.apellidos)
+                    }
                     fullWidth
-                    helperText={formik.touched.email && formik.errors.email}
-                    label="Email Address"
-                    name="email"
+                    helperText={
+                      formik.touched.apellidos && formik.errors.apellidos
+                    }
+                    label="Apellidos"
+                    name="apellidos"
+                    onBlur={formik.handleBlur}
+                    onChange={formik.handleChange}
+                    type="text"
+                    value={formik.values.apellidos}
+                  />
+                  <TextField
+                    error={!!(formik.touched.correo && formik.errors.correo)}
+                    fullWidth
+                    helperText={formik.touched.correo && formik.errors.correo}
+                    label="Correo"
+                    name="correo"
                     onBlur={formik.handleBlur}
                     onChange={formik.handleChange}
                     type="email"
-                    value={formik.values.email}
-                    />
-                    <TextField
-                    error={!!(formik.touched.password && formik.errors.password)}
+                    value={formik.values.correo}
+                  />
+                  <TextField
+                    error={!!(formik.touched.dni && formik.errors.dni)}
                     fullWidth
-                    helperText={formik.touched.password && formik.errors.password}
+                    helperText={formik.touched.dni && formik.errors.dni}
+                    label="DNI"
+                    name="dni"
+                    onBlur={formik.handleBlur}
+                    onChange={formik.handleChange}
+                    type="text"
+                    value={formik.values.dni}
+                  />
+                  <TextField
+                    sx={{ width: "100%", position: "relative", bottom: 4 }}
+                    id="standard-select-currency"
+                    label="ROL"
+                    defaultValue={"ADMIN"}
+                    select
+                    name="rol"
+                    value={formik.values.role}
+                    error={!!(formik.values.role && formik.errors.role)}
+                    helperText={formik.values.role && formik.errors.role}
+                    onBlur={formik.handleBlur}
+                    onChange={formik.handleChange}
+                  >
+                    <MenuItem value={"ADMIN"}>ADMIN</MenuItem>
+                    <MenuItem value={"MANAGER"}>MANAGER</MenuItem>
+                  </TextField>
+                  <TextField
+                    error={
+                      !!(formik.touched.password && formik.errors.password)
+                    }
+                    fullWidth
+                    helperText={
+                      formik.touched.password && formik.errors.password
+                    }
                     label="Password"
                     name="password"
                     onBlur={formik.handleBlur}
                     onChange={formik.handleChange}
                     type="password"
                     value={formik.values.password}
-                    />
+                  />
                 </Stack>
                 {formik.errors.submit && (
-                    <Typography
-                    color="error"
-                    sx={{ mt: 3 }}
-                    variant="body2"
-                    >
+                  <Typography color="error" sx={{ mt: 3 }} variant="body2">
                     {formik.errors.submit}
-                    </Typography>
+                  </Typography>
                 )}
                 <Button
-                    fullWidth
-                    size="large"
-                    sx={{ mt: 3 }}
-                    type="submit"
-                    variant="contained"
+                  fullWidth
+                  size="large"
+                  sx={{ mt: 3 }}
+                  type="submit"
+                  variant="contained"
                 >
-                    Continue
+                  Continue
                 </Button>
-                </form>
+              </form>
             </div>
-            </Box>
+          </Box>
         </Box>
       </LoginLayout>
     </>

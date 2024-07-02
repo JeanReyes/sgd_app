@@ -1,116 +1,168 @@
-import React, { useEffect, useReducer, useRef } from 'react'
-import { AuthContext } from './AuthContext'
-import { useAuth } from '../../hooks/useContext';
-import { User } from '../../interface/Auth';
-import { AuthReducer } from './AuthReducer';
+import React, { useEffect, useReducer, useRef } from "react";
+import { AuthContext } from "./AuthContext";
+import { useAuth } from "../../hooks/useContext";
+import { User } from "../../interface/Auth";
+import { AuthReducer } from "./AuthReducer";
 
 export interface AuthState {
-    isAuthenticated: boolean;
-    isLoading: boolean
-    user: User
-    
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  user: User;
 }
 
 const SGD_INITIAL_STATE: AuthState = {
-    isAuthenticated: false,
-    isLoading: true,
-    user: {} as User
-}
+  isAuthenticated: false,
+  isLoading: true,
+  user: {} as User,
+};
 
 interface Props {
-    children: JSX.Element;
+  children: JSX.Element;
 }
 
-export const AuthProvider = ({children}: Props) => {
+export type ResisterProps = {
+  correo: string;
+  nombres: string;
+  dni: string;
+  apellidos: string;
+  password: string;
+  role: string;
+};
 
-    const [ stateAuth, dispatch ] = useReducer( AuthReducer, SGD_INITIAL_STATE );
-    const initialized = useRef(false);
-    const loged = useRef((typeof window !== 'undefined' ? JSON.parse(window.localStorage.getItem('authenticated') as string) : null) !== null ? true : false)
+export const AuthProvider = ({ children }: Props) => {
+  const [stateAuth, dispatch] = useReducer(AuthReducer, SGD_INITIAL_STATE);
+  const initialized = useRef(false);
+  const loged = useRef(
+    (typeof window !== "undefined"
+      ? JSON.parse(window.localStorage.getItem("authenticated") as string)
+      : null) !== null
+      ? true
+      : false
+  );
 
-    const initialize = async () => {    
+  const initialize = async () => {
+    // Prevent from calling twice in development mode with React.StrictMode enabled
+    if (initialized.current) {
+      return;
+    }
 
-        // Prevent from calling twice in development mode with React.StrictMode enabled
-        if (initialized.current) {
-            return;
-        }
-    
-        initialized.current = true;
-    
-        let isAuthenticated = false;
-        
-        try {
-            isAuthenticated = window.localStorage.getItem('authenticated') === 'true';
-        } catch (err) {
-            console.error(err);
-        }
- 
+    initialized.current = true;
 
-        if (isAuthenticated) {
-            //aqui hacer la autenticacion
-            const user: User = {
-                id: '5e86809283e28b96d2d38537',
-                avatar: '/avatar-anika-visser.png',
-                name: 'Jean Reyes',
-                email: 'nes@company.cl'
-            };
+    let isAuthenticated = false;
 
-            dispatch({
-                type: 'init-login',
-                payload: user
-            });
-        }  else {
-            dispatch({
-              type:'init-login',
-            });
-          }
+    try {
+      isAuthenticated = window.localStorage.getItem("authenticated") === "true";
+    } catch (err) {
+      console.error(err);
+    }
+
+    if (isAuthenticated) {
+      //aqui hacer la autenticacion
+      const user: User = {
+        id: "5e86809283e28b96d2d38537",
+        avatar: "/avatar-anika-visser.png",
+        name: "Jean Reyes",
+        email: "nes@company.cl",
+      };
+
+      dispatch({
+        type: "init-login",
+        payload: user,
+      });
+    } else {
+      dispatch({
+        type: "init-login",
+      });
+    }
+  };
+
+  const signIn = async (rut: string, password: string) => {
+    const data = {
+      rut,
+      password,
     };
 
-    const signIn = async (email: string, password: string) => {
-        // metodo de login ir a BD y traer user
-        if (email !== 'nes@company.cl' || password !== 'Password123!') {
-            throw new Error('Please check your email and password');
+    try {
+      const response = await fetch(
+        "http://localhost:807/api/v1/auth/authenticate",
+        {
+          method: "POST", // Método HTTP
+          headers: {
+            "Content-Type": "application/json", // Indica el tipo de contenido que se está enviando
+          },
+          body: JSON.stringify(data),
         }
-    
-        try {
-            window.localStorage.setItem('authenticated', 'true');
-        } catch (err) {
-            console.error(err);
+      );
+      if (!response) {
+        throw new Error("Network response was not ok");
+      }
+
+      const userLoged = await response.json(); // Aquí asumimos que la respuesta es un objeto JSON
+      window.localStorage.setItem("authenticated", "true");
+      const user: User = {
+        id: "5e86809283e28b96d2d38537",
+        avatar: "/avatar-anika-visser.png",
+        name: "Jean Reyes",
+        email: "nes@company.cl",
+      };
+
+      dispatch({
+        type: "sign-in",
+        payload: user,
+      });
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const signOut = () => {
+    window.localStorage.removeItem("authenticated");
+    dispatch({
+      type: "sing-out",
+    });
+  };
+
+  const resisterUser = async (data: ResisterProps) => {
+    try {
+      console.log({ data });
+
+      const response = await fetch(
+        "http://localhost:807/api/v1/auth/register",
+        {
+          method: "POST", // Método HTTP
+          headers: {
+            "Content-Type": "application/json", // Indica el tipo de contenido que se está enviando
+          },
+          body: JSON.stringify(data),
         }
-    
-        const user: User = {
-            id: '5e86809283e28b96d2d38537',
-            avatar: '/avatar-anika-visser.png',
-            name: 'Jean Reyes',
-            email: 'nes@company.cl'
-        };
+      );
+      if (!response) {
+        throw new Error("Network response was not ok");
+      }
 
-        dispatch({
-            type: 'sign-in',
-            payload: user
-          });
-    };
+      const userRegister = await response.json();
+      console.log({ userRegister });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    const signOut = () => {
-        window.localStorage.removeItem('authenticated')
-        dispatch({
-          type: 'sing-out'
-        });
-    };
+  useEffect(() => {
+    initialize();
+  }, []);
 
-    useEffect(() => {    
-        initialize()
-    }, [])
-
-
-    return (
-        <AuthContext.Provider value={{
-            ...stateAuth,
-            signIn,
-            signOut,
-        }}>
-            { children }
-        </AuthContext.Provider>
-    )
-}
+  return (
+    <AuthContext.Provider
+      value={{
+        ...stateAuth,
+        signIn,
+        signOut,
+        resisterUser,
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+};
 
 export const AuthConsumer = AuthContext.Consumer;
