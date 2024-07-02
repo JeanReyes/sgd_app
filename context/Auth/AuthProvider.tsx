@@ -84,7 +84,7 @@ export const AuthProvider = ({ children }: Props) => {
 
     try {
       const response = await fetch(
-        "http://localhost:807/api/v1/auth/authenticate",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/authenticate`,
         {
           method: "POST", // Método HTTP
           headers: {
@@ -124,10 +124,8 @@ export const AuthProvider = ({ children }: Props) => {
 
   const resisterUser = async (data: ResisterProps) => {
     try {
-      console.log({ data });
-
       const response = await fetch(
-        "http://localhost:807/api/v1/auth/register",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/register`,
         {
           method: "POST", // Método HTTP
           headers: {
