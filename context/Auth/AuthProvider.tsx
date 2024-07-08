@@ -1,6 +1,5 @@
 import React, { useEffect, useReducer, useRef } from "react";
 import { AuthContext } from "./AuthContext";
-import { useAuth } from "../../hooks/useContext";
 import { User } from "../../interface/Auth";
 import { AuthReducer } from "./AuthReducer";
 
@@ -19,15 +18,6 @@ const SGD_INITIAL_STATE: AuthState = {
 interface Props {
   children: JSX.Element;
 }
-
-export type ResisterProps = {
-  correo: string;
-  nombres: string;
-  dni: string;
-  apellidos: string;
-  password: string;
-  role: string;
-};
 
 export const AuthProvider = ({ children }: Props) => {
   const [stateAuth, dispatch] = useReducer(AuthReducer, SGD_INITIAL_STATE);
@@ -76,28 +66,8 @@ export const AuthProvider = ({ children }: Props) => {
     }
   };
 
-  const signIn = async (rut: string, password: string) => {
-    const data = {
-      rut,
-      password,
-    };
-
+  const signIn = async () => {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/authenticate`,
-        {
-          method: "POST", // Método HTTP
-          headers: {
-            "Content-Type": "application/json", // Indica el tipo de contenido que se está enviando
-          },
-          body: JSON.stringify(data),
-        }
-      );
-      if (!response) {
-        throw new Error("Network response was not ok");
-      }
-
-      const userLoged = await response.json(); // Aquí asumimos que la respuesta es un objeto JSON
       window.localStorage.setItem("authenticated", "true");
       const user: User = {
         id: "5e86809283e28b96d2d38537",
@@ -122,29 +92,6 @@ export const AuthProvider = ({ children }: Props) => {
     });
   };
 
-  const resisterUser = async (data: ResisterProps) => {
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/register`,
-        {
-          method: "POST", // Método HTTP
-          headers: {
-            "Content-Type": "application/json", // Indica el tipo de contenido que se está enviando
-          },
-          body: JSON.stringify(data),
-        }
-      );
-      if (!response) {
-        throw new Error("Network response was not ok");
-      }
-
-      const userRegister = await response.json();
-      console.log({ userRegister });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
     initialize();
   }, []);
@@ -155,7 +102,6 @@ export const AuthProvider = ({ children }: Props) => {
         ...stateAuth,
         signIn,
         signOut,
-        resisterUser,
       }}
     >
       {children}

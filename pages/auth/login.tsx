@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Head from "next/head";
 import { useRouter } from "next/navigation";
 import { useFormik } from "formik";
@@ -7,15 +6,20 @@ import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { LoginLayout } from "../../components/layouts";
 import { useAuth } from "../../hooks/useContext";
 import { ConfigTheme } from "../../components/configTheme/ConfigTheme";
+import { ModalBase, ModalBaseMethods } from "../../components/ui/modal/Modal";
+import { useRef } from "react";
+import { autenticate } from "../../utils/api-client";
+import Link from "next/link";
 
 const Login = () => {
   const router = useRouter();
   const { signIn } = useAuth();
+  const childRef = useRef<ModalBaseMethods>(null);
 
   const formik = useFormik({
     initialValues: {
-      rut: "176295813",
-      password: "contraseña123",
+      rut: "17629581",
+      password: "contraseña",
       submit: null,
     },
     validationSchema: Yup.object({
@@ -24,10 +28,21 @@ const Login = () => {
     }),
     onSubmit: async (values, helpers) => {
       try {
-        const response = await signIn(values.rut, values.password);
-        console.log(response);
+        const response = await autenticate<{
+          rut: string;
+          password: string;
+        }>({
+          rut: values.rut,
+          password: values.password,
+        });
 
-        // router.push("/");
+        if (response.data.change_password) {
+          childRef.current?.handleOpen();
+          return;
+        }
+
+        signIn();
+        router.push("/");
       } catch (err) {
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: "Datos de acceso incorrectos" });
@@ -135,6 +150,14 @@ const Login = () => {
           </Box>
         </Box>
       </LoginLayout>
+      <ModalBase ref={childRef}>
+        <div>
+          <h3>
+            Cambiar Contraseña{" "}
+            <Link href={"/auth/cambiar-contrasena"}>Aqui</Link>
+          </h3>
+        </div>
+      </ModalBase>
     </>
   );
 };

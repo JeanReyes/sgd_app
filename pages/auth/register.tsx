@@ -13,19 +13,18 @@ import {
   Typography,
 } from "@mui/material";
 import { LoginLayout } from "../../components/layouts";
-import { useAuth } from "../../hooks";
-// import { useAuth } from 'src/hooks/use-auth';
+import { register } from "../../utils/api-client";
+import { IRegister } from "../../interface/Auth";
+import { ModalBase, ModalBaseMethods } from "../../components/ui/modal/Modal";
+import { useRef } from "react";
 
 const Page = () => {
-  const router = useRouter();
-  const { resisterUser } = useAuth();
-  //   const auth = useAuth();
+  const childRef = useRef<ModalBaseMethods>(null);
   const formik = useFormik({
     initialValues: {
       correo: "",
       nombres: "",
       apellidos: "",
-      password: "",
       dni: "",
       role: "ADMIN",
       submit: null,
@@ -37,14 +36,21 @@ const Page = () => {
         .required("Email is required"),
       nombres: Yup.string().max(255).required("Nombres son requeridos"),
       apellidos: Yup.string().max(255).required("Apellidos son requeridos"),
-      password: Yup.string().max(255).required("Contraseña es requerida"),
       dni: Yup.string().max(255).required("Dni es requerido"),
     }),
     onSubmit: async (values, helpers) => {
       try {
-        // await auth.signUp(values.email, values.name, values.password);
-        const response = await resisterUser(values);
-        console.log(response);
+        const response = await register<IRegister>({
+          nombres: values.nombres,
+          apellidos: values.apellidos,
+          correo: values.correo,
+          dni: values.dni,
+          role: values.role,
+        });
+
+        if (!response.status.hasError) {
+          childRef.current?.handleOpen();
+        }
       } catch (err: any) {
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });
@@ -155,21 +161,6 @@ const Page = () => {
                     <MenuItem value={"ADMIN"}>ADMIN</MenuItem>
                     <MenuItem value={"MANAGER"}>MANAGER</MenuItem>
                   </TextField>
-                  <TextField
-                    error={
-                      !!(formik.touched.password && formik.errors.password)
-                    }
-                    fullWidth
-                    helperText={
-                      formik.touched.password && formik.errors.password
-                    }
-                    label="Password"
-                    name="password"
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    type="password"
-                    value={formik.values.password}
-                  />
                 </Stack>
                 {formik.errors.submit && (
                   <Typography color="error" sx={{ mt: 3 }} variant="body2">
@@ -190,6 +181,11 @@ const Page = () => {
           </Box>
         </Box>
       </LoginLayout>
+      <ModalBase ref={childRef}>
+        <div>
+          <h3>Usuario Registrado con éxito </h3>
+        </div>
+      </ModalBase>
     </>
   );
 };

@@ -181,7 +181,6 @@ export const Layout = withAuthGuard(({ children }: Props) => {
           direction={openNav}
           sideWidth={SIDE_NAV_WIDTH}
           navHeight={TOP_NAV_HEIGHT}
-          // className={(classes() as any).root}
           styles={classes}
           onClose={() => handleSideNav(false)}
           open={openNav}
