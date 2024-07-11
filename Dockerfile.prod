@@ -13,7 +13,12 @@ RUN npm ci
 # Copiar el resto de los archivos de la aplicación
 COPY . .
 
+# Eliminar el archivo .env.local
+RUN rm -f .env.local
+
 # Construir la aplicación Next.js
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 RUN npm run build
 
 # Eliminar las dependencias de desarrollo
